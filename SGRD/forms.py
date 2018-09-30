@@ -2,6 +2,7 @@ from django import forms
 from django.utils.translation import gettext as _
 from .models.recurso import Recurso
 from .models.entradaPlan import EntradaPlan
+from .models.archivo import Archivo
 
 class recursoForm(forms.ModelForm):
     class Meta:
@@ -38,4 +39,21 @@ class CreateEntradaPlanForm(forms.ModelForm):
           'equipos': forms.TextInput(attrs={'class': 'form-control'}),
           'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
           'observaciones': forms.TextInput(attrs={'class': 'form-control'})
+        }
+
+class archivoForm(forms.ModelForm):
+    class Meta:
+        model = Archivo
+        fields = ['nombre', 'recurso', 'ruta', 'fecha_creacion']
+        labels = {
+            'nombre': _("Nombre"),
+            'recurso': _("Recurso"),
+            'ruta': _("Ruta archivo"),
+            'fecha_creacion': _("Fecha de creación")
+        }
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
+            'recurso': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Recurso'}),
+            'ruta': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ruta archivo'}),
+            'fecha_creacion': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control','placeholder':'yyyy-MM-dd', 'type': 'date'})
         }

@@ -1,6 +1,7 @@
 from django import forms
+from django.utils.translation import gettext as _
 from .models.recurso import Recurso
-
+from .models.entradaPlan import EntradaPlan
 
 class recursoForm(forms.ModelForm):
     class Meta:
@@ -25,3 +26,16 @@ class recursoForm(forms.ModelForm):
             'descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descrpción'})
         }
 
+class CreateEntradaPlanForm(forms.ModelForm):
+    class Meta:
+        model = EntradaPlan
+        fields = ['dia', 'hora', 'lugar', 'personas', 'equipos', 'descripcion', 'observaciones']
+        widgets = {
+          'dia': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control','placeholder':'yyyy-MM-dd', 'type': 'date'}),
+          'hora': forms.TimeInput(format=('%H:%M'), attrs={'class': 'form-control','placeholder':'HH:MM', 'type': 'time'}),
+          'lugar': forms.TextInput(attrs={'class': 'form-control'}),
+          'personas': forms.TextInput(attrs={'class': 'form-control'}),
+          'equipos': forms.TextInput(attrs={'class': 'form-control'}),
+          'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
+          'observaciones': forms.TextInput(attrs={'class': 'form-control'})
+        }

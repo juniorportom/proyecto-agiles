@@ -4,7 +4,7 @@ from .models.recurso import Recurso
 from .models.entradaPlan import EntradaPlan
 from .models.archivo import Archivo
 
-class recursoForm(forms.ModelForm):
+class RecursoForm(forms.ModelForm):
     class Meta:
         model = Recurso
         fields = ['nombre', 'proyecto', 'fase', 'tipo', 'fecha_creacion', 'ruta_compartida', 'descripcion']

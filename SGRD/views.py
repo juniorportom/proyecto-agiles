@@ -2,7 +2,9 @@ from django.shortcuts import render
 from .models.recurso import Recurso
 from .models.PlanProduccion import PlanProduccion
 from .models.entradaPlan import EntradaPlan
-from .forms import CreateEntradaPlanForm
+from .forms import CreateEntradaPlanForm, RecursoForm
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
 
 # Create your views here.
 def index(request):
@@ -26,3 +28,10 @@ def createEntradaPlan(request, idPlan):
     }
 
     return render(request, 'SGRD/index.html', context)
+
+
+class RecursoCreate(CreateView):
+    model = Recurso
+    form_class = RecursoForm
+    template_name = 'forms/recurso-form.html'
+    success_url = reverse_lazy('index')

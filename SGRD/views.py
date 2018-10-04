@@ -23,12 +23,22 @@ def createEntradaPlan(request, idPlan):
         form = CreateEntradaPlanForm()
 
     context = {
-      'planProduccion': plan_entrada,
-      'form': form
+        'planProduccion': plan_entrada,
+        'form': form
     }
 
     return render(request, 'SGRD/index.html', context)
 
+def viewPlanProduccion(request, idPlan):
+    plan = PlanProduccion.objects.get(id=idPlan)
+    entradas = plan.entradas.all()
+
+    context = {
+        'plan': plan,
+        'entradas': entradas
+    }
+
+    return render(request, 'SGRD/planProduccion.html', context)
 
 class RecursoCreate(CreateView):
     model = Recurso

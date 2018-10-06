@@ -1,0 +1,67 @@
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    background-color: #dfe4ea;
+    color: #192a56;
+    font-family: 'Lato', 'Arial', 'sans-serif';
+    font-weight: 300;
+    font-size: 20px;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+}
+
+
+
+/*-------- BUTTONS ----------*/
+
+.btnn:link,
+.btnn:visited,
+input[type=submit] {
+    display: inline-block;
+    padding: 10px 30px;
+    font-weight: 300;
+    text-decoration: none;
+    border-radius: 200px;
+    color: #192a56;
+    -webkit-transition: background-color 0.5s, border 0.5s, color 0.5s;
+    transition: background-color 0.5s, border 0.5s, color 0.5s;
+}
+
+.btn-full:link,
+.btn-full:visited,
+input[type=submit] {
+    background-color: #ffeaa7;
+    border: 1px solid #ffeaa7;
+    color: #192a56;
+    margin-right: 15px;
+}
+
+.btn-ghost:link,
+.btn-ghost:visited {
+    border: 1px solid #ffeaa7;
+    color: #ffeaa7;
+}
+
+.btnn:hover,
+.btnn:active,
+input[type=submit]:hover,
+input[type=submit]:active {
+    background-color: #fdcb6e;
+}
+
+.btn-full:hover,
+.btn-full:active {
+    border: 1px solid #fdcb6e;
+}
+
+.btn-ghost:hover,
+.btn-ghost:active {
+    border: 1px solid #fdcb6e;
+    color: #192a56;
+}

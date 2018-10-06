@@ -1,6 +1,6 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #fff;"">
-<img src="{% static 'img/logo-1.png' %}" style="width: 10%; height: 2%; margin-left: 5%">
+<nav class="navbar navbar-expand-lg navbar-light navu" >
+<img src="{% static 'img/logo-1.png' %}" class="logou">
 <div class="container">
   <a class="navbar-brand" href="{% url 'index' %}">SGRD</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ned" aria-controls="ned" aria-expanded="false">
@@ -9,28 +9,28 @@
   <div class="collapse navbar-collapse" id="ned">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link btnn btn-full" href="{% url 'index' %}">Inicio</a>
+        <a class="nav-link btnn btn-full" href="{% url 'index' %}"><i class="ion-ios-home icon-small"></i>Inicio</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link btnn btn-full" href="{% url 'create-recurso' %}">Crear Recurso</a>
+        <a class="nav-link btnn btn-full" href="{% url 'create-recurso' %}"><i class="ion-ios-videocam icon-small"></i>Crear Recurso</a>
       </li>
     </ul>
     <ul class="navbar-nav">
       {% if not request.user.is_authenticated %}
       <li class="nav-item">
         <a class="nav-link btnn btn-full" href="#">
-          Registrarse
+          <i class="ion-ios-paper icon-small"></i>Registrarse
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link btnn btn-full" href="#">
-          Acceder
+          <i class="ion-ios-person icon-small"></i>Acceder
         </a>
       </li>
       {% else %}
       <li class="nav-item">
         <a class="nav-link btnn btn-full" href="#">
-          Salir
+          <i class="ion-ios-power icon-small"></i>Salir
         </a>
       </li>
       {% endif %}

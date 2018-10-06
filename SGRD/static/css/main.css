@@ -16,6 +16,9 @@ body {
     overflow-x: hidden;
 }
 
+.navu {
+    background-color: #fff;
+}
 
 
 /*-------- BUTTONS ----------*/
@@ -24,11 +27,11 @@ body {
 .btnn:visited,
 input[type=submit] {
     display: inline-block;
-    padding: 10px 30px;
-    font-weight: 300;
+    padding: 5px 15px;
+    font-size: 90%;
     text-decoration: none;
     border-radius: 200px;
-    color: #192a56;
+    color: #3d3d3d;
     -webkit-transition: background-color 0.5s, border 0.5s, color 0.5s;
     transition: background-color 0.5s, border 0.5s, color 0.5s;
 }
@@ -38,14 +41,14 @@ input[type=submit] {
 input[type=submit] {
     background-color: #ffeaa7;
     border: 1px solid #ffeaa7;
-    color: #192a56;
+    color: #3d3d3d;
     margin-right: 15px;
 }
 
 .btn-ghost:link,
 .btn-ghost:visited {
     border: 1px solid #ffeaa7;
-    color: #ffeaa7;
+    color: #3d3d3d;
 }
 
 .btnn:hover,
@@ -63,5 +66,33 @@ input[type=submit]:active {
 .btn-ghost:hover,
 .btn-ghost:active {
     border: 1px solid #fdcb6e;
-    color: #192a56;
+    color: #3d3d3d;
 }
+
+
+/* Logo Universidad */
+
+.logou {
+    width: 10%;
+    height: 2%;
+    margin-left: 5%
+}
+
+.page {
+
+}
+
+/* Icons */
+
+.icon-small {
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    color: #3d3d3d;
+    font-size: 120%;
+    margin-right: 10px;
+    line-height: 120%;
+    vertical-align: middle;
+    margin-top: -5px;
+}
+

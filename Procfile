@@ -1,1 +1,1 @@
-web: gunircorn proyecto-agiles.wsgi
+web: gunircorn project.wsgi

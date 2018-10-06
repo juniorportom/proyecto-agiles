@@ -1,7 +1,8 @@
 from django.db import models
+from .PlanProduccion import PlanProduccion
 
-class EntradaPlanModel(models.Model):
-    #plan = models.ForeignKey(PlanProduccion, on_delete=models.CASCADE)
+class EntradaPlan(models.Model):
+    plan = models.ForeignKey(PlanProduccion, on_delete=models.CASCADE, related_name='entradas')
     dia = models.DateField()
     hora = models.TimeField()
     lugar = models.TextField()

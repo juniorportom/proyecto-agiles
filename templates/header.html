@@ -1,0 +1,40 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #fff;"">
+<img src="{% static 'img/logo-1.png' %}" style="width: 10%; height: 2%; margin-left: 5%">
+<div class="container">
+  <a class="navbar-brand" href="{% url 'index' %}">SGRD</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ned" aria-controls="ned" aria-expanded="false">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="ned">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link btnn btn-full" href="{% url 'index' %}">Inicio</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link btnn btn-full" href="{% url 'create-recurso' %}">Crear Recurso</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+      {% if not request.user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link btnn btn-full" href="#">
+          Registrarse
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link btnn btn-full" href="#">
+          Acceder
+        </a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link btnn btn-full" href="#">
+          Salir
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
+</nav>

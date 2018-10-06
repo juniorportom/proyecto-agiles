@@ -1,0 +1,7 @@
+<div class="CreateEntradaPlanForm">
+  <h3>Nueva Entrada</h3>
+  <form method="POST"> {% csrf_token %}
+    {{ form.as_p }}
+    <p><input type="submit" class="btn btn-primary btn-block" value="Create"></p>
+  </form>
+</div>

@@ -16,20 +16,31 @@ def index(request):
     }
     return render(request, 'SGRD/index.html', context)
 
-def createEntradaPlan(request, idPlan):
+def createEntradaPlan(request):
 
-    plan_entrada = PlanProduccion.objects.get(id=idPlan)
-    form = CreateEntradaPlanForm(request.POST or None)
-    if form.is_valid():
-        EntradaPlan.create(**form.cleaned_data, plan=plan_entrada)
-        form = CreateEntradaPlanForm()
+    idPlan = 1
+    error = False
+    plan_entrada = None
+    form = None
+
+    plan_entrada = PlanProduccion.objects.all()
+
+    if (len(plan_entrada) > 0):
+        plan_entrada = plan_entrada[0]
+        form = CreateEntradaPlanForm(request.POST or None)
+        if form.is_valid():
+            EntradaPlan.create(**form.cleaned_data, plan=plan_entrada)
+            form = CreateEntradaPlanForm()
+    else:
+        error = True
 
     context = {
+        'error': error,
         'planProduccion': plan_entrada,
         'form': form
     }
 
-    return render(request, 'SGRD/index.html', context)
+    return render(request, 'forms/createEntradaPlanForm.html', context)
 
 def viewPlanProduccion(request, idPlan):
     plan = PlanProduccion.objects.get(id=idPlan)

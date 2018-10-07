@@ -1,5 +1,5 @@
 from django.db import models
-from .PlanProduccion import PlanProduccion
+from .planProduccion import PlanProduccion
 
 class EntradaPlan(models.Model):
     plan = models.ForeignKey(PlanProduccion, on_delete=models.CASCADE, related_name='entradas')

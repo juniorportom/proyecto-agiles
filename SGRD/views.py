@@ -1,8 +1,10 @@
 from django.shortcuts import render
+
+from .models.archivo import Archivo
 from .models.recurso import Recurso
-from .models.PlanProduccion import PlanProduccion
+from .models.planProduccion import PlanProduccion
 from .models.entradaPlan import EntradaPlan
-from .forms import CreateEntradaPlanForm, RecursoForm
+from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 
@@ -44,4 +46,10 @@ class RecursoCreate(CreateView):
     model = Recurso
     form_class = RecursoForm
     template_name = 'forms/recurso-form.html'
+    success_url = reverse_lazy('index')
+
+class ArchivoCreate(CreateView):
+    model = Archivo
+    form_class = ArchivoForm
+    template_name = 'forms/archivo-form.html'
     success_url = reverse_lazy('index')

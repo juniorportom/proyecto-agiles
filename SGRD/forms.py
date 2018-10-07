@@ -41,11 +41,11 @@ class CreateEntradaPlanForm(forms.ModelForm):
           'observaciones': forms.TextInput(attrs={'class': 'form-control'})
         }
 
-class archivoForm(forms.ModelForm):
+class ArchivoForm(forms.ModelForm):
     class Meta:
         model = Archivo
         fields = ['nombre', 'recurso', 'ruta', 'fecha_creacion']
-        labels = {
+"""        labels = {
             'nombre': _("Nombre"),
             'recurso': _("Recurso"),
             'ruta': _("Ruta archivo"),
@@ -57,3 +57,4 @@ class archivoForm(forms.ModelForm):
             'ruta': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ruta archivo'}),
             'fecha_creacion': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control','placeholder':'yyyy-MM-dd', 'type': 'date'})
         }
+"""

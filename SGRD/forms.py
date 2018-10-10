@@ -35,10 +35,10 @@ class CreateEntradaPlanForm(forms.ModelForm):
           'dia': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control','placeholder':'yyyy-MM-dd', 'type': 'date'}),
           'hora': forms.TimeInput(format=('%H:%M'), attrs={'class': 'form-control','placeholder':'HH:MM', 'type': 'time'}),
           'lugar': forms.TextInput(attrs={'class': 'form-control'}),
-          'personas': forms.TextInput(attrs={'class': 'form-control'}),
-          'equipos': forms.TextInput(attrs={'class': 'form-control'}),
-          'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
-          'observaciones': forms.TextInput(attrs={'class': 'form-control'})
+          'personas': forms.Textarea(attrs={'class': 'form-control'}),
+          'equipos': forms.Textarea(attrs={'class': 'form-control'}),
+          'descripcion': forms.Textarea(attrs={'class': 'form-control'}),
+          'observaciones': forms.Textarea(attrs={'class': 'form-control'})
         }
 
 class ArchivoForm(forms.ModelForm):

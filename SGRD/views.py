@@ -6,6 +6,7 @@ from .models.planProduccion import PlanProduccion
 from .models.entradaPlan import EntradaPlan
 from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm
 from django.views.generic.edit import CreateView
+from django.views.generic.list import ListView
 from django.urls import reverse_lazy
 
 # Create your views here.
@@ -57,10 +58,16 @@ class RecursoCreate(CreateView):
     model = Recurso
     form_class = RecursoForm
     template_name = 'forms/recurso-form.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('recursos')
 
 class ArchivoCreate(CreateView):
     model = Archivo
     form_class = ArchivoForm
     template_name = 'forms/archivo-form.html'
     success_url = reverse_lazy('index')
+
+
+class RecursoListView(ListView):
+    model = Recurso
+    template_name = 'forms/recurso_list.html'
+    paginate_by = 50

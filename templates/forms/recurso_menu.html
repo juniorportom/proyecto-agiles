@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand-lg navbar-light navu-sec">
+  <div class="container">
+    <span class="navbar-brand" href="#"><i>Administrar</i></span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nep" aria-controls="nep" aria-expanded="false">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nep">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="btnn btn-ghost" href="{% url 'create-recurso' %}"><i class="ion-ios-add-circle icon-small"></i>Crear recurso</a>
+        </li>
+        <li class="nav-item">
+          <a class="btnn btn-ghost" href="{% url 'recursos' %}"><i class="ion-ios-list-box icon-small"></i>Listar recursos</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

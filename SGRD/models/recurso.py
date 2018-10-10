@@ -9,7 +9,7 @@ class Tipo(models.Model):
         return self.nombre
 
     class Meta:
-        verbose_name_plural = 'Tipos'
+        verbose_name_plural = 'tipos'
 
 
 # Create your models here.
@@ -32,3 +32,8 @@ class Recurso(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    class Meta:
+        verbose_name = "recurso"
+        verbose_name_plural = "recursos"
+        ordering = ['-fecha_creacion']

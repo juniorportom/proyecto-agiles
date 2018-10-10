@@ -45,7 +45,7 @@ class ArchivoForm(forms.ModelForm):
     class Meta:
         model = Archivo
         fields = ['nombre', 'recurso', 'ruta', 'fecha_creacion']
-"""        labels = {
+        labels = {
             'nombre': _("Nombre"),
             'recurso': _("Recurso"),
             'ruta': _("Ruta archivo"),
@@ -53,8 +53,7 @@ class ArchivoForm(forms.ModelForm):
         }
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
-            'recurso': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Recurso'}),
-            'ruta': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ruta archivo'}),
+            'recurso': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Recurso'}),
+            'ruta': forms.FileInput(attrs={'class': 'form-control', 'placeholder': 'Archivo'}),
             'fecha_creacion': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control','placeholder':'yyyy-MM-dd', 'type': 'date'})
         }
-"""

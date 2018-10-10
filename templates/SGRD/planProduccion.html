@@ -1,0 +1,59 @@
+{% extends 'root.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="/static/css/planProduccion.css">
+<div class="row">
+  <div class="col-md-1"></div>
+  <div class="col-md-10 contentTitle">
+    <h3 class="title">Plan de Producción</h3>
+    <h5 class="recursoName">{{ recurso.nombre }}</h5>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+<div class="plan">
+  {% for key, values in entradas.items %}
+  <div class="diaBlock">
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="col-md-10 dia">
+        <h2>{{ key }}</h2>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-1"></div>
+      <table class="col-md-10 entradas table table-striped table-bordered">
+        <thead>
+          <th>Hora</th>
+          <th>Lugar</th>
+          <th>Personas</th>
+          <th>Equipos</th>
+          <th>Descripcion</th>
+          <th>Observaciones</th>
+        </thead>
+        <tbody>
+          {% for e in values %}
+          <tr>
+            <td>{{ e.hora }}</td>
+            <td>{{ e.lugar }}</td>
+            <td>{{ e.personas }}</td>
+            <td>{{ e.equipos }}</td>
+            <td>{{ e.descripcion }}</td>
+            <td>{{ e.observaciones }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-md-1"></div>
+  {% endfor %}
+</div>
+<div class="row">
+  <div class="col-md-1"></div>
+  <div class="col-md-2">
+    <button onclick="window.location.href='{% url 'create-entrada' idRecurso=recurso.id %}'" type="button" class="newEntradaBtn btn btn-primary">Agregar nueva entrada</button>
+  </div>
+  <div class="col-md-9"></div>
+</div>
+{% endblock %}

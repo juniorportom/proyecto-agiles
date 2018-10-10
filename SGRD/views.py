@@ -8,6 +8,8 @@ from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
+from django.template.defaultfilters import date
 
 # Create your views here.
 def index(request):
@@ -17,42 +19,50 @@ def index(request):
     }
     return render(request, 'SGRD/index.html', context)
 
-def createEntradaPlan(request):
-
-    idPlan = 1
-    error = False
+def createEntradaPlan(request, idRecurso):
     plan_entrada = None
     form = None
 
-    plan_entrada = PlanProduccion.objects.all()
+    recurso = Recurso.objects.get(id=idRecurso)
+    plan_entrada = recurso.plan.get()
 
-    if (len(plan_entrada) > 0):
-        plan_entrada = plan_entrada[0]
-        form = CreateEntradaPlanForm(request.POST or None)
-        if form.is_valid():
-            EntradaPlan.create(**form.cleaned_data, plan=plan_entrada)
-            form = CreateEntradaPlanForm()
-    else:
-        error = True
+    form = CreateEntradaPlanForm(request.POST or None)
+    if form.is_valid():
+        EntradaPlan.objects.create(**form.cleaned_data, plan=plan_entrada)
+        return HttpResponseRedirect('/planProduccion/'+str(recurso.id))
 
     context = {
-        'error': error,
+        'recurso': recurso,
         'planProduccion': plan_entrada,
         'form': form
     }
 
     return render(request, 'forms/createEntradaPlanForm.html', context)
 
-def viewPlanProduccion(request, idPlan):
-    plan = PlanProduccion.objects.get(id=idPlan)
+def viewPlanProduccion(request, idRecurso):
+    recurso = Recurso.objects.get(id=idRecurso)
+    plan = recurso.plan.get()
     entradas = plan.entradas.all()
 
+    entradas = sortEntradasPlan(list(entradas))
+
     context = {
+        'recurso': recurso,
         'plan': plan,
         'entradas': entradas
     }
 
     return render(request, 'SGRD/planProduccion.html', context)
+
+def sortEntradasPlan(entradas):
+    dias = {}
+    for e in entradas:
+        dia = e.dia
+        if dia in dias:
+            dias[dia].append(e)
+        else:
+            dias[dia] = [e]
+    return dias
 
 class RecursoCreate(CreateView):
     model = Recurso

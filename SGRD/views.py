@@ -4,7 +4,7 @@ from .models.archivo import Archivo
 from .models.recurso import Recurso
 from .models.planProduccion import PlanProduccion
 from .models.entradaPlan import EntradaPlan
-from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm
+from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 from django.urls import reverse_lazy
@@ -43,13 +43,15 @@ def viewPlanProduccion(request, idRecurso):
     recurso = Recurso.objects.get(id=idRecurso)
     plan = recurso.plan.get()
     entradas = plan.entradas.all()
+    planDescripcion = plan.descripcion
 
     entradas = sortEntradasPlan(list(entradas))
 
     context = {
         'recurso': recurso,
         'plan': plan,
-        'entradas': entradas
+        'entradas': entradas,
+        'planDescripcion': planDescripcion
     }
 
     return render(request, 'SGRD/planProduccion.html', context)
@@ -81,3 +83,21 @@ class RecursoListView(ListView):
     model = Recurso
     template_name = 'forms/recurso_list.html'
     paginate_by = 50
+
+
+def EditarPlanProduccion(request, idPlan):
+    plan = PlanProduccion.objects.get(id=idPlan)
+
+    if request.method == 'POST':
+        form_plan = PlanProduccionForm(request.POST, instance=plan)
+
+        if form_plan.is_valid():
+            form_plan.save()
+            return HttpResponseRedirect('/')
+
+    else:
+        form_plan = PlanProduccionForm(instance=plan)
+
+    context = {'form_plan': form_plan}
+
+    return render(request, 'forms/editarPlanProduccion.html', context)

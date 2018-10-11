@@ -2,6 +2,7 @@ from django import forms
 from django.utils.translation import gettext as _
 from .models.recurso import Recurso
 from .models.entradaPlan import EntradaPlan
+from .models.planProduccion import PlanProduccion
 from .models.archivo import Archivo
 
 class RecursoForm(forms.ModelForm):
@@ -24,7 +25,7 @@ class RecursoForm(forms.ModelForm):
             'tipo': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Tipo recurso'}),
             'fecha_creacion': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control','placeholder':'yyyy-MM-dd', 'type': 'date'}),
             'ruta_compartida': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ubicación recurso'}),
-            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descrpción'})
+            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción'})
         }
 
 class CreateEntradaPlanForm(forms.ModelForm):
@@ -56,4 +57,18 @@ class ArchivoForm(forms.ModelForm):
             'recurso': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Recurso'}),
             'ruta': forms.FileInput(attrs={'class': 'form-control', 'placeholder': 'Archivo'}),
             'fecha_creacion': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control','placeholder':'yyyy-MM-dd', 'type': 'date'})
+        }
+
+
+class PlanProduccionForm(forms.ModelForm):
+    class Meta:
+        model = PlanProduccion
+        fields = ['descripcion']
+
+        labels = {
+            'descripcion': _("Descripción")
+        }
+
+        widgets = {
+            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción'})
         }

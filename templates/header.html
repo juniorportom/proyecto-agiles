@@ -20,6 +20,9 @@
       <li class="nav-item">
         <a class="nav-link btnn btn-full" href="{% url 'create-archivo' %}"><i class="ion-ios-videocam icon-small"></i>Cargar Archivo</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link btnn btn-full" href="{% url 'editar-plan' idPlan=1 %}"><i class="ion-ios-videocam icon-small"></i>Editar Plan</a>
+      </li
     </ul>
     <ul class="navbar-nav">
       {% if not request.user.is_authenticated %}

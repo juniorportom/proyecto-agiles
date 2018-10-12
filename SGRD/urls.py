@@ -9,7 +9,7 @@ urlpatterns = [
     path('editar-plan-produccion/<int:idPlan>', views.EditarPlanProduccion, name='editar-plan'),
     path('crear-entrada/<int:idRecurso>', views.createEntradaPlan, name='create-entrada'),
     path('crear-recurso/', RecursoCreate.as_view(), name='create-recurso'),
-    path('crear-archivo/', ArchivoCreate.as_view(), name='create-archivo'),
+    path('crear-archivo/<int:id_recurso>', ArchivoCreate.as_view(), name='create-archivo'),
     path('recursos/', RecursoListView.as_view(), name='recursos'),
     path('recurso/<int:pk>', RecursoDetailView.as_view(), name='recurso'),
 ]

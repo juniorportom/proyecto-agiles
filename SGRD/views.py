@@ -68,17 +68,23 @@ def sortEntradasPlan(entradas):
             dias[dia] = [e]
     return dias
 
+
 class RecursoCreate(CreateView):
     model = Recurso
     form_class = RecursoForm
     template_name = 'forms/recurso-form.html'
     success_url = reverse_lazy('recursos')
 
+
 class ArchivoCreate(CreateView):
     model = Archivo
     form_class = ArchivoForm
     template_name = 'forms/archivo-form.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('recursos')
+
+    def form_valid(self, form):
+        form.instance.recurso = get_object_or_404(Recurso, id=self.kwargs['id_recurso'])
+        return super().form_valid(form)
 
 
 class RecursoListView(ListView):

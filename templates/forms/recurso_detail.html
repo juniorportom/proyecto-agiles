@@ -40,7 +40,7 @@
                 {% if archivos %}
             <div class="row">
               <div class="col-md-1"></div>
-              <table class="col-md-10 entradas table table-striped table-bordered">
+              <table class="col-md-10 w-100 entradas table table-striped table-bordered">
                 <thead>
                   <th>Nombre</th>
                   <th>Fecha</th>
@@ -54,7 +54,7 @@
                     <td>{{ archivo.fecha_creacion }}</td>
                     <td>{{ archivo.ruta.name }}</td>
                     <td>
-                        <a class="btnn btn-full" href="{{ archivo.ruta.url }}" download> <i class="ion-ios-cloud-download icon-small"> </i>Descargar </a>
+                        <a class="btnn btn-full" href="{{ archivo.ruta.url }}" download><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
                     </td>
                   </tr>
                   {% endfor %}

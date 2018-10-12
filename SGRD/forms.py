@@ -71,6 +71,6 @@ class PlanProduccionForm(forms.ModelForm):
 
         widgets = {
             #'recurso': forms.HiddenInput(),
-
+            #'recurso': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Recurso', 'default':'2'}),
             'descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción'}),
         }

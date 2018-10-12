@@ -41,7 +41,7 @@ def createEntradaPlan(request, idRecurso):
 
 def viewPlanProduccion(request, idRecurso):
     recurso = Recurso.objects.get(id=idRecurso)
-    plan = recurso.plan.get()
+    plan = recurso.plan
     entradas = plan.entradas.all()
     planDescripcion = plan.descripcion
 
@@ -91,6 +91,24 @@ class CrearPlanProduccion(CreateView):
     template_name = 'forms/crear_plan.html'
     success_url = reverse_lazy('index')
 
+
+def crearPlanProduccion(request, idPlan):
+    plan = Recurso.objects.get(id=idPlan)
+
+    if request.method == 'POST':
+        PlanProduccion.recurso = plan
+        form_plan = PlanProduccionForm(request.POST, instance=plan)
+
+        if form_plan.is_valid():
+            form_plan.save()
+            return HttpResponseRedirect('/')
+
+    else:
+        form_plan = PlanProduccionForm(instance=plan)
+
+    context = {'form_plan': form_plan}
+
+    return render(request, 'forms/crear_plan.html', context)
 
 def EditarPlanProduccion(request, idPlan):
     plan = PlanProduccion.objects.get(id=idPlan)

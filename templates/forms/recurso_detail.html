@@ -31,17 +31,15 @@
                       {{recurso.descripcion|striptags|safe|truncatechars:"200"}}
                     </p>
                    <p>
-                      <a href="#">Detalle</a>
-                  | <a href="{% url 'create-archivo' %}">Adjuntar Archivo</a>
+                    <a href="{% url 'create-archivo' %}">Adjuntar Archivo</a>
                   | <a href="#">Plan Producción</a>
-                  | <a href="#">Borrar</a>
                     </p>
               </div>
                 {% if archivos %}
-            <div class="row">
-              <div class="col-md-1"></div>
-              <table class="col-md-10 w-100 entradas table table-striped table-bordered">
-                <thead>
+                    <h5 class="text-center mt-3 mb-3">Archivos asociados</h5>
+            <div class="row text-center">
+              <table class="col-md-20 w-100 entradas table table-striped table-bordered">
+                <thead class="text-center">
                   <th>Nombre</th>
                   <th>Fecha</th>
                   <th>Archivo</th>

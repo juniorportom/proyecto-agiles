@@ -134,3 +134,8 @@ STATICFILES_DIRS = [
 ]
 
 django_heroku.settings(locals())
+
+
+# Media Files
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'

@@ -4,3 +4,5 @@ start.sh
 .env*
 media/profiles/*
 *.sqlite3
+media
+media/*

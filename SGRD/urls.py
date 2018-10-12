@@ -1,6 +1,6 @@
 from django.urls import path
 from SGRD import views
-from .views import RecursoCreate, ArchivoCreate, RecursoListView, EditarPlanProduccion, CrearPlanProduccion
+from .views import RecursoCreate, ArchivoCreate, RecursoListView, EditarPlanProduccion, CrearPlanProduccion, RecursoDetailView
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -11,4 +11,5 @@ urlpatterns = [
     path('crear-recurso/', RecursoCreate.as_view(), name='create-recurso'),
     path('crear-archivo/', ArchivoCreate.as_view(), name='create-archivo'),
     path('recursos/', RecursoListView.as_view(), name='recursos'),
+    path('recurso/<int:pk>', RecursoDetailView.as_view(), name='recurso'),
 ]

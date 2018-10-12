@@ -7,8 +7,10 @@ from .models.entradaPlan import EntradaPlan
 from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import date
 
 # Create your views here.
@@ -126,3 +128,15 @@ def EditarPlanProduccion(request, idPlan):
     context = {'form_plan': form_plan}
 
     return render(request, 'forms/editarPlanProduccion.html', context)
+
+
+class RecursoDetailView(DetailView):
+    model = Recurso
+    template_name = 'forms/recurso_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['archivos'] = Archivo.objects.filter(recurso=self.object)
+        if not context['archivos']:
+            context['archivos'] = ''
+        return context

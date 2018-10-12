@@ -31,7 +31,7 @@
                       {{recurso.descripcion|striptags|safe|truncatechars:"200"}}
                     </p>
                    <p>
-                    <a href="{% url 'create-archivo' %}">Adjuntar Archivo</a>
+                    <a href="{% url 'create-archivo' recurso.id %}">Adjuntar Archivo</a>
                   | <a href="#">Plan Producción</a>
                     </p>
               </div>

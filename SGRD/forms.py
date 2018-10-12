@@ -46,19 +46,18 @@ class CreateEntradaPlanForm(forms.ModelForm):
           'descripcion': 'Descripción'
         }
 
+
 class ArchivoForm(forms.ModelForm):
     class Meta:
         model = Archivo
-        fields = ['nombre', 'recurso', 'ruta', 'fecha_creacion']
+        fields = ['nombre', 'ruta', 'fecha_creacion']
         labels = {
             'nombre': _("Nombre"),
-            'recurso': _("Recurso"),
             'ruta': _("Ruta archivo"),
             'fecha_creacion': _("Fecha de creación")
         }
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
-            'recurso': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Recurso'}),
             'ruta': forms.FileInput(attrs={'class': 'form-control', 'placeholder': 'Archivo'}),
             'fecha_creacion': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control','placeholder':'yyyy-MM-dd', 'type': 'date'})
         }

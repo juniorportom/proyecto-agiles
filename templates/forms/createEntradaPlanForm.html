@@ -10,8 +10,8 @@
         <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
           {{ form.as_p }}
           <div class="text-center"></div>
-          <input type="submit" class="btn btn-primary" value="Crear entrada" />
-          <button onclick="window.location.href='{% url 'view-plan' idRecurso=recurso.id %}'" type="button" class="btn btn-secondary">Cancelar</button>
+          <input type="submit" class="btnn btn-full" value="Crear entrada" />
+          <a class="btnn btn-full" href="{% url 'view-plan' idRecurso=recurso.id %}" style="background-color: #b2b2b2; border: #7f7f7f;">Cancelar</a>
         </form>
       </div>
     </div>

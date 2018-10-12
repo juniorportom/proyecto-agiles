@@ -10,6 +10,15 @@
   </div>
   <div class="col-md-1"></div>
 </div>
+<div class="row descripcion">
+  <div class="col-md-1"></div>
+  <div class="col-md-10 card w-100">
+    <div class="card-body">
+      <p>{{ plan.descripcion }}</p>
+    </div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
 <div class="plan">
   {% for key, values in entradas.items %}
   <div class="diaBlock">
@@ -49,23 +58,14 @@
   <div class="col-md-1"></div>
   {% endfor %}
 </div>
-<div class="row">
+<div class="row buttonPanel">
   <div class="col-md-1"></div>
   <div class="col-md-2">
-    <button onclick="window.location.href='{% url 'create-entrada' idRecurso=recurso.id %}'" type="button" class="newEntradaBtn btn btn-primary">Agregar nueva entrada</button>
+    <a class="btnn btn-full" href="{% url 'create-entrada' idRecurso=recurso.id %}"><i class="ion-ios-add-circle icon-small"></i>Agregar nueva entrada</a>
   </div>
-  <div class="col-md-9"></div>
-</div>
-<div class="row">
-    <div class="col-md-1"></div>
-        <div class="col-md-10">
-            <h5 class="title">Descripción</h5>
-            <div class="card w-100">
-                <div class="card-body">
-                <p>{{ plan.descripcion }}</p>
-                </div>
-            </div>
-        </div>
-    <div class="col-md-1"></div>
+  <div class="col-md-2">
+    <a class="btnn btn-full" href="{% url 'editar-plan' idPlan=plan.id %}"><i class="ion-ios-list-box icon-small"></i>Editar descripción</a>
+  </div>
+  <div class="col-md-7"></div>
 </div>
 {% endblock %}

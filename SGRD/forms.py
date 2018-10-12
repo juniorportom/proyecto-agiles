@@ -41,6 +41,10 @@ class CreateEntradaPlanForm(forms.ModelForm):
           'descripcion': forms.Textarea(attrs={'class': 'form-control'}),
           'observaciones': forms.Textarea(attrs={'class': 'form-control'})
         }
+        labels={
+          'dia': 'Día',
+          'descripcion': 'Descripción'
+        }
 
 class ArchivoForm(forms.ModelForm):
     class Meta:

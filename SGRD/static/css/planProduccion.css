@@ -8,6 +8,11 @@
   color: #7a7a7a;
 }
 
+.descripcion
+{
+  margin-bottom: 2vh;
+}
+
 .dia h2
 {
   display: inline-block;
@@ -29,7 +34,7 @@
   overflow: hidden;
 }
 
-.newEntradaBtn
+.buttonPanel
 {
-  margin-bottom: 10vh;
+  margin-bottom: 5vh;
 }

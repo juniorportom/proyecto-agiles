@@ -63,12 +63,14 @@ class ArchivoForm(forms.ModelForm):
 class PlanProduccionForm(forms.ModelForm):
     class Meta:
         model = PlanProduccion
-        fields = ['descripcion']
+        fields = ['recurso', 'descripcion']
 
         labels = {
-            'descripcion': _("Descripción")
+            'descripcion': _("Descripción"),
         }
 
         widgets = {
-            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción'})
+            #'recurso': forms.HiddenInput(),
+
+            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción'}),
         }

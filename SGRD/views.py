@@ -85,6 +85,13 @@ class RecursoListView(ListView):
     paginate_by = 50
 
 
+class CrearPlanProduccion(CreateView):
+    model = PlanProduccion
+    form_class = PlanProduccionForm
+    template_name = 'forms/crear_plan.html'
+    success_url = reverse_lazy('index')
+
+
 def EditarPlanProduccion(request, idPlan):
     plan = PlanProduccion.objects.get(id=idPlan)
 

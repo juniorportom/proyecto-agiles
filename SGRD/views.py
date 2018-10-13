@@ -150,13 +150,15 @@ class RecursoDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['archivos'] = Archivo.objects.filter(recurso=self.object)
-        context['plan'] = PlanProduccion.objects.get(recurso=self.object)
-        context['id'] = self.kwargs['pk']
         print(self.object.id)
         if not context['archivos']:
             context['archivos'] = ''
-        if not context['plan']:
+
+        try:
+            if not self.object.plan:
+                context['hay_plan'] = False
+            else:
+                context['hay_plan'] = True
+        except:
             context['hay_plan'] = False
-        else:
-            context['hay_plan'] = True
         return context

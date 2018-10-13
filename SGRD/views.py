@@ -93,30 +93,30 @@ class RecursoListView(ListView):
     paginate_by = 50
 
 
-class CrearPlanProduccion(CreateView):
-    model = PlanProduccion
-    form_class = PlanProduccionForm
-    template_name = 'forms/crear_plan.html'
-    success_url = reverse_lazy('index')
+def crearPlanProduccion(request, idRecurso):
+    plan_entrada = None
+    form = None
 
+    recurso = Recurso.objects.get(id=idRecurso)
+    descripcion = PlanProduccion.descripcion
+    recurso_id = PlanProduccion.recurso_id
 
-def crearPlanProduccion(request, idPlan):
-    plan = Recurso.objects.get(id=idPlan)
+    form = PlanProduccionForm(request.POST or None)
+    if recurso_id != '':
+        if form.is_valid():
+            PlanProduccion.objects.create(**form.cleaned_data, recurso=recurso)
+            return HttpResponseRedirect('/recursos/')
 
-    if request.method == 'POST':
-        PlanProduccion.recurso = plan
-        form_plan = PlanProduccionForm(request.POST, instance=plan)
+        context = {
+            'recurso': recurso,
+            #'recurso_id': recurso_id,
+            'descripcion': descripcion,
+            'form': form
+        }
 
-        if form_plan.is_valid():
-            form_plan.save()
-            return HttpResponseRedirect('/')
+        return render(request, 'forms/crear_plan.html', context)
 
-    else:
-        form_plan = PlanProduccionForm(instance=plan)
-
-    context = {'form_plan': form_plan}
-
-    return render(request, 'forms/crear_plan.html', context)
+    return HttpResponseRedirect('/recursos/')
 
 def EditarPlanProduccion(request, idRecurso):
     try:

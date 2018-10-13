@@ -41,7 +41,7 @@ def createEntradaPlan(request, idRecurso):
 
     return render(request, 'forms/createEntradaPlanForm.html', context)
 
-def viewPlanProduccion(request, idRecurso):
+def verPlanProduccion(request, idRecurso):
     recurso = Recurso.objects.get(id=idRecurso)
     plan = recurso.plan
     entradas = plan.entradas.all()
@@ -105,11 +105,10 @@ def crearPlanProduccion(request, idRecurso):
     if recurso_id != '':
         if form.is_valid():
             PlanProduccion.objects.create(**form.cleaned_data, recurso=recurso)
-            return HttpResponseRedirect('/recursos/')
+            return verPlanProduccion(request, recurso.id)
 
         context = {
             'recurso': recurso,
-            #'recurso_id': recurso_id,
             'descripcion': descripcion,
             'form': form
         }

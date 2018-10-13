@@ -2,35 +2,18 @@
 <nav class="navbar navbar-expand-lg navbar-light navu" >
 <img src="{% static 'img/logo-1.png' %}" class="logou">
 <div class="container">
-  <!--<a class="navbar-brand" href="{% url 'index' %}">SGRD</a>-->
+  <a class="navbar-brand" href="#">SGRD</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ned" aria-controls="ned" aria-expanded="false">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="ned">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <!--<a class="nav-link btnn btn-full" href="{% url 'index' %}"><i class="ion-ios-home icon-small"></i>Inicio</a>-->
-      </li>
-      <li class="nav-item">
         <a class="nav-link btnn btn-full" href="{% url 'recursos' %}"><i class="ion-ios-videocam icon-small"></i>Recursos</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link btnn btn-full" href="{% url 'view-plan' idRecurso=1 %}"><i class="ion-ios-videocam icon-small"></i>Plan de Producción</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link btnn btn-full" href="{% url 'crear-plan' idRecurso=1 %}"><i class="ion-ios-videocam icon-small"></i>Crear Plan</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link btnn btn-full" href="{% url 'editar-plan' idPlan=1 %}"><i class="ion-ios-videocam icon-small"></i>Editar Plan</a>
       </li>
     </ul>
     <ul class="navbar-nav">
       {% if not request.user.is_authenticated %}
-<!---      <li class="nav-item">
-        <a class="nav-link btnn btn-full" href="#">
-          <i class="ion-ios-paper icon-small"></i>Registrarse
-        </a>
-      </li>--->
       <li class="nav-item">
         <a class="nav-link btnn btn-full" href="#">
           <i class="ion-ios-person icon-small"></i>Acceder

@@ -93,47 +93,55 @@ class RecursoListView(ListView):
     paginate_by = 50
 
 
-class CrearPlanProduccion(CreateView):
-    model = PlanProduccion
-    form_class = PlanProduccionForm
-    template_name = 'forms/crear_plan.html'
-    success_url = reverse_lazy('index')
+def crearPlanProduccion(request, idRecurso):
+    plan_entrada = None
+    form = None
 
+    recurso = Recurso.objects.get(id=idRecurso)
+    descripcion = PlanProduccion.descripcion
+    recurso_id = PlanProduccion.recurso_id
 
-def crearPlanProduccion(request, idPlan):
-    plan = Recurso.objects.get(id=idPlan)
+    form = PlanProduccionForm(request.POST or None)
+    if recurso_id != '':
+        if form.is_valid():
+            PlanProduccion.objects.create(**form.cleaned_data, recurso=recurso)
+            return HttpResponseRedirect('/recursos/')
 
-    if request.method == 'POST':
-        PlanProduccion.recurso = plan
-        form_plan = PlanProduccionForm(request.POST, instance=plan)
+        context = {
+            'recurso': recurso,
+            #'recurso_id': recurso_id,
+            'descripcion': descripcion,
+            'form': form
+        }
+
+        return render(request, 'forms/crear_plan.html', context)
+
+    return HttpResponseRedirect('/recursos/')
+
+def EditarPlanProduccion(request, idRecurso):
+    try:
+        recurso = Recurso.objects.get(id=idRecurso)
+        plan = recurso.plan.get()
+        form_plan = PlanProduccionForm(request.POST or None, instance=plan)
 
         if form_plan.is_valid():
             form_plan.save()
             return HttpResponseRedirect('/')
 
-    else:
-        form_plan = PlanProduccionForm(instance=plan)
+        context = {
+            'form_plan': form_plan,
+            'error': False
+        }
 
-    context = {'form_plan': form_plan}
+        return render(request, 'forms/editarPlanProduccion.html', context)
 
-    return render(request, 'forms/crear_plan.html', context)
+    except:
+        context = {
+            'form_plan': None,
+            'error': True
+        }
 
-def EditarPlanProduccion(request, idPlan):
-    plan = PlanProduccion.objects.get(id=idPlan)
-
-    if request.method == 'POST':
-        form_plan = PlanProduccionForm(request.POST, instance=plan)
-
-        if form_plan.is_valid():
-            form_plan.save()
-            return HttpResponseRedirect('/')
-
-    else:
-        form_plan = PlanProduccionForm(instance=plan)
-
-    context = {'form_plan': form_plan}
-
-    return render(request, 'forms/editarPlanProduccion.html', context)
+        return render(request, 'forms/editarPlanProduccion.html', context)
 
 
 class RecursoDetailView(DetailView):

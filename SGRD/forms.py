@@ -66,7 +66,7 @@ class ArchivoForm(forms.ModelForm):
 class PlanProduccionForm(forms.ModelForm):
     class Meta:
         model = PlanProduccion
-        fields = ['recurso', 'descripcion']
+        fields = ['descripcion']
 
         labels = {
             'descripcion': _("Descripción"),

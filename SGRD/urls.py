@@ -4,7 +4,7 @@ from .views import RecursoCreate, ArchivoCreate, RecursoListView, EditarPlanProd
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('planProduccion/<int:idRecurso>', views.viewPlanProduccion, name='view-plan'),
+    path('ver-plan-produccion/<int:idRecurso>', views.verPlanProduccion, name='view-plan'),
     path('crear-plan-produccion/<int:idRecurso>', views.crearPlanProduccion, name='crear-plan'),
     path('editar-plan-produccion/<int:idRecurso>', views.EditarPlanProduccion, name='editar-plan'),
     path('crear-entrada/<int:idRecurso>', views.createEntradaPlan, name='create-entrada'),

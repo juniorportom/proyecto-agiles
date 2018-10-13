@@ -26,7 +26,7 @@ def createEntradaPlan(request, idRecurso):
     form = None
 
     recurso = Recurso.objects.get(id=idRecurso)
-    plan_entrada = recurso.plan.get()
+    plan_entrada = recurso.plan
 
     form = CreateEntradaPlanForm(request.POST or None)
     if form.is_valid():
@@ -41,7 +41,7 @@ def createEntradaPlan(request, idRecurso):
 
     return render(request, 'forms/createEntradaPlanForm.html', context)
 
-def viewPlanProduccion(request, idRecurso):
+def verPlanProduccion(request, idRecurso):
     recurso = Recurso.objects.get(id=idRecurso)
     plan = recurso.plan
     entradas = plan.entradas.all()
@@ -105,11 +105,10 @@ def crearPlanProduccion(request, idRecurso):
     if recurso_id != '':
         if form.is_valid():
             PlanProduccion.objects.create(**form.cleaned_data, recurso=recurso)
-            return HttpResponseRedirect('/recursos/')
+            return verPlanProduccion(request, recurso.id)
 
         context = {
             'recurso': recurso,
-            #'recurso_id': recurso_id,
             'descripcion': descripcion,
             'form': form
         }
@@ -121,7 +120,7 @@ def crearPlanProduccion(request, idRecurso):
 def EditarPlanProduccion(request, idRecurso):
     try:
         recurso = Recurso.objects.get(id=idRecurso)
-        plan = recurso.plan.get()
+        plan = recurso.plan
         form_plan = PlanProduccionForm(request.POST or None, instance=plan)
 
         if form_plan.is_valid():
@@ -151,6 +150,15 @@ class RecursoDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['archivos'] = Archivo.objects.filter(recurso=self.object)
+        print(self.object.id)
         if not context['archivos']:
             context['archivos'] = ''
+
+        try:
+            if not self.object.plan:
+                context['hay_plan'] = False
+            else:
+                context['hay_plan'] = True
+        except:
+            context['hay_plan'] = False
         return context

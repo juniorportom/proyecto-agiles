@@ -61,10 +61,10 @@
 <div class="row buttonPanel">
   <div class="col-md-1"></div>
   <div class="col-md-2">
-    <a class="btnn btn-full" href="{% url 'create-entrada' idRecurso=recurso.id %}"><i class="ion-ios-add-circle icon-small"></i>Agregar nueva entrada</a>
+    <a class="btnn btn-full" href="{% url 'create-entrada' recurso.id %}"><i class="ion-ios-add-circle icon-small"></i>Agregar nueva entrada</a>
   </div>
   <div class="col-md-2">
-    <a class="btnn btn-full" href="{% url 'editar-plan' idPlan=plan.id %}"><i class="ion-ios-list-box icon-small"></i>Editar descripción</a>
+    <a class="btnn btn-full" href="{% url 'editar-plan' recurso.id %}"><i class="ion-ios-list-box icon-small"></i>Editar descripción</a>
   </div>
   <div class="col-md-7"></div>
 </div>

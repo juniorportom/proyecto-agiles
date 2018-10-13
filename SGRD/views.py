@@ -26,7 +26,7 @@ def createEntradaPlan(request, idRecurso):
     form = None
 
     recurso = Recurso.objects.get(id=idRecurso)
-    plan_entrada = recurso.plan.get()
+    plan_entrada = recurso.plan
 
     form = CreateEntradaPlanForm(request.POST or None)
     if form.is_valid():
@@ -121,7 +121,7 @@ def crearPlanProduccion(request, idRecurso):
 def EditarPlanProduccion(request, idRecurso):
     try:
         recurso = Recurso.objects.get(id=idRecurso)
-        plan = recurso.plan.get()
+        plan = recurso.plan
         form_plan = PlanProduccionForm(request.POST or None, instance=plan)
 
         if form_plan.is_valid():
@@ -151,6 +151,13 @@ class RecursoDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['archivos'] = Archivo.objects.filter(recurso=self.object)
+        context['plan'] = PlanProduccion.objects.get(recurso=self.object)
+        context['id'] = self.kwargs['pk']
+        print(self.object.id)
         if not context['archivos']:
             context['archivos'] = ''
+        if not context['plan']:
+            context['hay_plan'] = False
+        else:
+            context['hay_plan'] = True
         return context

@@ -7,11 +7,16 @@
   <div class="container">
     <div class="row mt-3 mb-5">
       <div class="col-md-9 mx-auto">
+            {% if error %}
+            <h3>Error</h3>
+            <p>El recurso al que accedió no tiene plan de producción</p>
+            {% else %}
             <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
                     {{ form_plan.as_p }}
                 <div class="text-center"></div>
                 <input type="submit" class="btn btn-primary" value="Guardar" />
             </form>
+            {% endif %}
         </div>
     </div>
   </div>

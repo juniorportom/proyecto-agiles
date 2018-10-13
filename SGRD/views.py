@@ -118,22 +118,30 @@ def crearPlanProduccion(request, idPlan):
 
     return render(request, 'forms/crear_plan.html', context)
 
-def EditarPlanProduccion(request, idPlan):
-    plan = PlanProduccion.objects.get(id=idPlan)
-
-    if request.method == 'POST':
-        form_plan = PlanProduccionForm(request.POST, instance=plan)
+def EditarPlanProduccion(request, idRecurso):
+    try:
+        recurso = Recurso.objects.get(id=idRecurso)
+        plan = recurso.plan.get()
+        form_plan = PlanProduccionForm(request.POST or None, instance=plan)
 
         if form_plan.is_valid():
             form_plan.save()
             return HttpResponseRedirect('/')
 
-    else:
-        form_plan = PlanProduccionForm(instance=plan)
+        context = {
+            'form_plan': form_plan,
+            'error': False
+        }
 
-    context = {'form_plan': form_plan}
+        return render(request, 'forms/editarPlanProduccion.html', context)
 
-    return render(request, 'forms/editarPlanProduccion.html', context)
+    except:
+        context = {
+            'form_plan': None,
+            'error': True
+        }
+
+        return render(request, 'forms/editarPlanProduccion.html', context)
 
 
 class RecursoDetailView(DetailView):

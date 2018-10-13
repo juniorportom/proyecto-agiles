@@ -125,7 +125,7 @@ def EditarPlanProduccion(request, idRecurso):
 
         if form_plan.is_valid():
             form_plan.save()
-            return HttpResponseRedirect('/')
+            return verPlanProduccion(request, recurso.id)
 
         context = {
             'form_plan': form_plan,

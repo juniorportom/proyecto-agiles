@@ -6,3 +6,4 @@ from .models.recurso import Tipo
 from .models.recurso import Recurso
 from .models.archivo import Archivo
 from .models.planProduccion import PlanProduccion
+from .models.etiqueta import Etiqueta

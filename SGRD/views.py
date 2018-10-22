@@ -89,7 +89,7 @@ class ArchivoCreate(CreateView):
 
 class RecursoListView(ListView):
     model = Recurso
-    template_name = 'forms/recurso_list.html'
+    template_name = 'SGRD/recurso_list.html'
     paginate_by = 50
 
 
@@ -145,11 +145,12 @@ def EditarPlanProduccion(request, idRecurso):
 
 class RecursoDetailView(DetailView):
     model = Recurso
-    template_name = 'forms/recurso_detail.html'
+    template_name = 'SGRD/recurso_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['archivos'] = Archivo.objects.filter(recurso=self.object)
+        context['tags'] = self.object.etiquetas.all()
         print(self.object.id)
         if not context['archivos']:
             context['archivos'] = ''

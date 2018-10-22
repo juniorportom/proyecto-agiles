@@ -1,4 +1,5 @@
 from django.db import models
+from .etiqueta import Etiqueta
 from datetime import datetime
 
 
@@ -29,6 +30,7 @@ class Recurso(models.Model):
     fecha_creacion = models.DateField(default=datetime.now, blank=True)
     ruta_compartida = models.CharField(max_length=250)
     descripcion = models.CharField(max_length=500)
+    etiquetas = models.ManyToManyField(Etiqueta)
 
     def __str__(self):
         return self.nombre

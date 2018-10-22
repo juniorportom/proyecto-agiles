@@ -153,3 +153,12 @@ a:active {
 {
   margin-bottom: 10vh;
 }
+
+.recursoTag
+{
+  margin: 1vw;
+  border: 1px solid #7F055F;
+  border-radius: 10px;
+  width: auto;
+  height: auto;
+}

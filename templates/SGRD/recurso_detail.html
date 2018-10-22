@@ -26,6 +26,7 @@
                     <p><b>Ruta: </b>{{recurso.ruta_compartida}}</p>
                   </div>
                 </div>
+                {% if tags %}
                 <div class="row">
                   <h5>Etiquetas:</h5>
                 </div>
@@ -38,6 +39,7 @@
                   </div>
                   {% endfor %}
                 </div>
+                {% endif %}
                   <h5>Descripción:</h5>
                     <p style="max-width: 90%">
                       {{recurso.descripcion|striptags|safe|truncatechars:"200"}}

@@ -12,4 +12,5 @@ urlpatterns = [
     path('crear-archivo/<int:id_recurso>', ArchivoCreate.as_view(), name='create-archivo'),
     path('recursos/', RecursoListView.as_view(), name='recursos'),
     path('recurso/<int:pk>', RecursoDetailView.as_view(), name='recurso'),
+    path('buscar/', views.recursoBusqueda, name='busqueda'),
 ]

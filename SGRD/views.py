@@ -4,6 +4,8 @@ from .models.archivo import Archivo
 from .models.recurso import Recurso
 from .models.planProduccion import PlanProduccion
 from .models.entradaPlan import EntradaPlan
+from .models.etiqueta import Etiqueta
+from .models.tipo import Tipo
 from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
@@ -163,3 +165,26 @@ class RecursoDetailView(DetailView):
         except:
             context['hay_plan'] = False
         return context
+
+def recursoBusqueda(request):
+    tags = request.GET.get('tags', [])
+    type = request.GET.get('types', -1)
+    print(tags)
+
+    type = int(type)
+
+    recursos = Recurso.objects.filter(etiquetas__in=tags)
+
+    all_tags = Etiqueta.objects.all()
+    all_types = Tipo.objects.all()
+
+    context = {
+        'searchParams': {
+            'type': type,
+            'tags': tags,
+        },
+        'types': all_types,
+        'tags': all_tags,
+        'recursos': recursos,
+    }
+    return render(request, 'SGRD/busqueda.html', context)

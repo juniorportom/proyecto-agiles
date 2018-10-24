@@ -19,7 +19,7 @@
             </div>
             <div class="row">
               <label class="col-md-2 text-center" for="tags">Etiquetas:</label>
-              <select class="tagsSelect col-md-10" name="tags[]" multiple="multiple">
+              <select class="tagsSelect col-md-10" name="tags" multiple="multiple">
                 {% for tag in tags %}
                 <option value="{{tag.id}}" {% if tag.id|stringformat:"i" in searchParams.tags %} selected {% endif %}>{{tag.nombre}}</option>
                 {% endfor %}

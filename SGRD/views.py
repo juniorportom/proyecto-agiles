@@ -168,9 +168,9 @@ class RecursoDetailView(DetailView):
 
 
 def recursoBusqueda(request):
-    tags = request.GET.get('tags', [])
+    tags = request.GET.getlist('tags')
     type = request.GET.get('types', -1)
-    print(tags)
+    print("Tags: "+str(tags))
 
     type = int(type)
 

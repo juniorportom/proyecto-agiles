@@ -4,32 +4,29 @@
 <link rel="stylesheet" href="/static/css/busqueda.css">
 <div class="searchPage">
   <div class="row mt-3">
-    <div class="col-md-1"></div>
-    <div class="card col-md-10">
+    <div class="card container">
         <div class="card-body">
           <h3 class="card-title">Buscar</h3>
-          <div class="row">
-            <form id="searchForm" action="{% url 'busqueda' %}" method="GET">
-              <div>
-                <label for="types">Tipo:</label>
-                <select id="typeSelect" name="types">
-                  <option value="-1" {% if searchParams.type == -1 %} selected {% endif %}>Todos</option>
-                  {% for type in types %}
-                  <option value="{{type.id}}" {% if searchParams.type == type.id %} selected {% endif %}>{{type.nombre}}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div>
-                <label for="tags">Etiquetas:</label>
-                <select id="tagsSelect" multiple="multiple" data-placeholder="Ninguna" name="tags[]" hidden>
-                  {% for tag in tags %}
-                  <option value="{{tag.id}}" {% if tag.id|stringformat:"i" in searchParams.tags %} selected {% endif %}>{{tag.nombre}}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <input type="submit" class="btn btn-primary btn-block" value="Buscar">
-            </form>
-          </div>
+          <form class="searchForm" action="{% url 'busqueda' %}" method="GET">
+            <div class="row">
+              <label class="col-md-2 text-center" for="types">Tipo:</label>
+              <select class="typeSelect col-md-10" name="types">
+                <option value="-1" {% if searchParams.type == -1 %} selected {% endif %}>Todos</option>
+                {% for type in types %}
+                <option value="{{type.id}}" {% if searchParams.type == type.id %} selected {% endif %}>{{type.nombre}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="row">
+              <label class="col-md-2 text-center" for="tags">Etiquetas:</label>
+              <select class="tagsSelect col-md-10" name="tags[]" multiple="multiple">
+                {% for tag in tags %}
+                <option value="{{tag.id}}" {% if tag.id|stringformat:"i" in searchParams.tags %} selected {% endif %}>{{tag.nombre}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <input type="submit" class="btn btn-primary btn-block w-25" value="Buscar">
+          </form>
           <div id="searchResult" >
             {% for recurso in recursos|dictsort:"fecha_creacion" reversed%}
             <div class="row m3 mt-2">
@@ -61,7 +58,6 @@
           </div>
         </div>
     </div>
-    <div class="col-md-1"></div>
   </div>
 </div>
 {% endblock %}

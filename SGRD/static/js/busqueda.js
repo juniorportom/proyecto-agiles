@@ -1,3 +1,4 @@
 $(document).ready(function() {
-  $('#tagsSelect').multiselect();
+  $('.typeSelect').select2();
+  $('.tagsSelect').select2();
 });

@@ -170,18 +170,16 @@ class RecursoDetailView(DetailView):
 def recursoBusqueda(request):
     tags = request.GET.getlist('tags')
     type = request.GET.get('types', -1)
-    print("Tags: "+str(tags))
 
     type = int(type)
 
-    if type == -1 and not tags:
-        recursos = Recurso.objects.all()
-    elif type != -1 and not tags:
-        recursos = Recurso.objects.filter(tipo=type)
-    elif type == -1 and tags:
-        recursos = Recurso.objects.filter(etiquetas__in=tags)
-    else:
-        recursos = Recurso.objects.filter(etiquetas__in=tags).filter(tipo=type)
+    recursos = Recurso.objects.all()
+
+    if type != -1:
+        recursos = recursos.filter(tipo=type)
+
+    for pk in tags:
+        recursos = recursos.filter(etiquetas__in=pk)
 
     all_tags = Etiqueta.objects.all()
     all_types = Tipo.objects.all()

@@ -1,7 +1,5 @@
 {% extends 'root.html' %}
 {% block content %}
-{% load static %}
-<link rel="stylesheet" href="/static/css/busqueda.css">
 <div class="searchPage">
   <div class="row mt-3">
     <div class="card container">
@@ -25,9 +23,10 @@
                 {% endfor %}
               </select>
             </div>
-            <input type="submit" class="btn btn-primary btn-block w-25" value="Buscar">
+            <input type="submit" class="btn btn-primary btn-block w-25" value="Buscar" style="margin: 1vh 0vw;">
           </form>
           <div id="searchResult" >
+            <h3 class="card-title">Recursos</h3>
             {% for recurso in recursos|dictsort:"fecha_creacion" reversed%}
             <div class="row m3 mt-2">
               <div class="card w-100">

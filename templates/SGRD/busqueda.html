@@ -30,9 +30,9 @@
               <input type="submit" class="btn btn-primary btn-block" value="Buscar">
             </form>
           </div>
-          <div id="searchResult">
+          <div id="searchResult" >
             {% for recurso in recursos|dictsort:"fecha_creacion" reversed%}
-            <div class="row m3">
+            <div class="row m3 mt-2">
               <div class="card w-100">
                 <div class="card-body">
                   <div class="col-md-12 mx-auto">

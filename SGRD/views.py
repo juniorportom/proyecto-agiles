@@ -166,6 +166,7 @@ class RecursoDetailView(DetailView):
             context['hay_plan'] = False
         return context
 
+
 def recursoBusqueda(request):
     tags = request.GET.get('tags', [])
     type = request.GET.get('types', -1)
@@ -173,7 +174,14 @@ def recursoBusqueda(request):
 
     type = int(type)
 
-    recursos = Recurso.objects.filter(etiquetas__in=tags)
+    if type == -1 and not tags:
+        recursos = Recurso.objects.all()
+    elif type != -1 and not tags:
+        recursos = Recurso.objects.filter(tipo=type)
+    elif type == -1 and tags:
+        recursos = Recurso.objects.filter(etiquetas__in=tags)
+    else:
+        recursos = Recurso.objects.filter(etiquetas__in=tags).filter(tipo=type)
 
     all_tags = Etiqueta.objects.all()
     all_types = Tipo.objects.all()

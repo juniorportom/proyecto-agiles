@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
+selenium = "==3.4.1"
 
 [packages]
 django = "*"
@@ -12,7 +13,6 @@ django-heroku = "*"
 gunicorn = "*"
 "psycopg2-binary" = "*"
 "boto3" = "*"
-selenium = "==3.4.1"
 
 [requires]
 python_version = "3.6"

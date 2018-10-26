@@ -15,3 +15,7 @@ class FunctionalTest(TestCase):
     def test_title(self):
         self.browser.get('http://localhost:8000')
         self.assertIn('', self.browser.title)
+
+    def test_title(self):
+        self.browser.get('http://localhost:8000/editar-entrada-plan/1')
+        self.assertIn('Editar entrada', self.browser.title)

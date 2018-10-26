@@ -33,7 +33,7 @@ def createEntradaPlan(request, idRecurso):
     form = CreateEntradaPlanForm(request.POST or None)
     if form.is_valid():
         EntradaPlan.objects.create(**form.cleaned_data, plan=plan_entrada)
-        return HttpResponseRedirect('/planProduccion/'+str(recurso.id))
+        return HttpResponseRedirect('/ver-plan-produccion/'+str(recurso.id))
 
     context = {
         'recurso': recurso,

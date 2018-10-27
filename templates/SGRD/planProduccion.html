@@ -48,7 +48,7 @@
             <td>{{ e.personas }}</td>
             <td>{{ e.equipos }}</td>
             <td>{{ e.descripcion }}</td>
-            <td>{{ e.observaciones }}</td>
+            <td>{{ e.observaciones }} <a class="btnn btn-full float-right" href="{% url 'editar-entrada' e.id %}">Editar</a></td>
           </tr>
           {% endfor %}
         </tbody>

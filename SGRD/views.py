@@ -48,16 +48,17 @@ def editarEntradaPlan(request, idEntrada):
     form = None
 
     entrada = EntradaPlan.objects.get(id=idEntrada)
+    recurso = entrada.plan.recurso
 
     form = CreateEntradaPlanForm(request.POST or None, instance=entrada)
     if form.is_valid():
         form.save()
-        return verPlanProduccion(request, entrada.plan.id)
+        return HttpResponseRedirect('/ver-plan-produccion/' + str(recurso.id))
 
     context = {
         'entrada': entrada,
         'form': form,
-        'recurso': entrada.plan.recurso
+        'recurso': recurso
     }
 
     return render(request, 'forms/editarEntradaPlanForm.html', context)
@@ -146,7 +147,7 @@ def EditarPlanProduccion(request, idRecurso):
 
         if form_plan.is_valid():
             form_plan.save()
-            return verPlanProduccion(request, recurso.id)
+            return HttpResponseRedirect('/ver-plan-produccion/' + str(recurso.id))
 
         context = {
             'form_plan': form_plan,

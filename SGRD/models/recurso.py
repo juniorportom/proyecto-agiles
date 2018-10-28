@@ -29,3 +29,6 @@ class Recurso(models.Model):
         verbose_name = "recurso"
         verbose_name_plural = "recursos"
         ordering = ['-fecha_creacion']
+
+    def etiquetas_list(self):
+        return self.etiquetas.all()

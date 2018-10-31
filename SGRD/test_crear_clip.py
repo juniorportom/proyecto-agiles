@@ -19,5 +19,24 @@ class FunctionalTest(TestCase):
         link = self.browser.find_element_by_link_text('Crear clip')
         self.assertTrue(link.is_displayed())
 
+    def test_create_clip(self):
+        self.browser.get('http://localhost:8000/recursos/')
+        self.browser.find_element_by_link_text('Detalle').click()
+        link = self.browser.find_element_by_link_text('Crear clip')
+        self.assertTrue(link.is_displayed())
+        link.click()
+
+        name = self.browser.find_element_by_id('nombre')
+        name.send_keys('Clip 1')
+
+        time_start = self.browser.find_element_by_id('tiempo_inicio')
+        time_start.send_keys(0)
+
+        time_end = self.browser.find_element_by_id('tiempo_fin')
+        time_end.send_keys(20)
+
+        button_create_clip = self.browser.find_element_by_id('create_clip')
+        button_create_clip.click()
+
 if __name__ == "__main__":
     unittest.main()

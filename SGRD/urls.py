@@ -14,4 +14,5 @@ urlpatterns = [
     path('recursos/', RecursoListView.as_view(), name='recursos'),
     path('recurso/<int:pk>', RecursoDetailView.as_view(), name='recurso'),
     path('buscar/', views.recursoBusqueda, name='busqueda'),
+    path('crear-clip/<int:id_recurso>', RecursoDetailView.as_view(), name='crear-clip'),
 ]

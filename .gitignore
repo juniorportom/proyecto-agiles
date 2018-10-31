@@ -6,3 +6,4 @@ media/profiles/*
 *.sqlite3
 media
 media/*
+*.exe

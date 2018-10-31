@@ -6,7 +6,8 @@ from .models.planProduccion import PlanProduccion
 from .models.entradaPlan import EntradaPlan
 from .models.etiqueta import Etiqueta
 from .models.tipo import Tipo
-from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm
+from .models.clip import Clip
+from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -214,3 +215,24 @@ def recursoBusqueda(request):
         'recursos': recursos,
     }
     return render(request, 'SGRD/busqueda.html', context)
+
+
+class ClipCreate(CreateView):
+    model = Clip
+    form_class = ClipForm
+    template_name = 'forms/clip-form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['archivo'] = Archivo.objects.filter(recurso=self.kwargs['id_recurso'])
+
+        return context
+
+    def form_valid(self, form):
+        archivo_id = self.request.POST.get('file')
+        form.instance.archivo = get_object_or_404(Archivo, id=archivo_id)
+        return super().form_valid(form)
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('recurso', kwargs = {'pk': self.kwargs['id_recurso']})
+

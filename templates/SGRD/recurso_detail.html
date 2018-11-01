@@ -52,7 +52,9 @@
                   | <a href="{% url 'view-plan' recurso.id %}">Plan producción</a>
                   | <a href="{% url 'editar-plan' recurso.id %}">Editar plan</a>
                    {%  endif %}
+                   {% if tipo_video %}
                   | <a href="{% url 'crear-clip' recurso.id %}">Crear clip</a>
+                   {% endif %}
                     </p>
               </div>
                 {% if archivos %}

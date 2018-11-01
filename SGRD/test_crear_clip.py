@@ -8,8 +8,8 @@ from selenium.webdriver.common.by import By
 class FunctionalTest(TestCase):
 
     def setUp(self):
-        # self.browser = webdriver.Chrome(os.path.join(os.path.dirname(__file__), 'driver', 'chromedriver.exe'))
-        self.browser = webdriver.Chrome(os.path.join(os.path.dirname(__file__), 'driver', 'chromedriver'))
+        self.browser = webdriver.Chrome(os.path.join(os.path.dirname(__file__), 'driver', 'chromedriver.exe'))
+        # self.browser = webdriver.Chrome(os.path.join(os.path.dirname(__file__), 'driver', 'chromedriver'))
         self.browser.implicitly_wait(2)
 
     def tearDown(self):
@@ -17,13 +17,25 @@ class FunctionalTest(TestCase):
 
     def test_navigation_to_form(self):
         self.browser.get('http://localhost:8000/recursos/')
-        self.browser.find_element_by_link_text('Detalle').click()
+        lista = self.browser.find_elements_by_id('id_type')
+        if lista:
+            for item in lista:
+                if item.text == 'Tipo: Video':
+                    parent_element = item.find_element_by_xpath('../../..')
+                    parent_element.find_element_by_link_text('Detalle').click()
+                    break
         link = self.browser.find_element_by_link_text('Crear clip')
         self.assertTrue(link.is_displayed())
 
     def test_create_clip(self):
         self.browser.get('http://localhost:8000/recursos/')
-        self.browser.find_element_by_link_text('Detalle').click()
+        lista = self.browser.find_elements_by_id('id_type')
+        if lista:
+            for item in lista:
+                if item.text == 'Tipo: Video':
+                    parent_element = item.find_element_by_xpath('../../..')
+                    parent_element.find_element_by_link_text('Detalle').click()
+                    break
         link = self.browser.find_element_by_link_text('Crear clip')
         self.assertTrue(link.is_displayed())
         link.click()

@@ -185,6 +185,8 @@ class RecursoDetailView(DetailView):
                 context['hay_plan'] = True
         except:
             context['hay_plan'] = False
+
+        context['tipo_video'] = self.object.tipo.nombre == "Video"
         return context
 
 
@@ -235,4 +237,3 @@ class ClipCreate(CreateView):
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('recurso', kwargs = {'pk': self.kwargs['id_recurso']})
-

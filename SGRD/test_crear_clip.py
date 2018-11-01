@@ -41,6 +41,9 @@ class FunctionalTest(TestCase):
         button_create_clip = self.browser.find_element_by_id('create_clip')
         button_create_clip.click()
 
+        label = self.browser.find_element_by_class_name('text-center mt-3 mb-3')
+        self.assertTrue(label.is_displayed())
+        
 
 if __name__ == "__main__":
     unittest.main()

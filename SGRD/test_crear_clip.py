@@ -70,6 +70,25 @@ class FunctionalTest(TestCase):
             link_list = self.browser.find_element_by_id('id_links')
             self.assertNotEqual(link_list.text, 'Adjuntar Archivo | Crear plan | Crear clip')
 
+    def test_create_clip_vacio(self):
+        self.browser.get('http://localhost:8000/recursos/')
+        lista = self.browser.find_elements_by_id('id_type')
+        if lista:
+            for item in lista:
+                if item.text == 'Tipo: Video':
+                    parent_element = item.find_element_by_xpath('../../..')
+                    parent_element.find_element_by_link_text('Detalle').click()
+                    break
+        link = self.browser.find_element_by_link_text('Crear clip')
+        self.assertTrue(link.is_displayed())
+        link.click()
+
+        button_create_clip = self.browser.find_element_by_id('create_clip')
+        button_create_clip.click()
+
+        li = self.browser.find_element(By.XPATH, '//li[text()="Campo Nombre obligatorio"]')
+        self.assertIn('Campo Nombre obligatorio', li.text)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -4,6 +4,7 @@ from unittest import TestCase
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+
 class FunctionalTest(TestCase):
 
     def setUp(self):
@@ -28,10 +29,10 @@ class FunctionalTest(TestCase):
         link.click()
 
         name = self.browser.find_element_by_id('id_nombre')
-        name.send_keys('Clip 1')
+        name.send_keys('Clip 10')
 
         time_start = self.browser.find_element_by_id('id_inicio')
-        time_start.send_keys(0)
+        time_start.send_keys(10)
 
         time_end = self.browser.find_element_by_id('id_final')
         time_end.send_keys(20)
@@ -41,9 +42,22 @@ class FunctionalTest(TestCase):
         button_create_clip = self.browser.find_element_by_id('create_clip')
         button_create_clip.click()
 
-        label = self.browser.find_element_by_class_name('text-center mt-3 mb-3')
-        self.assertTrue(label.is_displayed())
-        
+        h5 = self.browser.find_element(By.XPATH, '//h5[text()="Archivos asociados"]')
+        self.assertIn('Archivos asociados', h5.text)
+
+    def test_create_clip_no_video(self):
+        self.browser.get('http://localhost:8000/recursos/')
+
+        lista = self.browser.find_elements_by_id('id_type')
+        if lista:
+            for item in lista:
+                if item.text != 'Tipo: Video':
+                    parent_element = item.find_element_by_xpath('../../..')
+                    parent_element.find_element_by_link_text('Detalle').click()
+                    break
+            link_list = self.browser.find_element_by_id('id_links')
+            self.assertNotEqual(link_list.text, 'Adjuntar Archivo | Crear plan | Crear clip')
+
 
 if __name__ == "__main__":
     unittest.main()

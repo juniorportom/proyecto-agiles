@@ -44,7 +44,7 @@
                     <p style="max-width: 90%">
                       {{recurso.descripcion|striptags|safe|truncatechars:"200"}}
                     </p>
-                   <p>
+                   <p id="id_links">
                   <a href="{% url 'create-archivo' recurso.id %}">Adjuntar Archivo</a>
                    {% if not hay_plan %}
                    | <a href="{% url 'crear-plan' recurso.id %}">Crear plan</a>

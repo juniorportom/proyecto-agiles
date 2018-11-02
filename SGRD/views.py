@@ -233,7 +233,12 @@ class ClipCreate(CreateView):
     def form_valid(self, form):
         archivo_id = self.request.POST.get('file')
         form.instance.archivo = get_object_or_404(Archivo, id=archivo_id)
+        nombre_clip = form.cleaned_data['nombre']
+        if len(nombre_clip) == 0:
+            form.add_error('nombre', 'Campo Nombre obligatorio')
+            return self.form_invalid(form)
         return super().form_valid(form)
+
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('recurso', kwargs = {'pk': self.kwargs['id_recurso']})

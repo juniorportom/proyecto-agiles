@@ -3,7 +3,7 @@ from .archivo import Archivo
 
 
 class Clip(models.Model):
-    nombre = models.CharField(max_length=200)
+    nombre = models.CharField(max_length=200, blank=True)
     inicio = models.IntegerField(default=0)
     final = models.IntegerField(default=0)
     archivo = models.ForeignKey(Archivo, on_delete=models.CASCADE)

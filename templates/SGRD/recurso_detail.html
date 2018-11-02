@@ -18,12 +18,13 @@
                   <div class="col-md-5 mx-auto">
                     <p><b>Proyecto: </b>{{recurso.proyecto}}</p>
                     <p><b>Fase: </b>{{recurso.get_fase_display}}</p>
-                      <p><b>Creado el</b> {{recurso.fecha_creacion}}</p>
+                      <p><b>Fecha de inicio producción: </b> {{recurso.inicio_produccion}}</p>
                 </div>
 
                   <div class="col-md-7 ">
                      <p><b>Tipo: </b>{{recurso.tipo}}</p>
-                    <p><b>Ruta: </b>{{recurso.ruta_compartida}}</p>
+                    <p><b>Fecha final de elaboración: </b>{{recurso.fin_elaboracion_recurso}}</p>
+                      <p><b>Fecha de publicación: </b>{{recurso.fecha_publicacion}}</p>
                   </div>
                 </div>
                 {% if tags %}

@@ -6,17 +6,19 @@ from .models.planProduccion import PlanProduccion
 from .models.archivo import Archivo
 from .models.clip import Clip
 
+
 class RecursoForm(forms.ModelForm):
     class Meta:
         model = Recurso
-        fields = ['nombre', 'proyecto', 'fase', 'tipo', 'fecha_creacion', 'ruta_compartida', 'descripcion']
+        fields = ['nombre', 'proyecto', 'fase', 'tipo', 'inicio_produccion', 'fin_elaboracion_recurso', 'fecha_publicacion', 'descripcion']
         labels = {
             'nombre': _("Nombre"),
             'proyecto': _("Proyecto"),
             'fase': _("Fase"),
             'tipo': _("Tipo Recurso"),
-            'fecha_creacion': _("Fecha de Producción"),
-            'ruta_compartida': _("Ubicación recurso"),
+            'inicio_produccion': _("Fecha de inicio producción"),
+            'fin_elaboracion_recurso': _("Fecha final de elaboración"),
+            'fecha_publicacion': _("Fecha de publicación"),
             'descripcion' : _("Descripción")
         }
         widgets = {
@@ -24,10 +26,12 @@ class RecursoForm(forms.ModelForm):
             'proyecto': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Proyecto'}),
             'fase': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Fase'}),
             'tipo': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Tipo recurso'}),
-            'fecha_creacion': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control','placeholder':'yyyy-MM-dd', 'type': 'date'}),
-            'ruta_compartida': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ubicación recurso'}),
+            'inicio_produccion': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control','placeholder':'yyyy-MM-dd', 'type': 'date'}),
+            'fin_elaboracion_recurso': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control', 'placeholder': 'yyyy-MM-dd', 'type': 'date'}),
+            'fecha_publicacion': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control', 'placeholder': 'yyyy-MM-dd', 'type': 'date'}),
             'descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción'})
         }
+
 
 class CreateEntradaPlanForm(forms.ModelForm):
     class Meta:

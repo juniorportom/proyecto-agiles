@@ -18,8 +18,9 @@ class Recurso(models.Model):
     fase = models.CharField(max_length=1, choices=FASE_TYPES)
     tipo = models.ForeignKey(Tipo, on_delete=models.CASCADE)
     etiquetas = models.ManyToManyField(Etiqueta)
-    fecha_creacion = models.DateField(default=datetime.now, blank=True)
-    ruta_compartida = models.CharField(max_length=250)
+    inicio_produccion = models.DateField(blank=True, null=True, default=datetime.now)
+    fin_elaboracion_recurso = models.DateField(blank=True, null=True)
+    fecha_publicacion = models.DateField(blank=True, null=True)
     descripcion = models.CharField(max_length=500)
 
     def __str__(self):
@@ -28,7 +29,7 @@ class Recurso(models.Model):
     class Meta:
         verbose_name = "recurso"
         verbose_name_plural = "recursos"
-        ordering = ['-fecha_creacion']
+        ordering = ['-inicio_produccion']
 
     def etiquetas_list(self):
         return self.etiquetas.all()

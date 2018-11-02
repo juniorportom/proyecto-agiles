@@ -34,7 +34,7 @@
     {% if not recurso_list %}
       <h3 class="text-center">No tienes recursos registrados.</h3>
     {% else %}
-    {% for recurso in recurso_list|dictsort:"fecha_creacion" reversed%}
+    {% for recurso in recurso_list|dictsort:"inicio_produccion" reversed%}
       <div class="row mt-3">
         <div class="card w-100">
             <div class="card-body">

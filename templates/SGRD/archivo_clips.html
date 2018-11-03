@@ -26,6 +26,16 @@
                                onclick="playClip({{ cl.inicio }}, {{ cl.final }})" class="btnn btn-full">
                               Reproducir
                             </a>
+                            <div class="row">
+                              {% for tag in cl.etiquetas.all %}
+                                <div class="col-md-4 card recursoTag"
+                                     style="border: 2px solid #{{ tag.color }}; border-radius: 10px; width: auto; height: auto; margin-right: 1px;">
+                                  <div class="card-body text-center etiqueta-item">
+                                    {{ tag.nombre }}
+                                  </div>
+                                </div>
+                              {% endfor %}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -34,7 +44,7 @@
                   <div class="col-md-8">
                     <video id="video-clip" class="video-js vjs-default-skin vjs-16-9" controls preload="none"
                            poster="http://vjs.zencdn.net/v/oceans.png" data-setup="{}">
-                      <source src="{{archivo.get_absolute_url}}"
+                      <source src="{{ archivo.get_absolute_url }}"
                               type="video/mp4">
                       <p class="vjs-no-js">To view this video please enable JavaScript, and
                         consider upgrading to a web browser that <a

@@ -26,7 +26,9 @@
             <input type="submit" class="btn btn-primary btn-block w-25" value="Buscar" style="margin: 1vh 0vw;">
           </form>
           <div id="searchResult" >
+            {% if recursos|length > 0 %}
             <h3 class="card-title">Recursos</h3>
+            {% endif %}
             {% for recurso in recursos|dictsort:"inicio_produccion" reversed%}
             <div class="row m3 mt-2">
               <div class="card w-100">
@@ -61,7 +63,50 @@
                         </div>
                     {% endif %}
                     <p>
-                      <a href="{% url 'recurso' recurso.id %}">Detalle</a>
+                      <a class="btnn btn-full mt-1 mb-1" href="{% url 'recurso' recurso.id %}">Detalle</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% if clips|length > 0 %}
+            <h3 class="card-title">Clips</h3>
+            {% endif %}
+            {% for clip in clips%}
+            <div class="row m3 mt-2">
+              <div class="card w-100">
+                <div class="card-body">
+                  <div class="col-md-12 mx-auto">
+                    <div class="row">
+                      <h5 class="card-title">{{clip.nombre}} </h5>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-md-6 mx-auto">
+                        <p><b>Recusro: </b>{{clip.archivo.recurso.nombre}}</p>
+                      </div>
+                      <div class="col-md-6 mx-auto">
+                        <p><b>Archivo: </b>{{clip.archivo.nombre}}</p>
+                      </div>
+                    </div>
+                      {% if clip.etiquetas.all|length > 0 %}
+                        <div class="row">
+                          <h5>Etiquetas:</h5>
+                        </div>
+                        <div class="row">
+                          {% for tag in clip.etiquetas.all %}
+                          <div class="col-md-2 card recursoTag" style="margin: 1vw; border: 2px solid #{{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px;">
+                            <div class="card-body text-center etiqueta-item">
+                              {{tag.nombre}}
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                    {% endif %}
+                    <p>
+                      <a class="btnn btn-full mt-1 mb-1" href="{% url 'ver-clips' clip.archivo.id %}">Ver Clip</a>
                     </p>
                   </div>
                 </div>

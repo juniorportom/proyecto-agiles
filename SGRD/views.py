@@ -207,12 +207,14 @@ def recursoBusqueda(request):
     type = int(type)
 
     recursos = Recurso.objects.all()
+    clips = Clip.objects.all()
 
     if type != -1:
         recursos = recursos.filter(tipo=type)
 
     for pk in tags:
         recursos = recursos.filter(etiquetas__in=pk)
+        clips = clips.filter(etiquetas__in=pk)
 
     all_tags = Etiqueta.objects.all()
     all_types = Tipo.objects.all()
@@ -225,6 +227,7 @@ def recursoBusqueda(request):
         'types': all_types,
         'tags': all_tags,
         'recursos': recursos,
+        'clips': clips
     }
     return render(request, 'SGRD/busqueda.html', context)
 

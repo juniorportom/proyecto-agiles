@@ -41,7 +41,29 @@
                   {% endfor %}
                 </div>
                 {% endif %}
+                <div class="row">
+                    <h5>Responsables:</h5>
+                </div>
+                <div class="row">
+                  <div class="col-md-3 card" style="margin: 1vw; border: 2px solid #{{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px; padding-top: 1rem;">
+                    <div class="card-body text-center etiqueta-item">
+                        <p>Sebastian Martinez</p>
+                    </div>
+                  </div>
+                  <div class="col-md-3 card" style="margin: 1vw; border: 2px solid #{{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px; padding-top: 1rem;">
+                    <div class="card-body text-center etiqueta-item">
+                        <p>Alejandra Sabogal</p>
+                    </div>
+                  </div>
+                  <div class="col-md-3 card" style="margin: 1vw; border: 2px solid #{{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px; padding-top: 1rem;">
+                    <div class="card-body text-center etiqueta-item">
+                        <p>Reinaldo Portocarrero</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
                   <h5>Descripción:</h5>
+                </div>
                     <p style="max-width: 90%">
                       {{recurso.descripcion|striptags|safe|truncatechars:"200"}}
                     </p>

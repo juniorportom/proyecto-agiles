@@ -1,5 +1,4 @@
 {% extends 'root.html' %}
-{% load static %}
 {% block title %}Recursos{% endblock %}
 {% block content %}
 <main role="main">
@@ -15,8 +14,14 @@
             <div class="row">
               <div class="col-md-6">
                 {% for cl in clips %}
-                <div class="row">
-                  {{cl.nombre}}
+                <div class="row mb-2">
+                  <div class="card col-md-11">
+                    <div class="card-title">
+                      {{cl.nombre}}
+                    </div>
+                    <div class="card-body">
+                    </div>
+                  </div>
                 </div>
                 {% endfor %}
               </div>

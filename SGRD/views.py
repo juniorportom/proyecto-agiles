@@ -197,7 +197,7 @@ def archivoClips(request, idArchivo):
         'archivo': archivo,
         'clips': clips,
     }
-    return render(request, 'SGRD/recurso_detail.html', context)
+    return render(request, 'SGRD/archivo_clips.html', context)
 
 
 def recursoBusqueda(request):

@@ -34,7 +34,7 @@ def createEntradaPlan(request, idRecurso):
     form = CreateEntradaPlanForm(request.POST or None)
     if form.is_valid():
         EntradaPlan.objects.create(**form.cleaned_data, plan=plan_entrada)
-        return HttpResponseRedirect('/ver-plan-produccion/'+str(recurso.id))
+        return verPlanProduccion(request, recurso.id)
 
     context = {
         'recurso': recurso,
@@ -54,7 +54,7 @@ def editarEntradaPlan(request, idEntrada):
     form = CreateEntradaPlanForm(request.POST or None, instance=entrada)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect('/ver-plan-produccion/' + str(recurso.id))
+        return verPlanProduccion(request, recurso.id)
 
     context = {
         'entrada': entrada,
@@ -148,7 +148,7 @@ def EditarPlanProduccion(request, idRecurso):
 
         if form_plan.is_valid():
             form_plan.save()
-            return HttpResponseRedirect('/ver-plan-produccion/' + str(recurso.id))
+            return verPlanProduccion(request, recurso.id)
 
         context = {
             'form_plan': form_plan,
@@ -188,6 +188,16 @@ class RecursoDetailView(DetailView):
 
         context['tipo_video'] = self.object.tipo.nombre == "Video"
         return context
+
+def archivoClips(request, idArchivo):
+    archivo = Archivo.objects.get(id=idArchivo)
+    clips = archivo.clips.all()
+
+    context = {
+        'archivo': archivo,
+        'clips': clips,
+    }
+    return render(request, 'SGRD/recurso_detail.html', context)
 
 
 def recursoBusqueda(request):

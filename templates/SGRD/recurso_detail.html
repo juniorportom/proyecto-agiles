@@ -67,6 +67,7 @@
                   <th>Fecha</th>
                   <th>Archivo</th>
                   <th>Descargar</th>
+                  <th>Clips</th>
                 </thead>
                 <tbody>
                   {% for archivo in archivos %}
@@ -76,6 +77,9 @@
                     <td>{{ archivo.ruta.name }}</td>
                     <td>
                         <a class="btnn btn-full" href="{{ archivo.ruta.url }}" download><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
+                    </td>
+                    <td>
+                        <a class="btnn btn-full" href="{% url 'ver-clips' archivo.id %}"><i class="ion-ios-videocam icon-small"></i>Clips</a>
                     </td>
                   </tr>
                   {% endfor %}

@@ -20,6 +20,15 @@
                       {{cl.nombre}}
                     </div>
                     <div class="card-body">
+                      <div class="row">
+                        {% for tag in cl.etiquetas.all %}
+                        <div class="col-md-4 card recursoTag" style="border: 2px solid #{{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px;">
+                          <div class="card-body text-center etiqueta-item">
+                            {{tag.nombre}}
+                          </div>
+                        </div>
+                        {% endfor %}
+                      </div>
                     </div>
                   </div>
                 </div>

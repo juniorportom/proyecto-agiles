@@ -10,3 +10,7 @@ class EntradaPlan(models.Model):
     equipos = models.TextField()
     descripcion = models.TextField()
     observaciones = models.TextField()
+
+
+    class Meta:
+        ordering = ['dia']

@@ -2,13 +2,39 @@
 {% load static %}
 {% block title %}Recursos{% endblock %}
 {% block content %}
-{% include 'forms/recurso_menu.html' %}
+{% include 'SGRD/recurso_menu.html' %}
+<link rel="stylesheet" href="/static/css/home.css">
 <main role="main">
-  <div class="container mb-4">
+ <div class="row">
+        <div class="col-md-4 intro">
+            <div class="title">
+                Introducción
+            </div>
+            <div>
+                <p>
+                    Para resolver la necesidad del Centro de innovación tecnológica (Conecta-TE), el equipo 2 tiene como
+                    objetivo resolver la necesidad de la administración de los recursos de video y animaciones. Para este
+                    primer Sprint, el equipo tuvo como prioridad desarrollar las siguientes historias de usuario teniendo
+                    en cuenta que la velocidad del equipo es de 36PHU:
+                </p>
+                <ul>
+                    <li>Agregar recurso o crudo</li>
+                    <li>Diligenciar descripción del recurso</li>
+                    <li>Crear plan de producción</li>
+                    <li>Editar plan de producción</li>
+                    <li>Consultar plan de producción</li>
+                    <li>Crear entrada del plan de producción</li>
+                    <li>Adjuntar archivos</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-8 intro">
+            <div class="title">Listado de recursos</div>
+            <div class="container mb-4">
     {% if not recurso_list %}
       <h3 class="text-center">No tienes recursos registrados.</h3>
     {% else %}
-    {% for recurso in recurso_list|dictsort:"fecha_creacion" reversed%}
+    {% for recurso in recurso_list|dictsort:"inicio_produccion" reversed%}
       <div class="row mt-3">
         <div class="card w-100">
             <div class="card-body">
@@ -22,23 +48,15 @@
                   <div class="col-md-5 mx-auto">
                     <p><b>Proyecto: </b>{{recurso.proyecto}}</p>
                     <p><b>Fase: </b>{{recurso.get_fase_display}}</p>
-                      <p><b>Creado el</b> {{recurso.fecha_creacion}}</p>
                 </div>
 
-                  <div class="col-md-7 ">
-                     <p><b>Tipo: </b>{{recurso.tipo}}</p>
-                    <p><b>Ruta: </b>{{recurso.ruta_compartida}}</p>
+                  <div class="col-md-7 " >
+                     <p id="id_type"><b>Tipo: </b>{{recurso.tipo}}</p>
                   </div>
                 </div>
-                  <h5>Descripción:</h5>
-                    <p style="max-width: 90%">
-                      {{recurso.descripcion|striptags|safe|truncatechars:"200"}}
-                    </p>
                    <p>
-                      <a href="{% url 'recurso' recurso.id %}">Detalle</a>
+                    <a href="{% url 'recurso' recurso.id %}">Detalle</a>
                   | <a href="{% url 'create-archivo' recurso.id %}">Adjuntar Archivo</a>
-                  | <a href="#">Plan Producción</a>
-                  | <a href="#">Borrar</a>
                     </p>
               </div>
 
@@ -78,5 +96,8 @@
         </ul>
       </nav>
     {% endif %}
+        </div>
+
+    </div>
 </main>
 {% endblock %}

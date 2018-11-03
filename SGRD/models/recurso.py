@@ -1,16 +1,7 @@
 from django.db import models
+from .etiqueta import Etiqueta
+from .tipo import Tipo
 from datetime import datetime
-
-
-class Tipo(models.Model):
-    nombre = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.nombre
-
-    class Meta:
-        verbose_name_plural = 'tipos'
-
 
 # Create your models here.
 class Recurso(models.Model):
@@ -26,8 +17,10 @@ class Recurso(models.Model):
     proyecto = models.CharField(max_length=200)
     fase = models.CharField(max_length=1, choices=FASE_TYPES)
     tipo = models.ForeignKey(Tipo, on_delete=models.CASCADE)
-    fecha_creacion = models.DateField(default=datetime.now, blank=True)
-    ruta_compartida = models.CharField(max_length=250)
+    etiquetas = models.ManyToManyField(Etiqueta)
+    inicio_produccion = models.DateField(blank=True, null=True, default=datetime.now)
+    fin_elaboracion_recurso = models.DateField(blank=True, null=True)
+    fecha_publicacion = models.DateField(blank=True, null=True)
     descripcion = models.CharField(max_length=500)
 
     def __str__(self):
@@ -36,4 +29,7 @@ class Recurso(models.Model):
     class Meta:
         verbose_name = "recurso"
         verbose_name_plural = "recursos"
-        ordering = ['-fecha_creacion']
+        ordering = ['-inicio_produccion']
+
+    def etiquetas_list(self):
+        return self.etiquetas.all()

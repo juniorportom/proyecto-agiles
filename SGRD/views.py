@@ -103,11 +103,13 @@ class ArchivoCreate(CreateView):
     model = Archivo
     form_class = ArchivoForm
     template_name = 'forms/archivo-form.html'
-    success_url = reverse_lazy('recursos')
 
     def form_valid(self, form):
         form.instance.recurso = get_object_or_404(Recurso, id=self.kwargs['id_recurso'])
         return super().form_valid(form)
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('recurso', kwargs = {'pk': self.kwargs['id_recurso']})
 
 
 class RecursoListView(ListView):
@@ -239,7 +241,7 @@ class ClipCreate(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['archivo'] = Archivo.objects.filter(recurso=self.kwargs['id_recurso'])
+        context['archivo'] = Archivo.objects.filter(recurso=self.kwargs['id_recurso']).filter(ruta__contains='.mp4')
 
         return context
 

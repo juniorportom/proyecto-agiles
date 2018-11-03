@@ -89,7 +89,9 @@
                   <th>Fecha</th>
                   <th>Archivo</th>
                   <th>Descargar</th>
+                  {% if tipo_video %}
                   <th>Clips</th>
+                  {% endif %}
                 </thead>
                 <tbody>
                   {% for archivo in archivos %}
@@ -100,9 +102,13 @@
                     <td>
                         <a class="btnn btn-full" href="{{ archivo.ruta.url }}" download><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
                     </td>
+                    {% if tipo_video %}
+                    {% if '.mp4' in archivo.ruta.name %}
                     <td>
                         <a class="btnn btn-full" href="{% url 'ver-clips' archivo.id %}"><i class="ion-ios-videocam icon-small"></i>Clips</a>
                     </td>
+                    {% endif %}
+                    {% endif %}
                   </tr>
                   {% endfor %}
                 </tbody>

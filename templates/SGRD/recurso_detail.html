@@ -41,7 +41,29 @@
                   {% endfor %}
                 </div>
                 {% endif %}
+                <div class="row">
+                    <h5>Responsables:</h5>
+                </div>
+                <div class="row">
+                  <div class="col-md-3 card" style="margin: 1vw; border: 2px solid #{{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px; padding-top: 1rem;">
+                    <div class="card-body text-center etiqueta-item">
+                        <p>Sebastian Martinez</p>
+                    </div>
+                  </div>
+                  <div class="col-md-3 card" style="margin: 1vw; border: 2px solid #{{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px; padding-top: 1rem;">
+                    <div class="card-body text-center etiqueta-item">
+                        <p>Alejandra Sabogal</p>
+                    </div>
+                  </div>
+                  <div class="col-md-3 card" style="margin: 1vw; border: 2px solid #{{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px; padding-top: 1rem;">
+                    <div class="card-body text-center etiqueta-item">
+                        <p>Reinaldo Portocarrero</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
                   <h5>Descripción:</h5>
+                </div>
                     <p style="max-width: 90%">
                       {{recurso.descripcion|striptags|safe|truncatechars:"200"}}
                     </p>
@@ -67,6 +89,9 @@
                   <th>Fecha</th>
                   <th>Archivo</th>
                   <th>Descargar</th>
+                  {% if tipo_video %}
+                  <th>Clips</th>
+                  {% endif %}
                 </thead>
                 <tbody>
                   {% for archivo in archivos %}
@@ -77,6 +102,13 @@
                     <td>
                         <a class="btnn btn-full" href="{{ archivo.ruta.url }}" download><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
                     </td>
+                    {% if tipo_video %}
+                    {% if '.mp4' in archivo.ruta.name %}
+                    <td>
+                        <a class="btnn btn-full" href="{% url 'ver-clips' archivo.id %}"><i class="ion-ios-videocam icon-small"></i>Clips</a>
+                    </td>
+                    {% endif %}
+                    {% endif %}
                   </tr>
                   {% endfor %}
                 </tbody>

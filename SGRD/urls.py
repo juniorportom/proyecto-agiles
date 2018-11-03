@@ -15,4 +15,5 @@ urlpatterns = [
     path('recurso/<int:pk>', RecursoDetailView.as_view(), name='recurso'),
     path('buscar/', views.recursoBusqueda, name='busqueda'),
     path('crear-clip/<int:id_recurso>', ClipCreate.as_view(), name='crear-clip'),
+    path('clips/<int:idArchivo>', views.archivoClips, name='ver-clips'),
 ]

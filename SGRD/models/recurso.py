@@ -17,7 +17,7 @@ class Recurso(models.Model):
     proyecto = models.CharField(max_length=200)
     fase = models.CharField(max_length=1, choices=FASE_TYPES)
     tipo = models.ForeignKey(Tipo, on_delete=models.CASCADE)
-    etiquetas = models.ManyToManyField(Etiqueta)
+    etiquetas = models.ManyToManyField(Etiqueta, blank=True)
     inicio_produccion = models.DateField(blank=True, null=True, default=datetime.now)
     fin_elaboracion_recurso = models.DateField(blank=True, null=True)
     fecha_publicacion = models.DateField(blank=True, null=True)

@@ -5,11 +5,9 @@
 {% include 'SGRD/recurso_menu.html' %}
 <link rel="stylesheet" href="/static/css/home.css">
 <main role="main">
- <div class="row">
-        <div class="col-md-8 intro">
-            <div class="title">Listado de recursos</div>
-            <div class="container mb-4">
-    {% if not recurso_list %}
+    <h1 class="text-center mb-xl-5">Listado de recursos</h1>
+  <div class="container mb-4">
+      {% if not recurso_list %}
       <h3 class="text-center">No tienes recursos registrados.</h3>
     {% else %}
     {% for recurso in recurso_list|dictsort:"inicio_produccion" reversed%}
@@ -74,8 +72,5 @@
         </ul>
       </nav>
     {% endif %}
-        </div>
-
-    </div>
 </main>
 {% endblock %}

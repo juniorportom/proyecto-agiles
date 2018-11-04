@@ -63,6 +63,7 @@
                             if (!window.myPlayer) return alert('El video aún no ha sido cargado')
                             window.myPlayer.currentTime(start)
                             window.myPlayer.play()
+                            window.myPlayer.off('timeupdate')
                             window.myPlayer.on('timeupdate', () => {
                                 if (window.myPlayer.currentTime() < start || window.myPlayer.currentTime() > end) {
                                     window.myPlayer.off('timeupdate')

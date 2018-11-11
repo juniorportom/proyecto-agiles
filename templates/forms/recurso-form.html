@@ -9,9 +9,48 @@
     <div class="row mt-3 mb-5">
       <div class="col-md-9 mx-auto">
             <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
-                    {{ form.as_p }}
-                <div class="text-center"></div>
-                <input type="submit" class="btn btn-primary" value="Crear recurso" />
+                <div class="fieldWrapper">
+                    {{ form.nombre.errors }}
+                    {{ form.nombre.label_tag }}
+                    {{ form.nombre }}
+                </div>
+                <div class="fieldWrapper">
+                    {{ form.proyecto.errors }}
+                    {{ form.proyecto.label_tag }}
+                    {{ form.proyecto }}
+                </div>
+                <div class="fieldWrapper">
+                    {{ form.fase.errors }}
+                    {{ form.fase.label_tag }}
+                    {{ form.fase }}
+                </div>
+                <div class="fieldWrapper">
+                    {{ form.tipo.errors }}
+                    {{ form.tipo.label_tag }}
+                    {{ form.tipo }}  <a class="btnn btn-full mt-1 mb-1" href="#">Agregar tipo</a>
+                </div>
+                <div class="fieldWrapper">
+                    {{ form.inicio_produccion.errors }}
+                    {{ form.inicio_produccion.label_tag }}
+                    {{ form.inicio_produccion }}
+                </div>
+                <div class="fieldWrapper">
+                    {{ form.fin_elaboracion_recurso.errors }}
+                    {{ form.fin_elaboracion_recurso.label_tag }}
+                    {{ form.fin_elaboracion_recurso }}
+                </div>
+                <div class="fieldWrapper">
+                    {{ form.fecha_publicacion.errors }}
+                    {{ form.fecha_publicacion.label_tag }}
+                    {{ form.fecha_publicacion }}
+                </div>
+                <div class="fieldWrapper">
+                    {{ form.descripcion.errors }}
+                    {{ form.descripcion.label_tag }}
+                    {{ form.descripcion }}
+                </div>
+
+                <input type="submit" class="btn btn-primary mt-2" value="Crear recurso" />
             </form>
         </div>
     </div>

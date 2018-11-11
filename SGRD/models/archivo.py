@@ -12,4 +12,5 @@ class Archivo(models.Model):
         return self.nombre
 
     def get_absolute_url(self):
+        # return self.ruta.url
         return 'https://s3.amazonaws.com/agiles-media/' + str(self.ruta.name)

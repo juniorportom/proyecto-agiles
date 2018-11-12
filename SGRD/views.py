@@ -14,6 +14,7 @@ from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
 from django.template.defaultfilters import date
 
 # Create your views here.
@@ -265,11 +266,15 @@ class ClipCreate(CreateView):
 
 def crear_tipo(request):
     if request.method == 'POST':
+        form = TipoForm(request.POST or None)
         nombreTipo = request.POST.get('tiponame')
+        tipo = Tipo.objects.filter(nombre=nombreTipo)
 
-        tipo=Tipo(nombre=nombreTipo)
-        tipo.save()
-
-    # return render(request, "independent/registro.html")
+        if not tipo:
+            tipo=Tipo(nombre=nombreTipo)
+            tipo.save()
+            messages.success(request, "¡Tipo se registro correctamente!", extra_tags="alert-success")
+        else:
+            messages.error(request, "¡Tipo ya se encuentra registrado!", extra_tags="alert-danger")
 
     return HttpResponseRedirect('/crear-recurso')

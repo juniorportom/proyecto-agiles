@@ -7,7 +7,7 @@ from .models.entradaPlan import EntradaPlan
 from .models.etiqueta import Etiqueta
 from .models.tipo import Tipo
 from .models.clip import Clip
-from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm
+from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm, TipoForm
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -261,3 +261,15 @@ class ClipCreate(CreateView):
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('recurso', kwargs = {'pk': self.kwargs['id_recurso']})
+
+
+def crear_tipo(request):
+    if request.method == 'POST':
+        nombreTipo = request.POST.get('tiponame')
+
+        tipo=Tipo(nombre=nombreTipo)
+        tipo.save()
+
+    # return render(request, "independent/registro.html")
+
+    return HttpResponseRedirect('/crear-recurso')

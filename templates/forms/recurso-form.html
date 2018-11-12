@@ -27,7 +27,7 @@
                 <div class="fieldWrapper">
                     {{ form.tipo.errors }}
                     {{ form.tipo.label_tag }}
-                    {{ form.tipo }}  <a class="btnn btn-full mt-1 mb-1" href="#">Agregar tipo</a>
+                    {{ form.tipo }}  <a class="btnn btn-full mt-1 mb-1" href="#" id="id_crear_tipo">Agregar tipo</a>
                 </div>
                 <div class="fieldWrapper">
                     {{ form.inicio_produccion.errors }}
@@ -56,4 +56,15 @@
     </div>
   </div>
 </main>
+{% include "forms/tipo-form.html" %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+      <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#id_crear_tipo').click(function () {
+            $('#tipo_modal').modal();
+        });
+    });
+
+</script>
 {% endblock %}

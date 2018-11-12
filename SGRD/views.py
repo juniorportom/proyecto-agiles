@@ -278,3 +278,14 @@ def crear_tipo(request):
             messages.error(request, "¡Tipo ya se encuentra registrado!", extra_tags="alert-danger")
 
     return HttpResponseRedirect('/crear-recurso')
+
+def manage_tags(request):
+    context = {}
+    if request.method == 'GET':
+        pass
+    elif request.method == 'POST':
+        pass
+    elif request.method == 'DELETE':
+        pass
+
+    return render(request, 'SGRD/manage_tags.html', context)

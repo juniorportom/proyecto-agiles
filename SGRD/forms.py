@@ -5,6 +5,7 @@ from .models.entradaPlan import EntradaPlan
 from .models.planProduccion import PlanProduccion
 from .models.archivo import Archivo
 from .models.clip import Clip
+from .models.tipo import Tipo
 
 
 class RecursoForm(forms.ModelForm):
@@ -98,4 +99,16 @@ class ClipForm(forms.ModelForm):
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
             'inicio': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Tiempo Inicial'}),
             'final': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Tiempo Final'}),
+        }
+
+
+class TipoForm(forms.ModelForm):
+    class Meta:
+        model = Tipo
+        fields = ['nombre']
+        labels = {
+            'nombre': _("Nombre")
+        }
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'})
         }

@@ -29,6 +29,7 @@ body {
 
 .btnn:link,
 .btnn:visited,
+.btn-b,
 input[type=submit] {
     display: inline-block;
     padding: 5px 15px;
@@ -42,6 +43,7 @@ input[type=submit] {
 
 .btn-full:link,
 .btn-full:visited,
+.btn-bf,
 input[type=submit] {
     background-color: #ffeaa7;
     border: 1px solid #ffeaa7;
@@ -50,25 +52,30 @@ input[type=submit] {
 }
 
 .btn-ghost:link,
-.btn-ghost:visited {
+.btn-ghost:visited
+.btn-bg{
     border: 2px solid #ffeaa7;
     color: #3d3d3d;
 }
 
 .btnn:hover,
 .btnn:active,
+.btn-b:hover,
+.btn-b:active,
 input[type=submit]:hover,
 input[type=submit]:active {
     background-color: #fdcb6e;
 }
 
 .btn-full:hover,
-.btn-full:active {
+.btn-full:active,
+.btn-bf{
     border: 1px solid #fdcb6e;
 }
 
 .btn-ghost:hover,
-.btn-ghost:active {
+.btn-ghost:active,
+.btn-bg{
     border: 2px solid #fdcb6e;
     color: #3d3d3d;
 }

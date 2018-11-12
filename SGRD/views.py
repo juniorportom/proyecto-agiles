@@ -7,13 +7,14 @@ from .models.entradaPlan import EntradaPlan
 from .models.etiqueta import Etiqueta
 from .models.tipo import Tipo
 from .models.clip import Clip
-from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm
+from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm, TipoForm
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
 from django.template.defaultfilters import date
 
 # Create your views here.
@@ -261,3 +262,19 @@ class ClipCreate(CreateView):
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('recurso', kwargs = {'pk': self.kwargs['id_recurso']})
+
+
+def crear_tipo(request):
+    if request.method == 'POST':
+        form = TipoForm(request.POST or None)
+        nombreTipo = request.POST.get('tiponame')
+        tipo = Tipo.objects.filter(nombre=nombreTipo)
+
+        if not tipo:
+            tipo=Tipo(nombre=nombreTipo)
+            tipo.save()
+            messages.success(request, "¡Tipo se registro correctamente!", extra_tags="alert-success")
+        else:
+            messages.error(request, "¡Tipo ya se encuentra registrado!", extra_tags="alert-danger")
+
+    return HttpResponseRedirect('/crear-recurso')

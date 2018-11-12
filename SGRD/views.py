@@ -7,7 +7,7 @@ from .models.entradaPlan import EntradaPlan
 from .models.etiqueta import Etiqueta
 from .models.tipo import Tipo
 from .models.clip import Clip
-from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm, TipoForm
+from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm, TipoForm, EtiquetaForm
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -177,6 +177,7 @@ class RecursoDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['archivos'] = Archivo.objects.filter(recurso=self.object)
         context['tags'] = self.object.etiquetas.all()
+        context['otherTags'] = Etiqueta.objects.exclude(id__in=context['tags'])
         print(self.object.id)
         if not context['archivos']:
             context['archivos'] = ''
@@ -195,13 +196,14 @@ class RecursoDetailView(DetailView):
 def archivoClips(request, idArchivo):
     archivo = Archivo.objects.get(id=idArchivo)
     clips = archivo.clips.all()
+    otherTags = Etiqueta.objects.all()
 
     context = {
         'archivo': archivo,
         'clips': clips,
+        'otherTags': otherTags
     }
     return render(request, 'SGRD/archivo_clips.html', context)
-
 
 def recursoBusqueda(request):
     tags = request.GET.getlist('tags')
@@ -278,3 +280,61 @@ def crear_tipo(request):
             messages.error(request, "¡Tipo ya se encuentra registrado!", extra_tags="alert-danger")
 
     return HttpResponseRedirect('/crear-recurso')
+
+def manage_tags(request):
+    tags = Etiqueta.objects.all()
+    newTag_form = EtiquetaForm(request.POST or None)
+    if newTag_form.is_valid():
+        Etiqueta.objects.create(**newTag_form.cleaned_data)
+        return HttpResponseRedirect('/tags')
+
+    context = {
+        'tags': tags,
+        'form': newTag_form
+    }
+    return render(request, 'SGRD/manage_tags.html', context)
+
+def delete_tag(request, id_tag):
+
+    tag = Etiqueta.objects.get(id=id_tag)
+    if request.method == 'POST':
+        tag.delete()
+        return HttpResponseRedirect('/tags')
+
+    context = {
+        'tag': tag
+    }
+
+    return render(request, 'confirmation/delete_tag.html', context)
+
+def remove_tag(request, pk, id_tag):
+    recurso = Recurso.objects.get(id=pk)
+    tag = Etiqueta.objects.get(id=id_tag)
+    if recurso and tag:
+        recurso.etiquetas.remove(tag)
+
+    return HttpResponseRedirect('/recurso/'+str(pk))
+
+def add_tag(request, pk):
+    recurso = Recurso.objects.get(id=pk)
+    if recurso and request.method == 'POST':
+        tags = request.POST.getlist('addTags')
+        recurso.etiquetas.add(*tags)
+
+    return HttpResponseRedirect('/recurso/'+str(pk))
+
+def remove_tag_clip(request, pk, id_tag, id_archivo):
+    clip = Clip.objects.get(id=pk)
+    tag = Etiqueta.objects.get(id=id_tag)
+    if clip and tag:
+        clip.etiquetas.remove(tag)
+
+    return HttpResponseRedirect('/clips/'+str(id_archivo))
+
+def add_tag_clip(request, pk, id_archivo):
+    clip = Clip.objects.get(id=pk)
+    if clip and request.method == 'POST':
+        tags = request.POST.getlist('addTags')
+        clip.etiquetas.add(*tags)
+
+    return HttpResponseRedirect('/clips/'+str(id_archivo))

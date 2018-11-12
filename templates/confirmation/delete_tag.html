@@ -1,0 +1,21 @@
+{% extends 'root.html' %}
+{% block content %}
+<div class="card container mt-3">
+  <div class="card-body">
+    <h3 class="card-title">¿Eliminar etiqueta?</h3>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6" style="margin: 1vw; border: 2px solid {{tag.color}}; border-radius: 10px; background-color: {{tag.color}}; width: auto; height: auto; margin-right: 1px;">
+        <div class="text-center" style="color: #FFF; font-weight: 400;">
+          {{tag.nombre}}
+        </div>
+      </div>
+      <div class="col-md-3 mb-3"></div>
+    </div>
+    <form action="{% url 'delete-tag' tag.id %}" method='POST'> {% csrf_token %}
+      <input type="submit" value="Eliminar">
+      <a class="nav-link btnn btn-full" href="{% url 'manage-tags' %}">Cancelar</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -27,20 +27,36 @@
                       <p><b>Fecha de publicación: </b>{{recurso.fecha_publicacion}}</p>
                   </div>
                 </div>
-                {% if tags %}
                 <div class="row">
                   <h5>Etiquetas:</h5>
                 </div>
                 <div class="row">
                   {% for tag in tags %}
-                  <div class="col-md-2 card recursoTag" style="margin: 1vw; border: 2px solid #{{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px;">
-                    <div class="card-body text-center etiqueta-item">
+                  <div class="col-md-4 row recursoTag" style="margin: 1vw; border: 2px solid {{tag.color}}; background-color: {{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px;">
+                    <div class="col-10 text-center etiqueta-item" style="color: #FFF; font-weight: 400;">
                       {{tag.nombre}}
                     </div>
+                    <a href="{% url 'remove-tag' pk=recurso.id id_tag=tag.id %}" class="col-2">
+                      <i class="ion-md-close icon-small" style="color: #FFF"></i>
+                    </a>
                   </div>
                   {% endfor %}
                 </div>
-                {% endif %}
+                <div class="row">
+                  <form action="{% url 'add-tag' recurso.id %}" method="POST"> {% csrf_token %}
+                    <select class="tagsSelect col-md-10" name="addTags" multiple="multiple">
+                      {% for tag in otherTags %}
+                      <option value="{{tag.id}}" {% if tag.id|stringformat:"i" in searchParams.tags %} selected {% endif %}>{{tag.nombre}}</option>
+                      {% endfor %}
+                    </select>
+                    <input type="submit" value="Agregar">
+                  </form>
+                </div>
+                <div class="row mt-2 mb-2">
+                  <a href="{% url 'manage-tags' %}" class="nav-link btnn btn-full"">
+                    <i class="ion-md-pricetags icon-small"></i>Administrar etiquetas
+                  </a>
+                </div>
                 <div class="row">
                     <h5>Responsables:</h5>
                 </div>

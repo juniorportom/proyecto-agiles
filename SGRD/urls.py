@@ -16,5 +16,11 @@ urlpatterns = [
     path('buscar/', views.recursoBusqueda, name='busqueda'),
     path('crear-clip/<int:id_recurso>', ClipCreate.as_view(), name='crear-clip'),
     path('clips/<int:idArchivo>', views.archivoClips, name='ver-clips'),
-    path('crear-recurso/crear-tipo', views.crear_tipo, name='crear-tipo')
+    path('crear-recurso/crear-tipo', views.crear_tipo, name='crear-tipo'),
+    path('tags', views.manage_tags, name='manage-tags'),
+    path('tag/<int:id_tag>/delete', views.delete_tag, name='delete-tag'),
+    path('recurso/<int:pk>/remove-tag/<int:id_tag>', views.remove_tag, name='remove-tag'),
+    path('recurso/<int:pk>/add-tag', views.add_tag, name='add-tag'),
+    path('clip/<int:pk>/remove-tag/<int:id_tag>/<int:id_archivo>', views.remove_tag_clip, name='remove-tag-clip'),
+    path('clip/<int:pk>/add-tag/<int:id_archivo>', views.add_tag_clip, name='add-tag-clip')
 ]

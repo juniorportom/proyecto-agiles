@@ -7,7 +7,7 @@ from .models.entradaPlan import EntradaPlan
 from .models.etiqueta import Etiqueta
 from .models.tipo import Tipo
 from .models.clip import Clip
-from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm, TipoForm
+from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm, TipoForm, EtiquetaForm
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -280,12 +280,27 @@ def crear_tipo(request):
     return HttpResponseRedirect('/crear-recurso')
 
 def manage_tags(request):
-    context = {}
-    if request.method == 'GET':
-        pass
-    elif request.method == 'POST':
-        pass
-    elif request.method == 'DELETE':
-        pass
+    tags = Etiqueta.objects.all()
+    newTag_form = EtiquetaForm(request.POST or None)
+    if newTag_form.is_valid():
+        Etiqueta.objects.create(**newTag_form.cleaned_data)    
+        return HttpResponseRedirect('/tags')
 
+    context = {
+        'tags': tags,
+        'form': newTag_form
+    }
     return render(request, 'SGRD/manage_tags.html', context)
+
+def delete_tag(request, id_tag):
+
+    tag = Etiqueta.objects.get(id=id_tag)
+    if request.method == 'POST':
+        tag.delete()
+        return HttpResponseRedirect('/tags')
+
+    context = {
+        'tag': tag
+    }
+
+    return render(request, 'confirmation/delete_tag.html', context)

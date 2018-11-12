@@ -28,9 +28,8 @@
                             </a>
                             <div class="row mt-1">
                               {% for tag in cl.etiquetas.all %}
-                                <div class="col-md-6 card recursoTag"
-                                     style="border: 2px solid #{{ tag.color }}; border-radius: 10px; width: auto; height: auto;">
-                                  <div class="card-body text-center etiqueta-item">
+                                <div class="col-md-6 card recursoTag" style="margin: 1vw; border: 2px solid {{tag.color}}; background-color: {{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px;">
+                                  <div class="card-body text-center etiqueta-item" style="color: #FFF; font-weight: 400;">
                                     {{ tag.nombre }}
                                   </div>
                                 </div>

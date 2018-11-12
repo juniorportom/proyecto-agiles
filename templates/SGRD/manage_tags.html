@@ -1,3 +1,31 @@
 {% extends 'root.html' %}
 {% block content %}
+<div class="tagsManagement">
+  <div class="card container mt-3">
+      <div class="card-body">
+        <h3 class="card-title">Manejo de Etiquetas</h3>
+        <div class="row">
+          <div class="col-md-6 tagList">
+            {% for tag in tags %}
+            <div class="row recursoTag" style="margin: 1vw; border: 2px solid {{tag.color}}; border-radius: 10px; background-color: {{tag.color}}; width: auto; height: auto; margin-right: 1px;">
+              <div class="col-10 text-center etiqueta-item" style="color: #FFF; font-weight: 400;">
+                {{tag.nombre}}
+              </div>
+              <a href="{% url 'delete-tag' tag.id %}" class="col-2">
+                <i class="ion-md-trash icon-small" style="color: #FFF"></i>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="col-md-6 newTag" style="padding: 1vw; box-shadow: 0px 0px 15px; border-radius: 10px; width: auto; height: auto;">
+            <h5 class="card-title">Nueva etiqueta</h5>
+            <form action="{% url 'manage-tags' %}" method="POST"> {% csrf_token %}
+              {{form.as_p}}
+              <input type="submit" value="Crear">
+            </form>
+          </div>
+        </div>
+      </div>
+  </div
+</div>
 {% endblock %}

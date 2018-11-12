@@ -17,5 +17,6 @@ urlpatterns = [
     path('crear-clip/<int:id_recurso>', ClipCreate.as_view(), name='crear-clip'),
     path('clips/<int:idArchivo>', views.archivoClips, name='ver-clips'),
     path('crear-recurso/crear-tipo', views.crear_tipo, name='crear-tipo'),
-    path('tags', views.manage_tags, name='manage-tags')
+    path('tags', views.manage_tags, name='manage-tags'),
+    path('tag/<int:id_tag>/delete', views.delete_tag, name='delete-tag')
 ]

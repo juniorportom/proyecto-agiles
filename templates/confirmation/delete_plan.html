@@ -1,0 +1,12 @@
+{% extends 'root.html' %}
+{% block content %}
+<div class="card container mt-3">
+  <div class="card-body">
+    <h3 class="card-title">¿Está seguro que desea eliminar el plan de producción?</h3>
+    <form action="{% url 'eliminar-plan' idPlan=plan.recurso_id %}" method='POST'> {% csrf_token %}
+      <input type="submit" value="Eliminar">
+      <a class="nav-link btnn btn-full" href="{% url 'recursos' %}">Cancelar</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

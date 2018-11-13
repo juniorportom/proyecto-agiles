@@ -338,3 +338,16 @@ def add_tag_clip(request, pk, id_archivo):
         clip.etiquetas.add(*tags)
 
     return HttpResponseRedirect('/clips/'+str(id_archivo))
+
+def delete_plan(request, idPlan):
+
+    plan = PlanProduccion.objects.get(recurso_id=idPlan)
+    if request.method == 'POST':
+        plan.delete()
+        return HttpResponseRedirect('/recurso/'+str(idPlan))
+
+    context = {
+        'plan': plan
+    }
+
+    return render(request, 'confirmation/delete_plan.html', context)

@@ -7,6 +7,7 @@ urlpatterns = [
     path('ver-plan-produccion/<int:idRecurso>', views.verPlanProduccion, name='view-plan'),
     path('crear-plan-produccion/<int:idRecurso>', views.crearPlanProduccion, name='crear-plan'),
     path('editar-plan-produccion/<int:idRecurso>', views.EditarPlanProduccion, name='editar-plan'),
+    path('eliminar-plan-produccion/<int:idPlan>', views.delete_plan, name='eliminar-plan'),
     path('crear-entrada/<int:idRecurso>', views.createEntradaPlan, name='create-entrada'),
     path('editar-entrada/<int:idEntrada>', views.editarEntradaPlan, name='editar-entrada'),
     path('crear-recurso/', RecursoCreate.as_view(), name='create-recurso'),

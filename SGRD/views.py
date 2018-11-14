@@ -12,10 +12,12 @@ from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, StreamingHttpResponse
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
-from django.template.defaultfilters import date
+
+import io
+import xlsxwriter
 
 # Create your views here.
 def index(request):
@@ -81,6 +83,40 @@ def verPlanProduccion(request, idRecurso):
     }
 
     return render(request, 'SGRD/planProduccion.html', context)
+
+def exportarPlanProduccion(request, idRecurso):
+    recurso = Recurso.objects.get(id=idRecurso)
+    plan = recurso.plan
+    entradas = list(plan.entradas.all().values())
+
+    output = io.BytesIO()
+
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet()
+
+    headers = list(entradas[0])
+
+    for col_num, header in enumerate(headers):
+        worksheet.write(0, col_num, header)
+
+    for row_num, entrada in enumerate(entradas):
+        entrada = list(entrada.values())
+        for col_num in range(len(entrada)):
+            worksheet.write(row_num + 1, col_num, str(entrada[col_num]))
+
+    workbook.close()
+
+    output.seek(0)
+
+    filename = 'plan_produccion.xlsx'
+    response = StreamingHttpResponse(
+        output,
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+    return response
+
 
 def sortEntradasPlan(entradas):
     dias = {}

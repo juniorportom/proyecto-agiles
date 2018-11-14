@@ -13,6 +13,7 @@ django-heroku = "*"
 gunicorn = "*"
 "psycopg2-binary" = "*"
 "boto3" = "*"
+xlsxwriter = "*"
 
 [requires]
 python_version = "3.6"

@@ -8,7 +8,7 @@ from .models.etiqueta import Etiqueta
 from .models.tipo import Tipo
 from .models.clip import Clip
 from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm, TipoForm, EtiquetaForm
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
@@ -19,13 +19,14 @@ from django.contrib import messages
 import io
 import xlsxwriter
 
+
 # Create your views here.
 def index(request):
-
     context = {
 
     }
     return render(request, 'SGRD/index.html', context)
+
 
 def createEntradaPlan(request, idRecurso):
     plan_entrada = None
@@ -47,6 +48,7 @@ def createEntradaPlan(request, idRecurso):
 
     return render(request, 'forms/createEntradaPlanForm.html', context)
 
+
 def editarEntradaPlan(request, idEntrada):
     plan_entrada = None
     form = None
@@ -67,6 +69,7 @@ def editarEntradaPlan(request, idEntrada):
 
     return render(request, 'forms/editarEntradaPlanForm.html', context)
 
+
 def verPlanProduccion(request, idRecurso):
     recurso = Recurso.objects.get(id=idRecurso)
     plan = recurso.plan
@@ -83,6 +86,7 @@ def verPlanProduccion(request, idRecurso):
     }
 
     return render(request, 'SGRD/planProduccion.html', context)
+
 
 def exportarPlanProduccion(request, idRecurso):
     recurso = Recurso.objects.get(id=idRecurso)
@@ -146,7 +150,7 @@ class ArchivoCreate(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('recurso', kwargs = {'pk': self.kwargs['id_recurso']})
+        return reverse_lazy('recurso', kwargs={'pk': self.kwargs['id_recurso']})
 
 
 class RecursoListView(ListView):
@@ -178,6 +182,7 @@ def crearPlanProduccion(request, idRecurso):
         return render(request, 'forms/crear_plan.html', context)
 
     return HttpResponseRedirect('/recursos/')
+
 
 def EditarPlanProduccion(request, idRecurso):
     try:
@@ -229,6 +234,7 @@ class RecursoDetailView(DetailView):
         context['tipo_video'] = self.object.tipo.nombre == "Video"
         return context
 
+
 def archivoClips(request, idArchivo):
     archivo = Archivo.objects.get(id=idArchivo)
     clips = archivo.clips.all()
@@ -240,6 +246,7 @@ def archivoClips(request, idArchivo):
         'otherTags': otherTags
     }
     return render(request, 'SGRD/archivo_clips.html', context)
+
 
 def recursoBusqueda(request):
     tags = request.GET.getlist('tags')
@@ -299,7 +306,7 @@ class ClipCreate(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('recurso', kwargs = {'pk': self.kwargs['id_recurso']})
+        return reverse_lazy('recurso', kwargs={'pk': self.kwargs['id_recurso']})
 
 
 def crear_tipo(request):
@@ -309,13 +316,14 @@ def crear_tipo(request):
         tipo = Tipo.objects.filter(nombre=nombreTipo)
 
         if not tipo:
-            tipo=Tipo(nombre=nombreTipo)
+            tipo = Tipo(nombre=nombreTipo)
             tipo.save()
             messages.success(request, "¡Tipo se registro correctamente!", extra_tags="alert-success")
         else:
             messages.error(request, "¡Tipo ya se encuentra registrado!", extra_tags="alert-danger")
 
     return HttpResponseRedirect('/crear-recurso')
+
 
 def manage_tags(request):
     tags = Etiqueta.objects.all()
@@ -330,8 +338,8 @@ def manage_tags(request):
     }
     return render(request, 'SGRD/manage_tags.html', context)
 
-def delete_tag(request, id_tag):
 
+def delete_tag(request, id_tag):
     tag = Etiqueta.objects.get(id=id_tag)
     if request.method == 'POST':
         tag.delete()
@@ -343,13 +351,15 @@ def delete_tag(request, id_tag):
 
     return render(request, 'confirmation/delete_tag.html', context)
 
+
 def remove_tag(request, pk, id_tag):
     recurso = Recurso.objects.get(id=pk)
     tag = Etiqueta.objects.get(id=id_tag)
     if recurso and tag:
         recurso.etiquetas.remove(tag)
 
-    return HttpResponseRedirect('/recurso/'+str(pk))
+    return HttpResponseRedirect('/recurso/' + str(pk))
+
 
 def add_tag(request, pk):
     recurso = Recurso.objects.get(id=pk)
@@ -357,7 +367,8 @@ def add_tag(request, pk):
         tags = request.POST.getlist('addTags')
         recurso.etiquetas.add(*tags)
 
-    return HttpResponseRedirect('/recurso/'+str(pk))
+    return HttpResponseRedirect('/recurso/' + str(pk))
+
 
 def remove_tag_clip(request, pk, id_tag, id_archivo):
     clip = Clip.objects.get(id=pk)
@@ -365,7 +376,8 @@ def remove_tag_clip(request, pk, id_tag, id_archivo):
     if clip and tag:
         clip.etiquetas.remove(tag)
 
-    return HttpResponseRedirect('/clips/'+str(id_archivo))
+    return HttpResponseRedirect('/clips/' + str(id_archivo))
+
 
 def add_tag_clip(request, pk, id_archivo):
     clip = Clip.objects.get(id=pk)
@@ -373,4 +385,12 @@ def add_tag_clip(request, pk, id_archivo):
         tags = request.POST.getlist('addTags')
         clip.etiquetas.add(*tags)
 
-    return HttpResponseRedirect('/clips/'+str(id_archivo))
+    return HttpResponseRedirect('/clips/' + str(id_archivo))
+
+
+class ClipDelete(DeleteView):
+    model = Clip
+    template_name = "confirmation/delete_clip.html"
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('ver-clips', kwargs={'idArchivo': self.kwargs['idArchivo']})

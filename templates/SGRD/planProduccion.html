@@ -69,6 +69,8 @@
   <div class="col-md-2">
     <a class="btnn btn-full" href="{% url 'eliminar-plan' recurso.id %}"><i class="ion-md-trash icon-small"></i>Eliminar plan de producción</a>
   </div>
-  <div class="col-md-7"></div>
+  <div class="col-md-7">
+    <a class="btnn btn-full" href="{% url 'exportar-plan' recurso.id %}"><i class="ion-ios-list-box icon-small"></i>Exportar a Excel</a>
+  </div>
 </div>
 {% endblock %}

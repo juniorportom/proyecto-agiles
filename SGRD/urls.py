@@ -1,6 +1,6 @@
 from django.urls import path
 from SGRD import views
-from .views import RecursoCreate, ArchivoCreate, RecursoListView,  RecursoDetailView, ClipCreate
+from .views import RecursoCreate, ArchivoCreate, RecursoListView,  RecursoDetailView, ClipCreate, ClipDelete
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -8,6 +8,7 @@ urlpatterns = [
     path('crear-plan-produccion/<int:idRecurso>', views.crearPlanProduccion, name='crear-plan'),
     path('editar-plan-produccion/<int:idRecurso>', views.EditarPlanProduccion, name='editar-plan'),
     path('eliminar-plan-produccion/<int:idPlan>', views.delete_plan, name='eliminar-plan'),
+    path('exportar-plan-produccion/<int:idRecurso>', views.exportarPlanProduccion, name='exportar-plan'),
     path('crear-entrada/<int:idRecurso>', views.createEntradaPlan, name='create-entrada'),
     path('editar-entrada/<int:idEntrada>', views.editarEntradaPlan, name='editar-entrada'),
     path('crear-recurso/', RecursoCreate.as_view(), name='create-recurso'),
@@ -23,5 +24,6 @@ urlpatterns = [
     path('recurso/<int:pk>/remove-tag/<int:id_tag>', views.remove_tag, name='remove-tag'),
     path('recurso/<int:pk>/add-tag', views.add_tag, name='add-tag'),
     path('clip/<int:pk>/remove-tag/<int:id_tag>/<int:id_archivo>', views.remove_tag_clip, name='remove-tag-clip'),
-    path('clip/<int:pk>/add-tag/<int:id_archivo>', views.add_tag_clip, name='add-tag-clip')
+    path('clip/<int:pk>/add-tag/<int:id_archivo>', views.add_tag_clip, name='add-tag-clip'),
+    path('clips/<int:idArchivo>/remove-clip/<int:pk>', ClipDelete.as_view(), name='eliminar-clip')
 ]

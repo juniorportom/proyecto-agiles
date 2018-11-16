@@ -1,0 +1,17 @@
+{% extends 'root.html' %}
+{% block content %}
+<div class="card container mt-3">
+  <div class="card-body">
+    <h3 class="card-title">¿Eliminar clip?</h3>
+    <div class="row">
+      <div class="text-center" style="color: #FFF; font-weight: 400;">
+          {{clip.nombre}}
+       </div>
+    </div>
+    <form action="" method="post">{% csrf_token %}
+        <p>¿Estás seguro que quieres borrar este clip <b>"{{ object }}"</b>?</p>
+        <input type="submit" class="btn btn-danger" value="Sí, borrar el clip" />
+    </form>
+  </div>
+</div>
+{% endblock %}

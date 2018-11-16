@@ -14,6 +14,7 @@
               <div class="row">
                 <p class="mr-2">Segundos: {{ cl.inicio }} - {{ cl.final }}</p>
                 <a href="#{{ cl.inicio }}-{{ cl.final }}" onclick="playClip({{ cl.inicio }}, {{ cl.final }})" class="btnn btn-full mt-1 mb-1">Reproducir</a>
+                <a href="{% url 'eliminar-clip' archivo.id cl.pk %}" class="btnn btn-full mt-1 mb-1">Eliminar</a>
               </div>
               {% for tag in cl.etiquetas.all %}
               <div class="col-md-12 row recursoTag" style="margin: 1vw; border: 2px solid {{tag.color}}; background-color: {{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px;">

@@ -7,7 +7,8 @@ from .models.entradaPlan import EntradaPlan
 from .models.etiqueta import Etiqueta
 from .models.tipo import Tipo
 from .models.clip import Clip
-from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm, TipoForm, EtiquetaForm
+from .models.descargarArchivo import DescargarArchivo
+from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm, TipoForm, EtiquetaForm, DescargarArchivoForm
 from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -311,7 +312,6 @@ class ClipCreate(CreateView):
 
 def crear_tipo(request):
     if request.method == 'POST':
-        form = TipoForm(request.POST or None)
         nombreTipo = request.POST.get('tiponame')
         tipo = Tipo.objects.filter(nombre=nombreTipo)
 
@@ -408,3 +408,10 @@ class ClipDelete(DeleteView):
     def get_success_url(self, **kwargs):
         return reverse_lazy('ver-clips', kwargs={'idArchivo': self.kwargs['idArchivo']})
 
+
+
+
+class PlanearDescarga(CreateView):
+    model = DescargarArchivo
+    form_class = DescargarArchivoForm
+    template_name = 'forms/descargar-archivo-form.html'

@@ -1,6 +1,6 @@
 from django.urls import path
 from SGRD import views
-from .views import RecursoCreate, ArchivoCreate, RecursoListView,  RecursoDetailView, ClipCreate, ClipDelete
+from .views import RecursoCreate, ArchivoCreate, RecursoListView,  RecursoDetailView, ClipCreate, ClipDelete, PlanearDescarga, EditarPlanearDescarga
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -25,5 +25,7 @@ urlpatterns = [
     path('recurso/<int:pk>/add-tag', views.add_tag, name='add-tag'),
     path('clip/<int:pk>/remove-tag/<int:id_tag>/<int:id_archivo>', views.remove_tag_clip, name='remove-tag-clip'),
     path('clip/<int:pk>/add-tag/<int:id_archivo>', views.add_tag_clip, name='add-tag-clip'),
-    path('clips/<int:idArchivo>/remove-clip/<int:pk>', ClipDelete.as_view(), name='eliminar-clip')
+    path('clips/<int:idArchivo>/remove-clip/<int:pk>', ClipDelete.as_view(), name='eliminar-clip'),
+    path('recurso/<int:id_recurso>/archivo/<int:id_archivo>', PlanearDescarga.as_view(), name='descargar-archivo'),
+    path('recurso/<int:id_recurso>/archivo/<int:id_archivo>/descarga/<int:pk>', EditarPlanearDescarga.as_view(), name='editar-descargar-archivo'),
 ]

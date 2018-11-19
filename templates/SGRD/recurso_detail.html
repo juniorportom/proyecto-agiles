@@ -105,6 +105,7 @@
                   <th>Fecha</th>
                   <th>Archivo</th>
                   <th>Descargar</th>
+                  <th>Planear Descarga</th>
                   {% if tipo_video %}
                   <th>Clips</th>
                   {% endif %}
@@ -117,6 +118,10 @@
                     <td>{{ archivo.ruta.name }}</td>
                     <td>
                         <a class="btnn btn-full" href="{{ archivo.get_absolute_url}}" download><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
+                    </td>
+                    <td>
+
+                        <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'descargar-archivo' recurso.id archivo.id %}')"   ><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
                     </td>
                     {% if tipo_video %}
                     <td>
@@ -136,4 +141,26 @@
       </div>
   </div>
 </main>
+    <div id="popup" class="modal fade" role="dialog">
+
+</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+      <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+<script>
+   /* $(document).ready(function () {
+        $('#id_descargar').click(function () {
+            $('#descargar_modal').modal();
+        });
+    });*/
+
+    function abrir_modal(url)
+{
+        $('#popup').load(url, function()
+        {
+                $(this).modal('show');
+        });
+        return false;
+}
+
+</script>
 {% endblock %}

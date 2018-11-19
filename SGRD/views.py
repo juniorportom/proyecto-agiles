@@ -409,9 +409,35 @@ class ClipDelete(DeleteView):
         return reverse_lazy('ver-clips', kwargs={'idArchivo': self.kwargs['idArchivo']})
 
 
-
-
 class PlanearDescarga(CreateView):
     model = DescargarArchivo
     form_class = DescargarArchivoForm
     template_name = 'forms/descargar-archivo-form.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('recurso', kwargs={'pk': self.kwargs['id_recurso']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['id_recurso'] = self.kwargs['id_recurso']
+        context['id_archivo'] = self.kwargs['id_archivo']
+        return context
+
+    def form_valid(self, form):
+        form.instance.archivo = get_object_or_404(Archivo, id=self.kwargs['id_archivo'])
+        return super().form_valid(form)
+
+
+class EditarPlanearDescarga(CreateView):
+    model = DescargarArchivo
+    form_class = DescargarArchivoForm
+    template_name = 'forms/descargar-archivo-form.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('recurso', kwargs={'pk': self.kwargs['id_recurso']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['id_recurso'] = self.kwargs['id_recurso']
+        context['id_archivo'] = self.kwargs['id_archivo']
+        return context

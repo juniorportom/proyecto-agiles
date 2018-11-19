@@ -48,7 +48,6 @@ def createEntradaPlan(request, idRecurso):
 
     return render(request, 'forms/createEntradaPlanForm.html', context)
 
-
 def editarEntradaPlan(request, idEntrada):
     plan_entrada = None
     form = None
@@ -400,6 +399,20 @@ def delete_plan(request, idPlan):
 
     return render(request, 'confirmation/delete_plan.html', context)
 
+def delete_entrada(request, idEntrada):
+
+    entrada = EntradaPlan.objects.get(id=idEntrada)
+    recurso = entrada.plan.recurso.id
+
+    if request.method == 'POST':
+        entrada.delete()
+        return HttpResponseRedirect('/ver-plan-produccion/'+str(recurso))
+
+    context = {
+        'entrada': entrada
+    }
+
+    return render(request, 'confirmation/delete_entrada.html', context)
 
 class ClipDelete(DeleteView):
     model = Clip

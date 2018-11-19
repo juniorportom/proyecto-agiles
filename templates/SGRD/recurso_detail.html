@@ -111,7 +111,7 @@
                   {% endif %}
                 </thead>
                 <tbody>
-                  {% for archivo in archivos %}
+                  {% for archivo in archivos|dictsort:"fecha_creacion" %}
                   <tr>
                     <td>{{ archivo.nombre }}</td>
                     <td>{{ archivo.fecha_creacion }}</td>
@@ -120,8 +120,11 @@
                         <a class="btnn btn-full" href="{{ archivo.get_absolute_url}}" download><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
                     </td>
                     <td>
-
-                        <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'descargar-archivo' recurso.id archivo.id %}')"   ><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
+                        {% if archivo.descarga_archivo %}
+                        <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'editar-descargar-archivo' recurso.id archivo.id archivo.descarga_archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programada</a>
+                        {% else %}
+                        <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'descargar-archivo' recurso.id archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programar</a>
+                        {% endif %}
                     </td>
                     {% if tipo_video %}
                     <td>

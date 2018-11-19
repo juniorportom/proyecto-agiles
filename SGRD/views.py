@@ -9,13 +9,14 @@ from .models.tipo import Tipo
 from .models.clip import Clip
 from .models.descargarArchivo import DescargarArchivo
 from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm, TipoForm, EtiquetaForm, DescargarArchivoForm
-from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect, StreamingHttpResponse
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+
 
 import io
 import xlsxwriter
@@ -220,6 +221,7 @@ class RecursoDetailView(DetailView):
         context['archivos'] = Archivo.objects.filter(recurso=self.object)
         context['tags'] = self.object.etiquetas.all()
         context['otherTags'] = Etiqueta.objects.exclude(id__in=context['tags'])
+        context['descargas'] = DescargarArchivo.objects.all()
         print(self.object.id)
         if not context['archivos']:
             context['archivos'] = ''
@@ -415,6 +417,9 @@ class PlanearDescarga(CreateView):
     template_name = 'forms/descargar-archivo-form.html'
 
     def get_success_url(self, **kwargs):
+        archivo = get_object_or_404(Archivo, id=self.kwargs['id_archivo'])
+        archivo.descarga_archivo = self.object
+        archivo.save()
         return reverse_lazy('recurso', kwargs={'pk': self.kwargs['id_recurso']})
 
     def get_context_data(self, **kwargs):
@@ -423,12 +428,8 @@ class PlanearDescarga(CreateView):
         context['id_archivo'] = self.kwargs['id_archivo']
         return context
 
-    def form_valid(self, form):
-        form.instance.archivo = get_object_or_404(Archivo, id=self.kwargs['id_archivo'])
-        return super().form_valid(form)
 
-
-class EditarPlanearDescarga(CreateView):
+class EditarPlanearDescarga(UpdateView):
     model = DescargarArchivo
     form_class = DescargarArchivoForm
     template_name = 'forms/descargar-archivo-form.html'
@@ -441,3 +442,5 @@ class EditarPlanearDescarga(CreateView):
         context['id_recurso'] = self.kwargs['id_recurso']
         context['id_archivo'] = self.kwargs['id_archivo']
         return context
+
+

@@ -80,6 +80,7 @@
 </div>
 
 {% include "confirmation/delete_plan.html" %}
+{% include "confirmation/delete_entrada.html" %}
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
       <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
@@ -95,12 +96,20 @@
             $('#tipo_modal2').modal();
         });
     });
+let identrada
 
 async function eliminarEntrada(id) {
-    if (confirm("Está seguro")){
-        await fetch("/eliminar-entrada/"+id)
-        location.reload()
-    }
+        identrada = id
+
+        $('#tipo_modal2').modal();
+
+
+
+}
+
+async function eliminarEntrada2(){
+    await fetch("/eliminar-entrada/"+identrada)
+    location.reload()
 }
 </script>
 {% endblock %}

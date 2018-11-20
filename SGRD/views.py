@@ -12,7 +12,7 @@ from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect, StreamingHttpResponse
+from django.http import HttpResponseRedirect, StreamingHttpResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 
@@ -38,7 +38,7 @@ def createEntradaPlan(request, idRecurso):
     form = CreateEntradaPlanForm(request.POST or None)
     if form.is_valid():
         EntradaPlan.objects.create(**form.cleaned_data, plan=plan_entrada)
-        return verPlanProduccion(request, recurso.id)
+        return HttpResponseRedirect('/ver-plan-produccion/' + str(recurso.id))
 
     context = {
         'recurso': recurso,
@@ -47,7 +47,6 @@ def createEntradaPlan(request, idRecurso):
     }
 
     return render(request, 'forms/createEntradaPlanForm.html', context)
-
 
 def editarEntradaPlan(request, idEntrada):
     plan_entrada = None
@@ -400,6 +399,13 @@ def delete_plan(request, idPlan):
 
     return render(request, 'confirmation/delete_plan.html', context)
 
+def delete_entrada(request, idEntrada):
+
+    entrada = EntradaPlan.objects.get(id=idEntrada)
+    recurso = entrada.plan.recurso.id
+
+    entrada.delete()
+    return HttpResponse(status=200)
 
 class ClipDelete(DeleteView):
     model = Clip

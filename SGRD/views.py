@@ -12,7 +12,7 @@ from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect, StreamingHttpResponse
+from django.http import HttpResponseRedirect, StreamingHttpResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 
@@ -403,18 +403,9 @@ def delete_entrada(request, idEntrada):
 
     entrada = EntradaPlan.objects.get(id=idEntrada)
     recurso = entrada.plan.recurso.id
-    entrada_id = EntradaPlan.id
-    print(entrada_id)
 
-    if request.method == 'POST':
-        entrada.delete()
-        return HttpResponseRedirect('/ver-plan-produccion/'+str(recurso))
-
-    context = {
-        'entrada': entrada
-    }
-
-    return render(request, 'confirmation/delete_entrada.html', context)
+    entrada.delete()
+    return HttpResponse(status=200)
 
 class ClipDelete(DeleteView):
     model = Clip

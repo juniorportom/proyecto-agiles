@@ -52,7 +52,7 @@
             <td>{{ e.observaciones }}</td>
             <td><a class="btnn btn-full float-right" href="{% url 'editar-entrada' e.id %}">Editar</a>
                 <!--<a class="btnn btn-full float-right" href="#" id="id_eliminar_entrada">Eliminar</a>-->
-                <a class="btnn btn-full float-right" href="{% url 'eliminar-entrada' e.id %}" id="id_eliminar_entrada">Eliminar</a>
+                <a class="btnn btn-full float-right" href="#" onclick="eliminarEntrada({{ e.id }})" id="id_eliminar_entrada">Eliminar</a>
             </td>
           </tr>
           {% endfor %}
@@ -80,7 +80,7 @@
 </div>
 
 {% include "confirmation/delete_plan.html" %}
-{% include "confirmation/delete_entrada.html" %}
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
       <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
 <script>
@@ -95,5 +95,12 @@
             $('#tipo_modal2').modal();
         });
     });
+
+async function eliminarEntrada(id) {
+    if (confirm("Está seguro")){
+        await fetch("/eliminar-entrada/"+id)
+        location.reload()
+    }
+}
 </script>
 {% endblock %}

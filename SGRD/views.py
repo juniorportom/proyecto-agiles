@@ -403,6 +403,8 @@ def delete_entrada(request, idEntrada):
 
     entrada = EntradaPlan.objects.get(id=idEntrada)
     recurso = entrada.plan.recurso.id
+    entrada_id = EntradaPlan.id
+    print(entrada_id)
 
     if request.method == 'POST':
         entrada.delete()

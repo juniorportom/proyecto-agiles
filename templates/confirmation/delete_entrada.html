@@ -1,18 +1,18 @@
-<div class="modal fade" id="tipo_modal" role="dialog">
+<div class="modal fade" id="tipo_modal2" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4><span class="glyphicon glyphicon-user"></span>¿Está seguro de eliminar esta entrada?</h4>
             </div>
             <!--suppress HtmlUnknoid_crear_tipownTarget -->
-            <form role="form" action="{% url 'eliminar-entrada' idEntrada=entrada.id %}" method="post" enctype="multipart/form-data" novalidate="novalidate">
+            <form role="form" action="{% url 'eliminar-entrada' idEntrada=18 %}"  id="delete-entrada" method="post" enctype="multipart/form-data" novalidate="novalidate">
                 {% csrf_token %}
                 <div class="modal-footer btn-toolbar">
                     <button type="submit" class="btn-b btn-bf pull-right">
                         <span class="glyphicon glyphicon-save"></span> Eliminar
                     </button>
                     <button type="submit" class="btn-b btn-bg pull-right" data-dismiss="modal"
-                            style="margin-left: 5px">
+                            style="margin-left: 1px">
                         <span class="glyphicon glyphicon-remove"></span> Cancelar
                     </button>
                 </div>

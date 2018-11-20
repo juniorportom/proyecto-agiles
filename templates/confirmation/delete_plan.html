@@ -1,8 +1,11 @@
-<div class="modal fade" id="tipo_modal" role="dialog">
+<div class="modal fade" id="tipo_modal1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4><span class="glyphicon glyphicon-user"></span>¿Está seguro de eliminar el plan de producción?</h4>
+                <h4><span class="glyphicon glyphicon-user"></span>Confirmación eliminar plan</h4>
+            </div>
+            <div class="modal-body">
+                <p class="lead">¿Está seguro de eliminar el plan de producción y todas sus entradas?</p>
             </div>
             <!--suppress HtmlUnknoid_crear_tipownTarget -->
             <form role="form" action="{% url 'eliminar-plan' idPlan=plan.recurso_id %}" method="post" enctype="multipart/form-data" novalidate="novalidate">

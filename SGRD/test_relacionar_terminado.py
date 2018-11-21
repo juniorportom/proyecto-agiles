@@ -8,7 +8,7 @@ import os
 class FunctionalTest(TestCase):
 
     def setUp(self):
-        self.browser = webdriver.Chrome('D:/chromedriver.exe')
+        self.browser = webdriver.Chrome(     )
         self.browser.implicitly_wait(2)
 
     def tearDown(self):
@@ -16,8 +16,8 @@ class FunctionalTest(TestCase):
 
     def test_title(self):
         self.browser.get('http://localhost:8000/recurso/1')
-        self.assertIn('Recurso ', self.browser.title)
+        self.assertIn('Recursos', self.browser.title)
 
     def test_string_representation(self):
         entry = Archivo(descripcion="descripcion de prueba")
-        self.assertEqual(str(entry), entry.descripcion)
+        self.assertEqual(str(entry.descripcion), "descripcion de prueba")

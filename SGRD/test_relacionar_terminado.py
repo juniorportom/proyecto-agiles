@@ -34,4 +34,4 @@ class FunctionalTest(TestCase):
     def test_title_cargar(self):
         self.browser.get('http://localhost:8000/crear-archivo/1')
         self.assertIn('Crear archivo terminado', self.browser.title)
-        self.browser.find_element_by_id('create_archivo_terminado')
+        self.browser.find_element_by_link_text('Crear archivo terminado')

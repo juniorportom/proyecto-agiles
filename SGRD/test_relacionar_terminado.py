@@ -8,7 +8,7 @@ import os
 class FunctionalTest(TestCase):
 
     def setUp(self):
-        self.browser = webdriver.Chrome()
+        self.browser = webdriver.Chrome('D:/chromedriver.exe')
         self.browser.implicitly_wait(2)
 
     def tearDown(self):
@@ -26,7 +26,12 @@ class FunctionalTest(TestCase):
         entry = Archivo(terminado=True)
         self.assertEqual(str(entry.terminado), 'True')
 
-    def test_title(self):
+    def test_boton_cargar(self):
         self.browser.get('http://localhost:8000/recurso/1')
         link = self.browser.find_element_by_link_text('Cargar producto final')
         self.assertTrue(link.is_displayed())
+
+    def test_title_cargar(self):
+        self.browser.get('http://localhost:8000/crear-archivo/1')
+        self.assertIn('Crear archivo terminado', self.browser.title)
+        self.browser.find_element_by_id('create_archivo_terminado')

@@ -146,10 +146,16 @@ class ArchivoCreate(CreateView):
 
     def form_valid(self, form):
         form.instance.recurso = get_object_or_404(Recurso, id=self.kwargs['id_recurso'])
+        form.instance.terminado = self.kwargs['terminado'] == 1
         return super().form_valid(form)
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('recurso', kwargs={'pk': self.kwargs['id_recurso']})
+
+    def get_context_data(self, **kwargs):
+        context = super(ArchivoCreate, self).get_context_data(**kwargs)
+        context['terminado'] = self.kwargs['terminado'] == 1
+        return context
 
 
 class RecursoListView(ListView):
@@ -231,7 +237,7 @@ class RecursoDetailView(DetailView):
             context['hay_plan'] = False
 
         context['tipo_video'] = self.object.tipo.nombre == "Video"
-        context['produccion_terminada'] = self.object.fase in ['Pos-Producción', 'Control calidad', 'Cierre proyecto', 'Sistematización y resguardo']
+        context['produccion_terminada'] = str(self.object.fase) in ['C', 'D', 'E', 'F']
         return context
 
 

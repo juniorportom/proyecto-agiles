@@ -8,7 +8,7 @@ import os
 class FunctionalTest(TestCase):
 
     def setUp(self):
-        self.browser = webdriver.Chrome('D:/chromedriver.exe')
+        self.browser = webdriver.Chrome()
         self.browser.implicitly_wait(2)
 
     def tearDown(self):
@@ -32,6 +32,7 @@ class FunctionalTest(TestCase):
         self.assertTrue(link.is_displayed())
 
     def test_title_cargar(self):
-        self.browser.get('http://localhost:8000/crear-archivo/1')
+        self.browser.get('http://localhost:8000/crear-archivo/1/1')
         self.assertIn('Crear archivo terminado', self.browser.title)
-        self.browser.find_element_by_link_text('Crear archivo terminado')
+        btn = self.browser.find_element_by_xpath("//input[@value='Cargar archivo terminado']")
+        self.assertTrue(btn.is_displayed())

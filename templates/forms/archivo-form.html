@@ -1,6 +1,6 @@
 {% extends 'root.html' %}
 {% load static %}
-{% block title %}Crear archivo{% endblock %}
+{% block title %}Crear archivo{% if terminado %} terminado{% endif %}{% endblock %}
 {% block content %}
 <style>.errorlist{color:red;}</style>
 <main role="main">
@@ -10,7 +10,7 @@
             <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
                     {{ form.as_p }}
                 <div class="text-center"></div>
-                <input type="submit" class="btn btn-primary" value="Cargar archivo" />
+                <input type="submit" class="btn btn-primary" value="Cargar archivo{% if terminado %} terminado{% endif %}" />
             </form>
         </div>
     </div>

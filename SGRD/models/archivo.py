@@ -5,6 +5,7 @@ from .recurso import Recurso
 class Archivo(models.Model):
     nombre = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=500)
+    terminado = models.BooleanField(default=False)
     recurso = models.ForeignKey(Recurso, on_delete=models.CASCADE)
     ruta = models.FileField(upload_to='archivos_recursos/')
     fecha_creacion = models.DateField(default=datetime.now, blank=True)

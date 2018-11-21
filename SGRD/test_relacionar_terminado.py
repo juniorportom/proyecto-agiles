@@ -24,4 +24,4 @@ class FunctionalTest(TestCase):
 
     def test_model_terminado(self):
         entry = Archivo(terminado=True)
-        self.assertEqual(str(entry.terminado), True)
+        self.assertEqual(str(entry.terminado), 'True')

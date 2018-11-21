@@ -116,7 +116,7 @@
                 <tbody>
                   {% for archivo in archivos %}
                   <tr>
-                    <td>{{ archivo.nombre }}</td>
+                    <td>{% if archivo.terminado %}<strong>{{ archivo.nombre }}</strong> (Terminado){% else %}{{ archivo.nombre }}{% endif %}</td>
                     <td>{{ archivo.fecha_creacion }}</td>
                     <td>{{ archivo.ruta.name }}</td>
                     <td>

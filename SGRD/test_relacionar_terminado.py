@@ -8,7 +8,7 @@ import os
 class FunctionalTest(TestCase):
 
     def setUp(self):
-        self.browser = webdriver.Chrome(     )
+        self.browser = webdriver.Chrome('D:/chromedriver.exe')
         self.browser.implicitly_wait(2)
 
     def tearDown(self):
@@ -21,3 +21,7 @@ class FunctionalTest(TestCase):
     def test_string_representation(self):
         entry = Archivo(descripcion="descripcion de prueba")
         self.assertEqual(str(entry.descripcion), "descripcion de prueba")
+
+    def test_model_terminado(self):
+        entry = Archivo(terminado=True)
+        self.assertEqual(str(entry.terminado), True)

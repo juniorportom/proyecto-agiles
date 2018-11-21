@@ -84,7 +84,12 @@
                       {{recurso.descripcion|striptags|safe|truncatechars:"200"}}
                     </p>
                    <p id="id_links">
-                  <a href="{% url 'create-archivo' recurso.id %}">Adjuntar Archivo</a>
+                   {% if produccion_terminada %}
+                     <a href="{% url 'create-archivo' recurso.id %}">Cargar producto final</a>
+                   {% else %}
+                     <a href="{% url 'create-archivo' recurso.id %}">Cargar producto final</a>
+                   {%  endif %}
+                   | <a href="{% url 'create-archivo' recurso.id %}">Adjuntar Archivo</a>
                    {% if not hay_plan %}
                    | <a href="{% url 'crear-plan' recurso.id %}">Crear plan</a>
                    {% else %}

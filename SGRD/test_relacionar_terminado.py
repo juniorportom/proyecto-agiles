@@ -8,7 +8,7 @@ import os
 class FunctionalTest(TestCase):
 
     def setUp(self):
-        self.browser = webdriver.Chrome('D:/chromedriver.exe')
+        self.browser = webdriver.Chrome()
         self.browser.implicitly_wait(2)
 
     def tearDown(self):

@@ -231,6 +231,7 @@ class RecursoDetailView(DetailView):
             context['hay_plan'] = False
 
         context['tipo_video'] = self.object.tipo.nombre == "Video"
+        context['produccion_terminada'] = self.object.fase in ['Pos-Producción', 'Control calidad', 'Cierre proyecto', 'Sistematización y resguardo']
         return context
 
 

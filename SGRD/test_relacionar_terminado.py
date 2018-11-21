@@ -25,3 +25,8 @@ class FunctionalTest(TestCase):
     def test_model_terminado(self):
         entry = Archivo(terminado=True)
         self.assertEqual(str(entry.terminado), 'True')
+
+    def test_title(self):
+        self.browser.get('http://localhost:8000/recurso/1')
+        link = self.browser.find_element_by_link_text('Cargar producto final')
+        self.assertTrue(link.is_displayed())

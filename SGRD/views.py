@@ -238,6 +238,8 @@ class RecursoDetailView(DetailView):
 
         context['tipo_video'] = self.object.tipo.nombre == "Video"
         context['produccion_terminada'] = str(self.object.fase) in ['C', 'D', 'E', 'F']
+        context['archivos_terminados'] = Archivo.objects.filter(recurso=self.object, recurso__archivo__terminado__exact='True')
+        context['archivos_no_terminados'] = Archivo.objects.filter(recurso=self.object, recurso__archivo__terminado__exact='False')
         return context
 
 

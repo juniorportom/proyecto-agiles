@@ -85,10 +85,9 @@
                     </p>
                    <p id="id_links">
                    {% if produccion_terminada %}
-                     <a href="{% url 'create-archivo' recurso.id 1 %}">Cargar producto final</a>
-                   {% else %}
-                     <a href="{% url 'create-archivo' recurso.id 0 %}">Adjuntar Archivo</a>
+                     <a href="{% url 'create-archivo' recurso.id 1 %}">Cargar producto final</a> |
                    {%  endif %}
+                   <a href="{% url 'create-archivo' recurso.id 0 %}">Adjuntar Archivo</a>
                    {% if not hay_plan %}
                    | <a href="{% url 'crear-plan' recurso.id %}">Crear plan</a>
                    {% else %}
@@ -100,6 +99,45 @@
                    {% endif %}
                     </p>
               </div>
+
+            {% if archivos %}
+              <h5 class="text-center mt-3 mb-3">Producto terminado</h5>
+            <div class="row text-center">
+              <table class="col-md-20 w-100 entradas table table-striped table-bordered">
+                <thead class="text-center">
+                  <th>Nombre</th>
+                  <th>Fecha</th>
+                  <th>Archivo</th>
+                  <th>Descargar</th>
+                  {% if tipo_video %}
+                  <th>Clips</th>
+                  {% endif %}
+                </thead>
+                <tbody>
+                  {% for archivo in archivos %}
+                      {% if archivo.terminado %}
+                          <tr>
+                            <td><strong>{{ archivo.nombre }}</strong></td>
+                            <td>{{ archivo.fecha_creacion }}</td>
+                            <td>{{ archivo.ruta.name }}</td>
+                            <td>
+                                <a class="btnn btn-full" href="{{ archivo.get_absolute_url}}" download><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
+                            </td>
+                            {% if tipo_video %}
+                            <td>
+                            {% if '.mp4' in archivo.ruta.name %}
+                                <a class="btnn btn-full" href="{% url 'ver-clips' archivo.id %}"><i class="ion-ios-videocam icon-small"></i>Clips</a>
+                            {% endif %}
+                            </td>
+                            {% endif %}
+                          </tr>
+                      {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+           {% endif %}
+
                 {% if archivos %}
                     <h5 class="text-center mt-3 mb-3">Archivos asociados</h5>
             <div class="row text-center">
@@ -115,21 +153,23 @@
                 </thead>
                 <tbody>
                   {% for archivo in archivos %}
-                  <tr>
-                    <td>{% if archivo.terminado %}<strong>{{ archivo.nombre }}</strong> (Terminado){% else %}{{ archivo.nombre }}{% endif %}</td>
-                    <td>{{ archivo.fecha_creacion }}</td>
-                    <td>{{ archivo.ruta.name }}</td>
-                    <td>
-                        <a class="btnn btn-full" href="{{ archivo.get_absolute_url}}" download><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
-                    </td>
-                    {% if tipo_video %}
-                    <td>
-                    {% if '.mp4' in archivo.ruta.name %}
-                        <a class="btnn btn-full" href="{% url 'ver-clips' archivo.id %}"><i class="ion-ios-videocam icon-small"></i>Clips</a>
-                    {% endif %}
-                    </td>
-                    {% endif %}
-                  </tr>
+                      {% if not archivo.terminado %}
+                          <tr>
+                            <td>{{ archivo.nombre }}</td>
+                            <td>{{ archivo.fecha_creacion }}</td>
+                            <td>{{ archivo.ruta.name }}</td>
+                            <td>
+                                <a class="btnn btn-full" href="{{ archivo.get_absolute_url}}" download><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
+                            </td>
+                            {% if tipo_video %}
+                            <td>
+                            {% if '.mp4' in archivo.ruta.name %}
+                                <a class="btnn btn-full" href="{% url 'ver-clips' archivo.id %}"><i class="ion-ios-videocam icon-small"></i>Clips</a>
+                            {% endif %}
+                            </td>
+                            {% endif %}
+                          </tr>
+                      {% endif %}
                   {% endfor %}
                 </tbody>
               </table>

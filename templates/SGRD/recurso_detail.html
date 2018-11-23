@@ -120,8 +120,8 @@
                         <a class="btnn btn-full" href="{{ archivo.get_absolute_url}}" download><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
                     </td>
                     <td>
-                        {% if archivo.descarga_archivo %}
-                        <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'editar-descargar-archivo' recurso.id archivo.id archivo.descarga_archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programada</a>
+                        {% if archivo.descarga %}
+                        <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'editar-descargar-archivo' recurso.id archivo.id archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programada</a>
                         {% else %}
                         <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'descargar-archivo' recurso.id archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programar</a>
                         {% endif %}
@@ -145,8 +145,8 @@
   </div>
 </main>
     <div id="popup" class="modal fade" role="dialog">
-
-</div>
+      {{ form.as_p }}
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
       <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
 <script>

@@ -1,7 +1,6 @@
 from django.db import models
 from datetime import datetime
 from .recurso import Recurso
-from .descargarArchivo import DescargarArchivo
 
 
 class Archivo(models.Model):
@@ -9,7 +8,6 @@ class Archivo(models.Model):
     recurso = models.ForeignKey(Recurso, on_delete=models.CASCADE)
     ruta = models.FileField(upload_to='archivos_recursos/')
     fecha_creacion = models.DateField(default=datetime.now, blank=True)
-    descarga_archivo = models.OneToOneField(DescargarArchivo, on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         ordering = ['-fecha_creacion']

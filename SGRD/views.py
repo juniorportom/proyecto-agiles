@@ -13,12 +13,12 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect, StreamingHttpResponse
+from django.http import HttpResponseRedirect, StreamingHttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 
 
-import io
+import io, datetime
 import xlsxwriter
 
 
@@ -411,23 +411,20 @@ class ClipDelete(DeleteView):
         return reverse_lazy('ver-clips', kwargs={'idArchivo': self.kwargs['idArchivo']})
 
 
-class PlanearDescarga(CreateView):
-    model = DescargarArchivo
-    form_class = DescargarArchivoForm
-    template_name = 'forms/descargar-archivo-form.html'
+def planear_descarga(request, id_archivo, id_recurso):
 
-    def get_success_url(self, **kwargs):
-        archivo = get_object_or_404(Archivo, id=self.kwargs['id_archivo'])
-        archivo.descarga_archivo = self.object
-        archivo.save()
-        return reverse_lazy('recurso', kwargs={'pk': self.kwargs['id_recurso']})
+    form = DescargarArchivoForm(request.POST or None)
+    if form.is_valid():
+        archivo = Archivo.objects.get(id=id_archivo)
+        DescargarArchivo.objects.create(**form.cleaned_data, archivo=archivo)
+        return HttpResponseRedirect('/recurso/'+str(id_recurso))
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['id_recurso'] = self.kwargs['id_recurso']
-        context['id_archivo'] = self.kwargs['id_archivo']
-        return context
-
+    context = {
+        'id_recurso': id_recurso,
+        'id_archivo': id_archivo,
+        'form': form
+    }
+    return render(request, 'forms/descargar-archivo-form.html', context)
 
 class EditarPlanearDescarga(UpdateView):
     model = DescargarArchivo
@@ -443,4 +440,14 @@ class EditarPlanearDescarga(UpdateView):
         context['id_archivo'] = self.kwargs['id_archivo']
         return context
 
+def check_for_downloads(request):
 
+    data = {
+        'downloads': []
+    }
+    descargas = DescargarArchivo.objects.all()
+    for dl in descargas:
+        data['downloads'].append(dl.archivo.get_absolute_url())
+        #if dl.fecha_descarga >= datetime.date.today() and dl.hora_descarga >= datetime.time.now():
+
+    return JsonResponse(data)

@@ -426,19 +426,22 @@ def planear_descarga(request, id_archivo, id_recurso):
     }
     return render(request, 'forms/descargar-archivo-form.html', context)
 
-class EditarPlanearDescarga(UpdateView):
-    model = DescargarArchivo
-    form_class = DescargarArchivoForm
-    template_name = 'forms/descargar-archivo-form.html'
+def editar_plan_descarga(request, id_archivo, id_recurso):
 
-    def get_success_url(self, **kwargs):
-        return reverse_lazy('recurso', kwargs={'pk': self.kwargs['id_recurso']})
+    archivo = Archivo.objects.get(id=id_archivo)
+    descarga = archivo.descarga
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['id_recurso'] = self.kwargs['id_recurso']
-        context['id_archivo'] = self.kwargs['id_archivo']
-        return context
+    form = DescargarArchivoForm(request.POST or None, instance=descarga)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return HttpResponseRedirect('/recurso/'+str(id_recurso))
+
+    context = {
+        'id_recurso': id_recurso,
+        'id_archivo': id_archivo,
+        'form': form
+    }
+    return render(request, 'forms/editar-descargar-archivo-form.html', context)
 
 def check_for_downloads(request):
 
@@ -447,7 +450,13 @@ def check_for_downloads(request):
     }
     descargas = DescargarArchivo.objects.all()
     for dl in descargas:
-        data['downloads'].append(dl.archivo.get_absolute_url())
-        #if dl.fecha_descarga >= datetime.date.today() and dl.hora_descarga >= datetime.time.now():
+        print('Fecha Descarga: '+str(dl.fecha_descarga))
+        print('Date.Today: '+str(datetime.date.today()))
+        print('hora_descarga: '+str(dl.hora_descarga))
+        print('Date.Now: '+str(datetime.datetime.now().time()))
+        if dl.fecha_descarga >= datetime.date.today() and dl.hora_descarga <= datetime.datetime.now().time():
+            newDL = {'name': dl.archivo.nombre, 'uri': dl.archivo.get_absolute_url()}
+            data['downloads'].append(newDL)
+            dl.delete()
 
     return JsonResponse(data)

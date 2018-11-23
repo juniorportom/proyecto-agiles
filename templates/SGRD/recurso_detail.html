@@ -30,14 +30,14 @@
                 <div class="row">
                   <h5>Etiquetas:</h5>
                 </div>
-                <div class="row">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 1vw; margin-bottom: 2vh;">
                   {% for tag in tags %}
-                  <div class="col-md-4 row recursoTag" style="margin: 1vw; border: 2px solid {{tag.color}}; background-color: {{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px;">
-                    <div class="col-10 text-center etiqueta-item" style="color: #FFF; font-weight: 400;">
+                  <div class="recursoTag" style="border: 2px solid {{tag.color}}; background-color: {{tag.color}}; border-radius: 10px; height: 40px; display: grid; grid-template-columns: 4fr 1fr;">
+                    <div class="text-center etiqueta-item" style="color: #FFF; font-weight: 400; width: 100%;">
                       {{tag.nombre}}
                     </div>
-                    <a href="{% url 'remove-tag' pk=recurso.id id_tag=tag.id %}" class="col-2">
-                      <i class="ion-md-close icon-small" style="color: #FFF"></i>
+                    <a href="{% url 'remove-tag' pk=recurso.id id_tag=tag.id %}" style="width: 100%;">
+                      <i class="ion-md-close icon-small" style="color: #FFF; width: 100%; margin: 0 auto;"></i>
                     </a>
                   </div>
                   {% endfor %}

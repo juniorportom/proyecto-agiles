@@ -26,5 +26,8 @@ urlpatterns = [
     path('recurso/<int:pk>/add-tag', views.add_tag, name='add-tag'),
     path('clip/<int:pk>/remove-tag/<int:id_tag>/<int:id_archivo>', views.remove_tag_clip, name='remove-tag-clip'),
     path('clip/<int:pk>/add-tag/<int:id_archivo>', views.add_tag_clip, name='add-tag-clip'),
-    path('clips/<int:idArchivo>/remove-clip/<int:pk>', ClipDelete.as_view(), name='eliminar-clip')
+    path('clips/<int:idArchivo>/remove-clip/<int:pk>', ClipDelete.as_view(), name='eliminar-clip'),
+    path('recurso/<int:id_recurso>/archivo/<int:id_archivo>', views.planear_descarga, name='descargar-archivo'),
+    path('recurso/<int:id_recurso>/archivo/<int:id_archivo>/editar', views.editar_plan_descarga, name='editar-descargar-archivo'),
+    path('descargas-programadas', views.check_for_downloads, name='check-descargas'),
 ]

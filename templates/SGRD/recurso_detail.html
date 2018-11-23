@@ -30,14 +30,14 @@
                 <div class="row">
                   <h5>Etiquetas:</h5>
                 </div>
-                <div class="row">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 1vw; margin-bottom: 2vh;">
                   {% for tag in tags %}
-                  <div class="col-md-4 row recursoTag" style="margin: 1vw; border: 2px solid {{tag.color}}; background-color: {{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px;">
-                    <div class="col-10 text-center etiqueta-item" style="color: #FFF; font-weight: 400;">
+                  <div class="recursoTag" style="border: 2px solid {{tag.color}}; background-color: {{tag.color}}; border-radius: 10px; height: 40px; display: grid; grid-template-columns: 4fr 1fr;">
+                    <div class="text-center etiqueta-item" style="color: #FFF; font-weight: 400; width: 100%;">
                       {{tag.nombre}}
                     </div>
-                    <a href="{% url 'remove-tag' pk=recurso.id id_tag=tag.id %}" class="col-2">
-                      <i class="ion-md-close icon-small" style="color: #FFF"></i>
+                    <a href="{% url 'remove-tag' pk=recurso.id id_tag=tag.id %}" style="width: 100%;">
+                      <i class="ion-md-close icon-small" style="color: #FFF; width: 100%; margin: 0 auto;"></i>
                     </a>
                   </div>
                   {% endfor %}
@@ -111,6 +111,7 @@
                               <th>Fecha</th>
                               <th>Archivo</th>
                               <th>Descargar</th>
+                              <th>Planear Descarga</th>
                               {% if tipo_video %}
                               <th>Clips</th>
                               {% endif %}
@@ -124,6 +125,13 @@
                                         <td>{{ archivo.ruta.name }}</td>
                                         <td>
                                             <a class="btnn btn-full" href="{{ archivo.get_absolute_url}}" download><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
+                                        </td>
+                                        <td>
+                                          {% if archivo.descarga %}
+                                            <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'editar-descargar-archivo' recurso.id archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programada</a>
+                                          {% else %}
+                                            <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'descargar-archivo' recurso.id archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programar</a>
+                                          {% endif %}
                                         </td>
                                         {% if tipo_video %}
                                         <td>
@@ -152,6 +160,7 @@
                           <th>Fecha</th>
                           <th>Archivo</th>
                           <th>Descargar</th>
+                          <th>Planear Descarga</th>
                           {% if tipo_video %}
                           <th>Clips</th>
                           {% endif %}
@@ -165,6 +174,13 @@
                                     <td>{{ archivo.ruta.name }}</td>
                                     <td>
                                         <a class="btnn btn-full" href="{{ archivo.get_absolute_url}}" download><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
+                                    </td>
+                                    <td>
+                                      {% if archivo.descarga %}
+                                        <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'editar-descargar-archivo' recurso.id archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programada</a>
+                                      {% else %}
+                                        <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'descargar-archivo' recurso.id archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programar</a>
+                                      {% endif %}
                                     </td>
                                     {% if tipo_video %}
                                     <td>
@@ -186,4 +202,25 @@
       </div>
   </div>
 </main>
+    <div id="popup" class="modal fade" role="dialog">
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+      <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+<script>
+   /* $(document).ready(function () {
+        $('#id_descargar').click(function () {
+            $('#descargar_modal').modal();
+        });
+    });*/
+
+    function abrir_modal(url)
+{
+        $('#popup').load(url, function()
+        {
+                $(this).modal('show');
+        });
+        return false;
+}
+
+</script>
 {% endblock %}

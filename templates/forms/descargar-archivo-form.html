@@ -1,0 +1,29 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <form role="form" action="{% url 'descargar-archivo' id_recurso id_archivo %}" method="post">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">x</button>
+            <h3>Planear descarga</h3>
+        </div>
+        <div class="modal-body">
+            {% csrf_token %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                        {{ form.as_p }}
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="modal-footer btn-toolbar">
+                <button type="submit"id="id_grabar" class="btn-b btn-bf pull-right">
+                    <span class="glyphicon glyphicon-save"></span> Guardar
+                </button>
+                <button type="submit" class="btn-b btn-bg pull-right" data-dismiss="modal"
+                        style="margin-left: 5px">
+                    <span class="glyphicon glyphicon-remove"></span> Cancelar
+                </button>
+            </div>
+                    </div>
+            </form>
+    </div>
+</div>

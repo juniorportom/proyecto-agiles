@@ -8,6 +8,7 @@ from .models.archivo import Archivo
 from .models.clip import Clip
 from .models.tipo import Tipo
 from .models.etiqueta import Etiqueta
+from .models.descargarArchivo import DescargarArchivo
 
 
 class RecursoForm(forms.ModelForm):
@@ -133,3 +134,17 @@ class EtiquetaForm(forms.ModelForm):
         if Etiqueta.objects.filter(nombre__iexact=nombre).exists():
             raise ValidationError(_('Ya existe una etiqueta con el mismo nombre'), code='invalid')
         return nombre
+
+
+class DescargarArchivoForm(forms.ModelForm):
+    class Meta:
+        model = DescargarArchivo
+        fields = ['fecha_descarga', 'hora_descarga']
+        widgets = {
+          'fecha_descarga': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control','placeholder':'yyyy-MM-dd', 'type': 'date'}),
+          'hora_descarga': forms.TimeInput(format=('%H:%M'), attrs={'class': 'form-control','placeholder':'HH:MM', 'type': 'time'})
+        }
+        labels={
+          'fecha_descarga': 'Fecha descarga',
+          'hora_descarga': 'Hora descarga'
+        }

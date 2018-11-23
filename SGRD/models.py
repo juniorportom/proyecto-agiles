@@ -8,3 +8,4 @@ from .models.archivo import Archivo
 from .models.planProduccion import PlanProduccion
 from .models.etiqueta import Etiqueta
 from .models.clip import Clip
+from .models.descargarArchivo import DescargarArchivo

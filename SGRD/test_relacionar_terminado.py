@@ -1,6 +1,6 @@
 from unittest import TestCase
 from selenium import webdriver
-from django.test import TestCase
+from unittest import TestCase
 from selenium.webdriver.common.by import By
 import os
 

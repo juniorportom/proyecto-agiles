@@ -56,8 +56,8 @@ class FunctionalTest(TestCase):
         button_create_clip = self.browser.find_element_by_id('create_clip')
         button_create_clip.click()
 
-        h5 = self.browser.find_element(By.XPATH, '//h5[text()="Archivos asociados"]')
-        self.assertIn('Archivos asociados', h5.text)
+        h5 = self.browser.find_element(By.XPATH, '//h5[text()="Etiquetas:"]')
+        self.assertIn('Etiquetas:', h5.text)
 
     def test_create_clip_no_video(self):
         self.browser.get('http://localhost:8000/recursos/')

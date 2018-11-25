@@ -1,5 +1,8 @@
 from django.db import models
 
+"""
+Modelo de tipo de recurso
+"""
 class Tipo(models.Model):
     nombre = models.CharField(max_length=200)
 

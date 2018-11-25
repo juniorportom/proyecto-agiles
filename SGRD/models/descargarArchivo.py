@@ -3,8 +3,9 @@ from datetime import datetime
 from django.utils import timezone
 from .archivo import Archivo
 
-
-# Create your models here.
+"""
+Modelo de descarga programada de archivo
+"""
 class DescargarArchivo(models.Model):
     fecha_descarga = models.DateField(default=datetime.now, blank=True)
     hora_descarga = models.TimeField(default=timezone.now)

@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.shortcuts import render
 
 from .models.archivo import Archivo
@@ -21,15 +22,18 @@ from django.contrib import messages
 import io, datetime
 import xlsxwriter
 
-
-# Create your views here.
+"""
+Vista principal
+"""
 def index(request):
     context = {
 
     }
     return render(request, 'SGRD/index.html', context)
 
-
+"""
+Vista de crear entrada de plan de producción
+"""
 def createEntradaPlan(request, idRecurso):
     plan_entrada = None
     form = None
@@ -50,6 +54,9 @@ def createEntradaPlan(request, idRecurso):
 
     return render(request, 'forms/createEntradaPlanForm.html', context)
 
+"""
+Vista de editar entrada de plan de producción
+"""
 def editarEntradaPlan(request, idEntrada):
     plan_entrada = None
     form = None
@@ -70,7 +77,9 @@ def editarEntradaPlan(request, idEntrada):
 
     return render(request, 'forms/editarEntradaPlanForm.html', context)
 
-
+"""
+Vista de ver plan de producción
+"""
 def verPlanProduccion(request, idRecurso):
     recurso = Recurso.objects.get(id=idRecurso)
     plan = recurso.plan
@@ -88,7 +97,9 @@ def verPlanProduccion(request, idRecurso):
 
     return render(request, 'SGRD/planProduccion.html', context)
 
-
+"""
+Vista de exportar plan de producción
+"""
 def exportarPlanProduccion(request, idRecurso):
     recurso = Recurso.objects.get(id=idRecurso)
     plan = recurso.plan
@@ -122,7 +133,9 @@ def exportarPlanProduccion(request, idRecurso):
 
     return response
 
-
+"""
+Función para ordenar entradas de plan de producción
+"""
 def sortEntradasPlan(entradas):
     dias = {}
     for e in entradas:
@@ -133,14 +146,18 @@ def sortEntradasPlan(entradas):
             dias[dia] = [e]
     return dias
 
-
+"""
+Vista de crear recurso
+"""
 class RecursoCreate(CreateView):
     model = Recurso
     form_class = RecursoForm
     template_name = 'forms/recurso-form.html'
     success_url = reverse_lazy('recursos')
 
-
+"""
+Vista de crear entrada de plan de producción
+"""
 class ArchivoCreate(CreateView):
     model = Archivo
     form_class = ArchivoForm
@@ -159,13 +176,17 @@ class ArchivoCreate(CreateView):
         context['terminado'] = self.kwargs['terminado'] == 1
         return context
 
-
+"""
+Vista de recursos
+"""
 class RecursoListView(ListView):
     model = Recurso
     template_name = 'SGRD/recurso_list.html'
     paginate_by = 50
 
-
+"""
+Vista de crear plan de producción
+"""
 def crearPlanProduccion(request, idRecurso):
     plan_entrada = None
     form = None
@@ -190,7 +211,9 @@ def crearPlanProduccion(request, idRecurso):
 
     return HttpResponseRedirect('/recursos/')
 
-
+"""
+Vista de editar plan de producción
+"""
 def EditarPlanProduccion(request, idRecurso):
     try:
         recurso = Recurso.objects.get(id=idRecurso)
@@ -216,7 +239,9 @@ def EditarPlanProduccion(request, idRecurso):
 
         return render(request, 'forms/editarPlanProduccion.html', context)
 
-
+"""
+Vista de detalle de recurso
+"""
 class RecursoDetailView(DetailView):
     model = Recurso
     template_name = 'SGRD/recurso_detail.html'
@@ -245,7 +270,9 @@ class RecursoDetailView(DetailView):
         context['archivos_no_terminados'] = Archivo.objects.filter(recurso=self.object, recurso__archivo__terminado__exact='False')
         return context
 
-
+"""
+Vista de detalle de clips relacionados a un archivo
+"""
 def archivoClips(request, idArchivo):
     archivo = Archivo.objects.get(id=idArchivo)
     clips = archivo.clips.all()
@@ -258,7 +285,9 @@ def archivoClips(request, idArchivo):
     }
     return render(request, 'SGRD/archivo_clips.html', context)
 
-
+"""
+Vista de búsqueda de recursos
+"""
 def recursoBusqueda(request):
     tags = request.GET.getlist('tags')
     type = request.GET.get('types', -1)
@@ -290,7 +319,9 @@ def recursoBusqueda(request):
     }
     return render(request, 'SGRD/busqueda.html', context)
 
-
+"""
+Vista de crear clip a archivo
+"""
 class ClipCreate(CreateView):
     model = Clip
     form_class = ClipForm
@@ -319,7 +350,9 @@ class ClipCreate(CreateView):
     def get_success_url(self, **kwargs):
         return reverse_lazy('recurso', kwargs={'pk': self.kwargs['id_recurso']})
 
-
+"""
+Vista de crear tipo
+"""
 def crear_tipo(request):
     if request.method == 'POST':
         nombreTipo = request.POST.get('tiponame')
@@ -334,7 +367,9 @@ def crear_tipo(request):
 
     return HttpResponseRedirect('/crear-recurso')
 
-
+"""
+Vista de etiquetas
+"""
 def manage_tags(request):
     tags = Etiqueta.objects.all()
     newTag_form = EtiquetaForm(request.POST or None)
@@ -348,7 +383,9 @@ def manage_tags(request):
     }
     return render(request, 'SGRD/manage_tags.html', context)
 
-
+"""
+Vista de eliminación de etiqueta
+"""
 def delete_tag(request, id_tag):
     tag = Etiqueta.objects.get(id=id_tag)
     if request.method == 'POST':
@@ -361,7 +398,9 @@ def delete_tag(request, id_tag):
 
     return render(request, 'confirmation/delete_tag.html', context)
 
-
+"""
+Vista para quitar la relación de una etiqueta a un recurso
+"""
 def remove_tag(request, pk, id_tag):
     recurso = Recurso.objects.get(id=pk)
     tag = Etiqueta.objects.get(id=id_tag)
@@ -370,7 +409,9 @@ def remove_tag(request, pk, id_tag):
 
     return HttpResponseRedirect('/recurso/' + str(pk))
 
-
+"""
+Vista para agregar la relación de una etiqueta a un recurso
+"""
 def add_tag(request, pk):
     recurso = Recurso.objects.get(id=pk)
     if recurso and request.method == 'POST':
@@ -379,7 +420,9 @@ def add_tag(request, pk):
 
     return HttpResponseRedirect('/recurso/' + str(pk))
 
-
+"""
+Vista para quitar la relación de una etiqueta a un clip
+"""
 def remove_tag_clip(request, pk, id_tag, id_archivo):
     clip = Clip.objects.get(id=pk)
     tag = Etiqueta.objects.get(id=id_tag)
@@ -388,7 +431,9 @@ def remove_tag_clip(request, pk, id_tag, id_archivo):
 
     return HttpResponseRedirect('/clips/' + str(id_archivo))
 
-
+"""
+Vista para agregar la relación de una etiqueta a un clip
+"""
 def add_tag_clip(request, pk, id_archivo):
     clip = Clip.objects.get(id=pk)
     if clip and request.method == 'POST':
@@ -397,6 +442,9 @@ def add_tag_clip(request, pk, id_archivo):
 
     return HttpResponseRedirect('/clips/'+str(id_archivo))
 
+"""
+Vista de eliminar un plan de producción
+"""
 def delete_plan(request, idPlan):
 
     plan = PlanProduccion.objects.get(recurso_id=idPlan)
@@ -410,6 +458,9 @@ def delete_plan(request, idPlan):
 
     return render(request, 'confirmation/delete_plan.html', context)
 
+"""
+Vista de eliminar entrada de plan de producción
+"""
 def delete_entrada(request, idEntrada):
 
     entrada = EntradaPlan.objects.get(id=idEntrada)
@@ -418,6 +469,9 @@ def delete_entrada(request, idEntrada):
     entrada.delete()
     return HttpResponse(status=200)
 
+"""
+Vista de eliminar clip
+"""
 class ClipDelete(DeleteView):
     model = Clip
     template_name = "confirmation/delete_clip.html"
@@ -425,7 +479,9 @@ class ClipDelete(DeleteView):
     def get_success_url(self, **kwargs):
         return reverse_lazy('ver-clips', kwargs={'idArchivo': self.kwargs['idArchivo']})
 
-
+"""
+Vista de crear una programación de descarga de archivo
+"""
 def planear_descarga(request, id_archivo, id_recurso):
 
     form = DescargarArchivoForm(request.POST or None)
@@ -441,6 +497,9 @@ def planear_descarga(request, id_archivo, id_recurso):
     }
     return render(request, 'forms/descargar-archivo-form.html', context)
 
+"""
+Vista de editar plan de descarga de archivo
+"""
 def editar_plan_descarga(request, id_archivo, id_recurso):
 
     archivo = Archivo.objects.get(id=id_archivo)
@@ -458,6 +517,9 @@ def editar_plan_descarga(request, id_archivo, id_recurso):
     }
     return render(request, 'forms/editar-descargar-archivo-form.html', context)
 
+"""
+Vista JSON para verificación de descargas pendientes
+"""
 def check_for_downloads(request):
 
     data = {

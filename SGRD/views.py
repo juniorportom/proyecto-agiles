@@ -465,12 +465,8 @@ def check_for_downloads(request):
     }
     descargas = DescargarArchivo.objects.all()
     for dl in descargas:
-        print('Fecha Descarga: '+str(dl.fecha_descarga))
-        print('Date.Today: '+str(datetime.date.today()))
-        print('hora_descarga: '+str(dl.hora_descarga))
-        print('Date.Now: '+str(datetime.datetime.now().time()))
         if dl.fecha_descarga >= datetime.date.today() and dl.hora_descarga <= datetime.datetime.now().time():
-            newDL = {'name': dl.archivo.nombre, 'uri': dl.archivo.get_absolute_url()}
+            newDL = {'id': dl.archivo.id, 'uri': dl.archivo.get_absolute_url()}
             data['downloads'].append(newDL)
             dl.delete()
 

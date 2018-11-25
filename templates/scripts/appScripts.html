@@ -12,18 +12,22 @@
       success: function (data) {
         downloads = data['downloads']
         for (var i = 0; i < downloads.length; i++) {
-          downloadURI(downloads[0]['uri'], downloads[0]['name']);
+          downloadURI(downloads[0]['uri'], downloads[0]['id']);
         }
       }
     });
   }, 5000);
 
-  function downloadURI(uri, name) {
+  function downloadURI(uri, id) {
     var a = document.createElement('A');
     a.href = uri;
     a.download = uri.substr(uri.lastIndexOf('/') + 1);
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+    var url_mask = "{% url 'recurso' 1234 %}".replace(/1234/, id.toString());
+    if (window.location.href.endsWith(url_mask)){
+      setTimeout(location.reload.bind(location), 4000);
+    }
   }
 </script>

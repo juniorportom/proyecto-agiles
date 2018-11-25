@@ -7,22 +7,28 @@ from .models.entradaPlan import EntradaPlan
 from .models.etiqueta import Etiqueta
 from .models.tipo import Tipo
 from .models.clip import Clip
-from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm
-from django.views.generic.edit import CreateView
+from .models.descargarArchivo import DescargarArchivo
+from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm, TipoForm, EtiquetaForm, DescargarArchivoForm
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, StreamingHttpResponse, JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
-from django.template.defaultfilters import date
+from django.contrib import messages
+
+
+import io, datetime
+import xlsxwriter
+
 
 # Create your views here.
 def index(request):
-
     context = {
 
     }
     return render(request, 'SGRD/index.html', context)
+
 
 def createEntradaPlan(request, idRecurso):
     plan_entrada = None
@@ -34,7 +40,7 @@ def createEntradaPlan(request, idRecurso):
     form = CreateEntradaPlanForm(request.POST or None)
     if form.is_valid():
         EntradaPlan.objects.create(**form.cleaned_data, plan=plan_entrada)
-        return verPlanProduccion(request, recurso.id)
+        return HttpResponseRedirect('/ver-plan-produccion/' + str(recurso.id))
 
     context = {
         'recurso': recurso,
@@ -64,6 +70,7 @@ def editarEntradaPlan(request, idEntrada):
 
     return render(request, 'forms/editarEntradaPlanForm.html', context)
 
+
 def verPlanProduccion(request, idRecurso):
     recurso = Recurso.objects.get(id=idRecurso)
     plan = recurso.plan
@@ -80,6 +87,41 @@ def verPlanProduccion(request, idRecurso):
     }
 
     return render(request, 'SGRD/planProduccion.html', context)
+
+
+def exportarPlanProduccion(request, idRecurso):
+    recurso = Recurso.objects.get(id=idRecurso)
+    plan = recurso.plan
+    entradas = list(plan.entradas.all().values())
+
+    output = io.BytesIO()
+
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet()
+
+    headers = list(entradas[0])
+
+    for col_num, header in enumerate(headers):
+        worksheet.write(0, col_num, header)
+
+    for row_num, entrada in enumerate(entradas):
+        entrada = list(entrada.values())
+        for col_num in range(len(entrada)):
+            worksheet.write(row_num + 1, col_num, str(entrada[col_num]))
+
+    workbook.close()
+
+    output.seek(0)
+
+    filename = 'plan_produccion.xlsx'
+    response = StreamingHttpResponse(
+        output,
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+    return response
+
 
 def sortEntradasPlan(entradas):
     dias = {}
@@ -106,10 +148,16 @@ class ArchivoCreate(CreateView):
 
     def form_valid(self, form):
         form.instance.recurso = get_object_or_404(Recurso, id=self.kwargs['id_recurso'])
+        form.instance.terminado = self.kwargs['terminado'] == 1
         return super().form_valid(form)
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('recurso', kwargs = {'pk': self.kwargs['id_recurso']})
+        return reverse_lazy('recurso', kwargs={'pk': self.kwargs['id_recurso']})
+
+    def get_context_data(self, **kwargs):
+        context = super(ArchivoCreate, self).get_context_data(**kwargs)
+        context['terminado'] = self.kwargs['terminado'] == 1
+        return context
 
 
 class RecursoListView(ListView):
@@ -141,6 +189,7 @@ def crearPlanProduccion(request, idRecurso):
         return render(request, 'forms/crear_plan.html', context)
 
     return HttpResponseRedirect('/recursos/')
+
 
 def EditarPlanProduccion(request, idRecurso):
     try:
@@ -176,6 +225,8 @@ class RecursoDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['archivos'] = Archivo.objects.filter(recurso=self.object)
         context['tags'] = self.object.etiquetas.all()
+        context['otherTags'] = Etiqueta.objects.exclude(id__in=context['tags'])
+        context['descargas'] = DescargarArchivo.objects.all()
         print(self.object.id)
         if not context['archivos']:
             context['archivos'] = ''
@@ -189,15 +240,21 @@ class RecursoDetailView(DetailView):
             context['hay_plan'] = False
 
         context['tipo_video'] = self.object.tipo.nombre == "Video"
+        context['produccion_terminada'] = str(self.object.fase) in ['C', 'D', 'E', 'F']
+        context['archivos_terminados'] = Archivo.objects.filter(recurso=self.object, recurso__archivo__terminado__exact='True')
+        context['archivos_no_terminados'] = Archivo.objects.filter(recurso=self.object, recurso__archivo__terminado__exact='False')
         return context
+
 
 def archivoClips(request, idArchivo):
     archivo = Archivo.objects.get(id=idArchivo)
     clips = archivo.clips.all()
+    otherTags = Etiqueta.objects.all()
 
     context = {
         'archivo': archivo,
         'clips': clips,
+        'otherTags': otherTags
     }
     return render(request, 'SGRD/archivo_clips.html', context)
 
@@ -260,4 +317,161 @@ class ClipCreate(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('recurso', kwargs = {'pk': self.kwargs['id_recurso']})
+        return reverse_lazy('recurso', kwargs={'pk': self.kwargs['id_recurso']})
+
+
+def crear_tipo(request):
+    if request.method == 'POST':
+        nombreTipo = request.POST.get('tiponame')
+        tipo = Tipo.objects.filter(nombre=nombreTipo)
+
+        if not tipo:
+            tipo = Tipo(nombre=nombreTipo)
+            tipo.save()
+            messages.success(request, "¡Tipo se registro correctamente!", extra_tags="alert-success")
+        else:
+            messages.error(request, "¡Tipo ya se encuentra registrado!", extra_tags="alert-danger")
+
+    return HttpResponseRedirect('/crear-recurso')
+
+
+def manage_tags(request):
+    tags = Etiqueta.objects.all()
+    newTag_form = EtiquetaForm(request.POST or None)
+    if newTag_form.is_valid():
+        Etiqueta.objects.create(**newTag_form.cleaned_data)
+        return HttpResponseRedirect('/tags')
+
+    context = {
+        'tags': tags,
+        'form': newTag_form
+    }
+    return render(request, 'SGRD/manage_tags.html', context)
+
+
+def delete_tag(request, id_tag):
+    tag = Etiqueta.objects.get(id=id_tag)
+    if request.method == 'POST':
+        tag.delete()
+        return HttpResponseRedirect('/tags')
+
+    context = {
+        'tag': tag
+    }
+
+    return render(request, 'confirmation/delete_tag.html', context)
+
+
+def remove_tag(request, pk, id_tag):
+    recurso = Recurso.objects.get(id=pk)
+    tag = Etiqueta.objects.get(id=id_tag)
+    if recurso and tag:
+        recurso.etiquetas.remove(tag)
+
+    return HttpResponseRedirect('/recurso/' + str(pk))
+
+
+def add_tag(request, pk):
+    recurso = Recurso.objects.get(id=pk)
+    if recurso and request.method == 'POST':
+        tags = request.POST.getlist('addTags')
+        recurso.etiquetas.add(*tags)
+
+    return HttpResponseRedirect('/recurso/' + str(pk))
+
+
+def remove_tag_clip(request, pk, id_tag, id_archivo):
+    clip = Clip.objects.get(id=pk)
+    tag = Etiqueta.objects.get(id=id_tag)
+    if clip and tag:
+        clip.etiquetas.remove(tag)
+
+    return HttpResponseRedirect('/clips/' + str(id_archivo))
+
+
+def add_tag_clip(request, pk, id_archivo):
+    clip = Clip.objects.get(id=pk)
+    if clip and request.method == 'POST':
+        tags = request.POST.getlist('addTags')
+        clip.etiquetas.add(*tags)
+
+    return HttpResponseRedirect('/clips/'+str(id_archivo))
+
+def delete_plan(request, idPlan):
+
+    plan = PlanProduccion.objects.get(recurso_id=idPlan)
+    if request.method == 'POST':
+        plan.delete()
+        return HttpResponseRedirect('/recurso/'+str(idPlan))
+
+    context = {
+        'plan': plan
+    }
+
+    return render(request, 'confirmation/delete_plan.html', context)
+
+def delete_entrada(request, idEntrada):
+
+    entrada = EntradaPlan.objects.get(id=idEntrada)
+    recurso = entrada.plan.recurso.id
+
+    entrada.delete()
+    return HttpResponse(status=200)
+
+class ClipDelete(DeleteView):
+    model = Clip
+    template_name = "confirmation/delete_clip.html"
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('ver-clips', kwargs={'idArchivo': self.kwargs['idArchivo']})
+
+
+def planear_descarga(request, id_archivo, id_recurso):
+
+    form = DescargarArchivoForm(request.POST or None)
+    if form.is_valid():
+        archivo = Archivo.objects.get(id=id_archivo)
+        DescargarArchivo.objects.create(**form.cleaned_data, archivo=archivo)
+        return HttpResponseRedirect('/recurso/'+str(id_recurso))
+
+    context = {
+        'id_recurso': id_recurso,
+        'id_archivo': id_archivo,
+        'form': form
+    }
+    return render(request, 'forms/descargar-archivo-form.html', context)
+
+def editar_plan_descarga(request, id_archivo, id_recurso):
+
+    archivo = Archivo.objects.get(id=id_archivo)
+    descarga = archivo.descarga
+
+    form = DescargarArchivoForm(request.POST or None, instance=descarga)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return HttpResponseRedirect('/recurso/'+str(id_recurso))
+
+    context = {
+        'id_recurso': id_recurso,
+        'id_archivo': id_archivo,
+        'form': form
+    }
+    return render(request, 'forms/editar-descargar-archivo-form.html', context)
+
+def check_for_downloads(request):
+
+    data = {
+        'downloads': []
+    }
+    descargas = DescargarArchivo.objects.all()
+    for dl in descargas:
+        print('Fecha Descarga: '+str(dl.fecha_descarga))
+        print('Date.Today: '+str(datetime.date.today()))
+        print('hora_descarga: '+str(dl.hora_descarga))
+        print('Date.Now: '+str(datetime.datetime.now().time()))
+        if dl.fecha_descarga >= datetime.date.today() and dl.hora_descarga <= datetime.datetime.now().time():
+            newDL = {'name': dl.archivo.nombre, 'uri': dl.archivo.get_absolute_url()}
+            data['downloads'].append(newDL)
+            dl.delete()
+
+    return JsonResponse(data)

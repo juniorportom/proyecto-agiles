@@ -27,20 +27,36 @@
                       <p><b>Fecha de publicación: </b>{{recurso.fecha_publicacion}}</p>
                   </div>
                 </div>
-                {% if tags %}
                 <div class="row">
                   <h5>Etiquetas:</h5>
                 </div>
-                <div class="row">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 1vw; margin-bottom: 2vh;">
                   {% for tag in tags %}
-                  <div class="col-md-2 card recursoTag" style="margin: 1vw; border: 2px solid #{{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px;">
-                    <div class="card-body text-center etiqueta-item">
+                  <div class="recursoTag" style="border: 2px solid {{tag.color}}; background-color: {{tag.color}}; border-radius: 10px; height: 40px; display: grid; grid-template-columns: 4fr 1fr;">
+                    <div class="text-center etiqueta-item" style="color: #FFF; font-weight: 400; width: 100%;">
                       {{tag.nombre}}
                     </div>
+                    <a href="{% url 'remove-tag' pk=recurso.id id_tag=tag.id %}" style="width: 100%;">
+                      <i class="ion-md-close icon-small" style="color: #FFF; width: 100%; margin: 0 auto;"></i>
+                    </a>
                   </div>
                   {% endfor %}
                 </div>
-                {% endif %}
+                <div class="row">
+                  <form action="{% url 'add-tag' recurso.id %}" method="POST"> {% csrf_token %}
+                    <select class="tagsSelect col-md-10" name="addTags" multiple="multiple">
+                      {% for tag in otherTags %}
+                      <option value="{{tag.id}}" {% if tag.id|stringformat:"i" in searchParams.tags %} selected {% endif %}>{{tag.nombre}}</option>
+                      {% endfor %}
+                    </select>
+                    <input type="submit" value="Agregar">
+                  </form>
+                </div>
+                <div class="row mt-2 mb-2">
+                  <a href="{% url 'manage-tags' %}" class="nav-link btnn btn-full"">
+                    <i class="ion-md-pricetags icon-small"></i>Administrar etiquetas
+                  </a>
+                </div>
                 <div class="row">
                     <h5>Responsables:</h5>
                 </div>
@@ -68,7 +84,10 @@
                       {{recurso.descripcion|striptags|safe|truncatechars:"200"}}
                     </p>
                    <p id="id_links">
-                  <a href="{% url 'create-archivo' recurso.id %}">Adjuntar Archivo</a>
+                   {% if produccion_terminada %}
+                     <a href="{% url 'create-archivo' recurso.id 1 %}">Cargar producto final</a> |
+                   {%  endif %}
+                   <a href="{% url 'create-archivo' recurso.id 0 %}">Adjuntar Archivo</a>
                    {% if not hay_plan %}
                    | <a href="{% url 'crear-plan' recurso.id %}">Crear plan</a>
                    {% else %}
@@ -80,44 +99,128 @@
                    {% endif %}
                     </p>
               </div>
-                {% if archivos %}
+
+            {% if archivos %}
+                {% if produccion_terminada %}
+                    {% if archivos_terminados %}
+                        <h5 class="text-center mt-3 mb-3">Producto terminado</h5>
+                        <div class="row text-center">
+                          <table class="col-md-20 w-100 entradas table table-striped table-bordered">
+                            <thead class="text-center">
+                              <th>Nombre</th>
+                              <th>Fecha</th>
+                              <th>Archivo</th>
+                              <th>Descargar</th>
+                              <th>Planear Descarga</th>
+                              {% if tipo_video %}
+                              <th>Clips</th>
+                              {% endif %}
+                            </thead>
+                            <tbody>
+                              {% for archivo in archivos %}
+                                  {% if archivo.terminado %}
+                                      <tr>
+                                        <td><strong>{{ archivo.nombre }}</strong></td>
+                                        <td>{{ archivo.fecha_creacion }}</td>
+                                        <td>{{ archivo.ruta.name }}</td>
+                                        <td>
+                                            <a class="btnn btn-full" href="{{ archivo.get_absolute_url}}" download><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
+                                        </td>
+                                        <td>
+                                          {% if archivo.descarga %}
+                                            <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'editar-descargar-archivo' recurso.id archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programada</a>
+                                          {% else %}
+                                            <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'descargar-archivo' recurso.id archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programar</a>
+                                          {% endif %}
+                                        </td>
+                                        {% if tipo_video %}
+                                        <td>
+                                        {% if '.mp4' in archivo.ruta.name %}
+                                            <a class="btnn btn-full" href="{% url 'ver-clips' archivo.id %}"><i class="ion-ios-videocam icon-small"></i>Clips</a>
+                                        {% endif %}
+                                        </td>
+                                        {% endif %}
+                                      </tr>
+                                  {% endif %}
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                    {% endif %}
+                {% endif %}
+           {% endif %}
+
+           {% if archivos %}
+               {% if archivos_no_terminados %}
                     <h5 class="text-center mt-3 mb-3">Archivos asociados</h5>
-            <div class="row text-center">
-              <table class="col-md-20 w-100 entradas table table-striped table-bordered">
-                <thead class="text-center">
-                  <th>Nombre</th>
-                  <th>Fecha</th>
-                  <th>Archivo</th>
-                  <th>Descargar</th>
-                  {% if tipo_video %}
-                  <th>Clips</th>
-                  {% endif %}
-                </thead>
-                <tbody>
-                  {% for archivo in archivos %}
-                  <tr>
-                    <td>{{ archivo.nombre }}</td>
-                    <td>{{ archivo.fecha_creacion }}</td>
-                    <td>{{ archivo.ruta.name }}</td>
-                    <td>
-                        <a class="btnn btn-full" href="{{ archivo.get_absolute_url}}" download><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
-                    </td>
-                    {% if tipo_video %}
-                    <td>
-                    {% if '.mp4' in archivo.ruta.name %}
-                        <a class="btnn btn-full" href="{% url 'ver-clips' archivo.id %}"><i class="ion-ios-videocam icon-small"></i>Clips</a>
-                    {% endif %}
-                    </td>
-                    {% endif %}
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
+                    <div class="row text-center">
+                      <table class="col-md-20 w-100 entradas table table-striped table-bordered">
+                        <thead class="text-center">
+                          <th>Nombre</th>
+                          <th>Fecha</th>
+                          <th>Archivo</th>
+                          <th>Descargar</th>
+                          <th>Planear Descarga</th>
+                          {% if tipo_video %}
+                          <th>Clips</th>
+                          {% endif %}
+                        </thead>
+                        <tbody>
+                          {% for archivo in archivos %}
+                              {% if not archivo.terminado %}
+                                  <tr>
+                                    <td>{{ archivo.nombre }}</td>
+                                    <td>{{ archivo.fecha_creacion }}</td>
+                                    <td>{{ archivo.ruta.name }}</td>
+                                    <td>
+                                        <a class="btnn btn-full" href="{{ archivo.get_absolute_url}}" download><i class="ion-ios-cloud-download icon-small"></i>Descarga</a>
+                                    </td>
+                                    <td>
+                                      {% if archivo.descarga %}
+                                        <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'editar-descargar-archivo' recurso.id archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programada</a>
+                                      {% else %}
+                                        <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'descargar-archivo' recurso.id archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programar</a>
+                                      {% endif %}
+                                    </td>
+                                    {% if tipo_video %}
+                                    <td>
+                                    {% if '.mp4' in archivo.ruta.name %}
+                                        <a class="btnn btn-full" href="{% url 'ver-clips' archivo.id %}"><i class="ion-ios-videocam icon-small"></i>Clips</a>
+                                    {% endif %}
+                                    </td>
+                                    {% endif %}
+                                  </tr>
+                              {% endif %}
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+               {% endif %}
            {% endif %}
             </div>
         </div>
       </div>
   </div>
 </main>
+    <div id="popup" class="modal fade" role="dialog">
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+      <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+<script>
+   /* $(document).ready(function () {
+        $('#id_descargar').click(function () {
+            $('#descargar_modal').modal();
+        });
+    });*/
+
+    function abrir_modal(url)
+{
+        $('#popup').load(url, function()
+        {
+                $(this).modal('show');
+        });
+        return false;
+}
+
+</script>
 {% endblock %}

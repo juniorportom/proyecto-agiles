@@ -1,0 +1,29 @@
+<script>
+  $(document).ready(function() {
+    $('.typeSelect').select2();
+    $('.tagsSelect').select2();
+  });
+
+  setInterval(function(){
+    $.ajax({
+      url: '{% url "check-descargas" %}',
+      data: {},
+      dataType: 'json',
+      success: function (data) {
+        downloads = data['downloads']
+        for (var i = 0; i < downloads.length; i++) {
+          downloadURI(downloads[0]['uri'], downloads[0]['name']);
+        }
+      }
+    });
+  }, 5000);
+
+  function downloadURI(uri, name) {
+    var a = document.createElement('A');
+    a.href = uri;
+    a.download = uri.substr(uri.lastIndexOf('/') + 1);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+</script>

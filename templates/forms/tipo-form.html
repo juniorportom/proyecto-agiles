@@ -1,0 +1,29 @@
+<div class="modal fade" id="tipo_modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4><span class="glyphicon glyphicon-user"></span> Crear Tipo</h4>
+            </div>
+            <!--suppress HtmlUnknownTarget -->
+            <form role="form" action="crear-tipo" method="post" enctype="multipart/form-data" id="tipo-form" novalidate="novalidate">
+                {% csrf_token %}
+                <div class="modal-body">
+                     <p>
+                    <input type="text" name="tiponame" autofocus maxlength="254" required
+                      id="id_tiponame" class="form-control" placeholder="Nombre del tipo"/>
+                  </p>
+                </div>
+                <div class="modal-footer btn-toolbar">
+                    <button type="submit"id="id_grabar" class="btn-b btn-bf pull-right">
+                        <span class="glyphicon glyphicon-save"></span> Guardar
+                    </button>
+                    <button type="submit" class="btn-b btn-bg pull-right" data-dismiss="modal"
+                            style="margin-left: 5px">
+                        <span class="glyphicon glyphicon-remove"></span> Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

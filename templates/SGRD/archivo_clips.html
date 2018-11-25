@@ -1,86 +1,89 @@
 {% extends 'root.html' %}
 {% block title %}Recursos{% endblock %}
 {% block content %}
-  <main role="main">
-    <div class="container mb-4">
-      <div class="row mt-3">
-        <div class="card w-100">
-          <div class="card-body">
-            <div class="col-md-12 mx-auto">
+<div class="container mb-4">
+  <div class="card mt-3">
+    <div class="card-body">
+      <h3 class="card-title">Clips: {{ archivo.nombre }} </h3>
+      <div class="row">
+        <div class="col-md-4">
+          {% for cl in clips %}
+          <div class="card mb-3" style="box-shadow: 0px 0px 15px; border-radius: 10px;">
+            <div class="card-body">
+              <h5 class="card-title col-md-12">{{ cl.nombre }}</h5>
               <div class="row">
-                <h5 class="card-title">Clips: {{ archivo.nombre }} </h5>
+                <p class="mr-2">Segundos: {{ cl.inicio }} - {{ cl.final }}</p>
+                <a href="#{{ cl.inicio }}-{{ cl.final }}" onclick="playClip({{ cl.inicio }}, {{ cl.final }})" class="btnn btn-full mt-1 mb-1">Reproducir</a>
+                <a href="{% url 'eliminar-clip' archivo.id cl.pk %}" class="btnn btn-full mt-1 mb-1">Eliminar</a>
               </div>
-              {% if clips|length > 0 %}
-                <div class="row">
-                  <div class="col-md-4">
-                    {% for cl in clips %}
-                      <div class="row mb-2">
-                        <div class="card col-md-11">
-                          <div class="card-title">
-                            <strong>{{ cl.nombre }}</strong>
-                          </div>
-                          <div class="card-body">
-                            Segundo inicial: {{ cl.inicio }}<br>
-                            Segundo final: {{ cl.final }}<br>
-                            <a href="#{{ cl.inicio }}-{{ cl.final }}"
-                               onclick="playClip({{ cl.inicio }}, {{ cl.final }})" class="btnn btn-full mt-1 mb-1">
-                              Reproducir
-                            </a>
-                            <div class="row mt-1">
-                              {% for tag in cl.etiquetas.all %}
-                                <div class="col-md-6 card recursoTag"
-                                     style="border: 2px solid #{{ tag.color }}; border-radius: 10px; width: auto; height: auto;">
-                                  <div class="card-body text-center etiqueta-item">
-                                    {{ tag.nombre }}
-                                  </div>
-                                </div>
-                              {% endfor %}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    {% endfor %}
-                  </div>
-                  <div class="col-md-8">
-                    <video id="video-clip" class="video-js vjs-default-skin vjs-16-9" controls preload="none" data-setup="{}">
-                      <source src="{{ archivo.get_absolute_url }}"
-                              type="video/mp4">
-                      <p class="vjs-no-js">To view this video please enable JavaScript, and
-                        consider upgrading to a web browser that <a
-                            href="http://videojs.com/html5-video-support/" target="_blank">supports
-                          HTML5 video</a></p>
-                    </video>
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const myPlayer = videojs('video-clip')
-
-                            myPlayer.ready(function () {
-                                console.log('ready')
-                                window.myPlayer = myPlayer
-                            })
-                        }, false)
-                        window.playClip = (start, end) => {
-                            if (!window.myPlayer) return alert('El video aún no ha sido cargado')
-                            window.myPlayer.currentTime(start)
-                            window.myPlayer.play()
-                            window.myPlayer.on('timeupdate', () => {
-                                if (window.myPlayer.currentTime() < start || window.myPlayer.currentTime() > end) {
-                                    window.myPlayer.off('timeupdate')
-                                }
-                                if (window.myPlayer.currentTime() >= end) {
-                                    window.myPlayer.pause()
-                                    window.myPlayer.off('timeupdate')
-                                }
-                            })
-                        }
-                    </script>
-                  </div>
+              {% for tag in cl.etiquetas.all %}
+              <div class="col-md-12 row recursoTag" style="margin: 1vw; border: 2px solid {{tag.color}}; background-color: {{tag.color}}; border-radius: 10px; width: auto; height: auto; margin-right: 1px;">
+                <div class="col-10 text-center etiqueta-item" style="color: #FFF; font-weight: 400;">
+                  {{tag.nombre}}
                 </div>
-              {% endif %}
+                <a href="{% url 'remove-tag-clip' pk=cl.id id_tag=tag.id id_archivo=archivo.id %}" class="col-2">
+                  <i class="ion-md-close icon-small" style="color: #FFF"></i>
+                </a>
+              </div>
+              {% endfor %}
+              <div class="row">
+                <form action="{% url 'add-tag-clip' pk=cl.id id_archivo=archivo.id %}" method="POST"> {% csrf_token %}
+                  <select class="tagsSelect col-md-8" name="addTags" multiple="multiple">
+                    {% for tag in otherTags %}
+                    {% if tag not in cl.etiquetas.all %}
+                    <option value="{{tag.id}}" {% if tag.id|stringformat:"i" in searchParams.tags %} selected {% endif %}>{{tag.nombre}}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                  <input type="submit" value="Agregar">
+                </form>
+              </div>
             </div>
           </div>
+          {% endfor %}
         </div>
+        <div class="col-md-8">
+          <video id="video-clip" class="video-js vjs-default-skin vjs-16-9" controls preload="none" data-setup="{}">
+            <source src="{{ archivo.get_absolute_url }}"
+            type="video/mp4">
+            <p class="vjs-no-js">To view this video please enable JavaScript, and
+              consider upgrading to a web browser that <a
+              href="http://videojs.com/html5-video-support/" target="_blank">supports
+              HTML5 video</a></p>
+            </video>
+            <script>
+              document.addEventListener('DOMContentLoaded', function () {
+                const myPlayer = videojs('video-clip')
+
+                myPlayer.ready(function () {
+                  console.log('ready')
+                  window.myPlayer = myPlayer
+                })
+              }, false)
+              window.playClip = (start, end) => {
+                if (!window.myPlayer) return alert('El video aún no ha sido cargado')
+                window.myPlayer.currentTime(start)
+                window.myPlayer.play()
+                window.myPlayer.off('timeupdate')
+                window.myPlayer.on('timeupdate', () => {
+                  if (window.myPlayer.currentTime() < start || window.myPlayer.currentTime() > end) {
+                    window.myPlayer.off('timeupdate')
+                  }
+                  if (window.myPlayer.currentTime() >= end) {
+                    window.myPlayer.pause()
+                    window.myPlayer.off('timeupdate')
+                  }
+                })
+              }
+            </script>
+          </div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <a href="{% url 'manage-tags' %}" class="nav-link btnn btn-full"">
+          <i class="ion-md-pricetags icon-small"></i>Administrar etiquetas
+        </a>
       </div>
     </div>
-  </main>
+  </div>
+</div>
 {% endblock %}

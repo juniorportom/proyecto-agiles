@@ -12,6 +12,8 @@ django-storages = "*"
 django-heroku = "*"
 gunicorn = "*"
 "psycopg2-binary" = "*"
+xlsxwriter = "*"
+django-webpush = "*"
 "boto3" = "*"
 
 [requires]

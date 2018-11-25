@@ -39,6 +39,7 @@
           <th>Equipos</th>
           <th>Descripcion</th>
           <th>Observaciones</th>
+          <th>Opciones</th>
         </thead>
         <tbody>
           {% for e in values %}
@@ -48,7 +49,11 @@
             <td>{{ e.personas }}</td>
             <td>{{ e.equipos }}</td>
             <td>{{ e.descripcion }}</td>
-            <td>{{ e.observaciones }} <a class="btnn btn-full float-right" href="{% url 'editar-entrada' e.id %}">Editar</a></td>
+            <td>{{ e.observaciones }}</td>
+            <td><a class="btnn btn-full float-right" href="{% url 'editar-entrada' e.id %}">Editar</a>
+                <!--<a class="btnn btn-full float-right" href="#" id="id_eliminar_entrada">Eliminar</a>-->
+                <a class="btnn btn-full float-right" href="#" onclick="eliminarEntrada({{ e.id }})" id="id_eliminar_entrada">Eliminar</a>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
@@ -66,6 +71,45 @@
   <div class="col-md-2">
     <a class="btnn btn-full" href="{% url 'editar-plan' recurso.id %}"><i class="ion-ios-list-box icon-small"></i>Editar descripción</a>
   </div>
-  <div class="col-md-7"></div>
+  <div class="col-md-2">
+    <a class="btnn btn-full" href="#" id="id_eliminar_plan"><i class="ion-md-trash icon-small"></i>Eliminar plan de producción</a>
+  </div>
+  <div class="col-md-2">
+    <a class="btnn btn-full" href="{% url 'exportar-plan' recurso.id %}"><i class="ion-ios-list-box icon-small"></i>Exportar a Excel</a>
+  </div>
 </div>
+
+{% include "confirmation/delete_plan.html" %}
+{% include "confirmation/delete_entrada.html" %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+      <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#id_eliminar_plan').click(function () {
+            $('#tipo_modal1').modal();
+        });
+    });
+
+    $(document).ready(function () {
+        $('#id_eliminar_entrada').click(function () {
+            $('#tipo_modal2').modal();
+        });
+    });
+let identrada
+
+async function eliminarEntrada(id) {
+        identrada = id
+
+        $('#tipo_modal2').modal();
+
+
+
+}
+
+async function eliminarEntrada2(){
+    await fetch("/eliminar-entrada/"+identrada)
+    location.reload()
+}
+</script>
 {% endblock %}

@@ -1,7 +1,6 @@
 from django.urls import path
 
 from SGRD.views.recurso import RecursoCreate, RecursoListView,  RecursoDetailView, recursoBusqueda
-from SGRD.views.index import index
 from SGRD.views.archivo import ArchivoCreate
 from SGRD.views.clip import archivoClips, ClipCreate, ClipDelete
 from SGRD.views.planProduccion import crearPlanProduccion, EditarPlanProduccion, delete_plan, createEntradaPlan, editarEntradaPlan, verPlanProduccion, exportarPlanProduccion, delete_entrada

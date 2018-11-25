@@ -14,7 +14,7 @@
   {% else %}
   <div class="row mt-3 mb-4">
     <!-- Menu de filtros -->
-    <div class="col-md-3 card container" style="height: 100%;">
+    <div class="col-md-3 card container" style="height: 100%; margin-top: 9vh;">
       <div class="card-body">
         <h3 class="card-title">Filtros</h3>
         <form class="searchForm" action="{% url 'index' %}" method="GET">
@@ -39,97 +39,96 @@
         </form>
       </div>
     </div>
-    <!-- Lista de recursos -->
     <div class="col-md-8 container">
-      <div id="searchResult" >
-        {% if recursos|length > 0 %}
-        <h1 class="card-title">Recursos</h1>
-        {% endif %}
-        {% for recurso in recursos|dictsort:"inicio_produccion" reversed%}
-        <div class="row m3 mt-2">
-          <div class="card w-100">
-            <div class="card-body">
-              <div class="col-md-12 mx-auto">
-                <div class="row">
-                  <h2 class="card-title">{{recurso.nombre}} </h2>
+      <!-- Lista de recursos -->
+      {% if recursos|length > 0 %}
+      <h1 class="card-title">Recursos</h1>
+      {% endif %}
+      {% for recurso in recursos|dictsort:"inicio_produccion" reversed%}
+      <div class="row m3 mt-2">
+        <div class="card w-100">
+          <div class="card-body">
+            <div class="col-md-12 mx-auto">
+              <div class="row">
+                <h2 class="card-title">{{recurso.nombre}} </h2>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-5 mx-auto">
+                  <p><b>Proyecto: </b>{{recurso.proyecto}}</p>
+                  <p><b>Fase: </b>{{recurso.get_fase_display}}</p>
+                </div>
+                <div class="col-md-7 ">
+                  <p><b>Tipo: </b>{{recurso.tipo}}</p>
                 </div>
               </div>
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="col-md-5 mx-auto">
-                    <p><b>Proyecto: </b>{{recurso.proyecto}}</p>
-                    <p><b>Fase: </b>{{recurso.get_fase_display}}</p>
-                  </div>
-                  <div class="col-md-7 ">
-                    <p><b>Tipo: </b>{{recurso.tipo}}</p>
-                  </div>
-                </div>
-                {% if recurso.etiquetas_list %}
-                <div class="row">
-                  <h5>Etiquetas:</h5>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 1vw; margin-bottom: 2vh;">
-                  {% for tag in recurso.etiquetas_list %}
-                  <div class="recursoTag" style="border: 2px solid {{tag.color}}; background-color: {{tag.color}}; border-radius: 10px; height: 40px;">
-                    <div class="text-center etiqueta-item" style="color: #FFF; font-weight: 400; width: 100%;">
-                      {{tag.nombre}}
-                    </div>
-                  </div>
-                  {% endfor %}
-                </div>
-                {% endif %}
-                <p>
-                  <a class="btnn btn-full mt-1 mb-1" href="{% url 'recurso' recurso.id %}">Detalle</a>
-                </p>
+              {% if recurso.etiquetas_list %}
+              <div class="row">
+                <h5>Etiquetas:</h5>
               </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 1vw; margin-bottom: 2vh;">
+                {% for tag in recurso.etiquetas_list %}
+                <div class="recursoTag" style="border: 2px solid {{tag.color}}; background-color: {{tag.color}}; border-radius: 10px; height: 40px;">
+                  <div class="text-center etiqueta-item" style="color: #FFF; font-weight: 400; width: 100%;">
+                    {{tag.nombre}}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              {% endif %}
+              <p>
+                <a class="btnn btn-full mt-1 mb-1" href="{% url 'recurso' recurso.id %}">Detalle</a>
+              </p>
             </div>
           </div>
         </div>
-        {% endfor %}
-        {% if clips|length > 0 %}
-        <h3 class="card-title">Clips</h3>
-        {% endif %}
-        {% for clip in clips%}
-        <div class="row m3 mt-2">
-          <div class="card w-100">
-            <div class="card-body">
-              <div class="col-md-12 mx-auto">
-                <div class="row">
-                  <h5 class="card-title">{{clip.nombre}} </h5>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="col-md-6 mx-auto">
-                    <p><b>Recurso: </b>{{clip.archivo.recurso.nombre}}</p>
-                  </div>
-                  <div class="col-md-6 mx-auto">
-                    <p><b>Archivo: </b>{{clip.archivo.nombre}}</p>
-                  </div>
-                </div>
-                {% if clip.etiquetas.all|length > 0 %}
-                <div class="row">
-                  <h5>Etiquetas:</h5>
-                </div>
-                <div class="row">
-                  {% for tag in clip.etiquetas.all %}
-                  <div class="col-md-4 card recursoTag" style="margin: 1vw; border: 2px solid {{tag.color}}; border-radius: 10px; background-color: {{tag.color}}; width: auto; height: auto; margin-right: 1px;">
-                    <div class="card-body text-center etiqueta-item" style="color: #FFF" >
-                      {{tag.nombre}}
-                    </div>
-                  </div>
-                  {% endfor %}
-                </div>
-                {% endif %}
-                <p>
-                  <a class="btnn btn-full mt-1 mb-1" href="{% url 'ver-clips' clip.archivo.id %}">Ver Clip</a>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
       </div>
+      {% endfor %}
+      <!-- Lista de recursos -->
+      {% if clips|length > 0 %}
+      <h1 class="card-title mt-3">Clips</h1>
+      {% endif %}
+      {% for clip in clips%}
+      <div class="row m3 mt-2">
+        <div class="card w-100">
+          <div class="card-body">
+            <div class="col-md-12 mx-auto">
+              <div class="row">
+                <h5 class="card-title">{{clip.nombre}} </h5>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-6 mx-auto">
+                  <p><b>Recurso: </b>{{clip.archivo.recurso.nombre}}</p>
+                </div>
+                <div class="col-md-6 mx-auto">
+                  <p><b>Archivo: </b>{{clip.archivo.nombre}}</p>
+                </div>
+              </div>
+              {% if clip.etiquetas.all|length > 0 %}
+              <div class="row">
+                <h5>Etiquetas:</h5>
+              </div>
+              <div class="row">
+                {% for tag in clip.etiquetas.all %}
+                <div class="col-md-4 card recursoTag" style="margin: 1vw; border: 2px solid {{tag.color}}; border-radius: 10px; background-color: {{tag.color}}; width: auto; height: auto; margin-right: 1px;">
+                  <div class="card-body text-center etiqueta-item" style="color: #FFF" >
+                    {{tag.nombre}}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              {% endif %}
+              <p>
+                <a class="btnn btn-full mt-1 mb-1" href="{% url 'ver-clips' clip.archivo.id %}">Ver Clip</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
     </div>
   </div>
   {% endif %}

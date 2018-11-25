@@ -9,8 +9,14 @@ from .models.etiqueta import Etiqueta
 from .models.tipo import Tipo
 from .models.clip import Clip
 from .models.descargarArchivo import DescargarArchivo
-from .forms import CreateEntradaPlanForm, RecursoForm, ArchivoForm, PlanProduccionForm, ClipForm, TipoForm, EtiquetaForm, DescargarArchivoForm
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from .forms.recurso import RecursoForm
+from .forms.entradaPlan import CreateEntradaPlanForm
+from .forms.archivo import ArchivoForm
+from .forms.planProduccion import PlanProduccionForm
+from .forms.clip import ClipForm
+from .forms.etiqueta import EtiquetaForm
+from .forms.descargarArchivo import DescargarArchivoForm
+from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy

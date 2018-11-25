@@ -29,11 +29,37 @@ import io, datetime
 import xlsxwriter
 
 """
-Vista principal
+Vista principal: Listado de archivos y busqueda
 """
 def index(request):
-    context = {
+    tags = request.GET.getlist('tags')
+    type = request.GET.get('types', -1)
 
+    type = int(type)
+
+    recursos = Recurso.objects.all()
+    clips = Clip.objects.all()
+
+    if type != -1:
+        recursos = recursos.filter(tipo=type)
+
+    for pk in tags:
+        recursos = recursos.filter(etiquetas__in=pk)
+        clips = clips.filter(etiquetas__in=pk)
+
+    all_tags = Etiqueta.objects.all()
+    all_types = Tipo.objects.all()
+
+    context = {
+        'searchParams': {
+            'isSearch': len(tags) != 0 or type != -1,
+            'type': type,
+            'tags': tags,
+        },
+        'types': all_types,
+        'tags': all_tags,
+        'recursos': recursos,
+        'clips': clips
     }
     return render(request, 'SGRD/index.html', context)
 
@@ -159,7 +185,7 @@ class RecursoCreate(CreateView):
     model = Recurso
     form_class = RecursoForm
     template_name = 'forms/recurso-form.html'
-    success_url = reverse_lazy('recursos')
+    success_url = reverse_lazy('index')
 
 """
 Vista de crear entrada de plan de producción
@@ -215,7 +241,7 @@ def crearPlanProduccion(request, idRecurso):
 
         return render(request, 'forms/crear_plan.html', context)
 
-    return HttpResponseRedirect('/recursos/')
+    return HttpResponseRedirect('/recurso/'+str(idRecurso))
 
 """
 Vista de editar plan de producción
@@ -290,40 +316,6 @@ def archivoClips(request, idArchivo):
         'otherTags': otherTags
     }
     return render(request, 'SGRD/archivo_clips.html', context)
-
-"""
-Vista de búsqueda de recursos
-"""
-def recursoBusqueda(request):
-    tags = request.GET.getlist('tags')
-    type = request.GET.get('types', -1)
-
-    type = int(type)
-
-    recursos = Recurso.objects.all()
-    clips = Clip.objects.all()
-
-    if type != -1:
-        recursos = recursos.filter(tipo=type)
-
-    for pk in tags:
-        recursos = recursos.filter(etiquetas__in=pk)
-        clips = clips.filter(etiquetas__in=pk)
-
-    all_tags = Etiqueta.objects.all()
-    all_types = Tipo.objects.all()
-
-    context = {
-        'searchParams': {
-            'type': type,
-            'tags': tags,
-        },
-        'types': all_types,
-        'tags': all_tags,
-        'recursos': recursos,
-        'clips': clips
-    }
-    return render(request, 'SGRD/busqueda.html', context)
 
 """
 Vista de crear clip a archivo

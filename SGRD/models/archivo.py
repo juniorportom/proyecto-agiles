@@ -2,7 +2,9 @@ from django.db import models
 from datetime import datetime
 from .recurso import Recurso
 
-
+"""
+Modelo de archivo
+"""
 class Archivo(models.Model):
     nombre = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=500)

@@ -1,3 +1,4 @@
+# coding=utf-8
 from django import forms
 from django.utils.translation import gettext as _
 from django.core.exceptions import ValidationError
@@ -10,7 +11,9 @@ from .models.tipo import Tipo
 from .models.etiqueta import Etiqueta
 from .models.descargarArchivo import DescargarArchivo
 
-
+"""
+Formulario para un recurso
+"""
 class RecursoForm(forms.ModelForm):
     class Meta:
         model = Recurso
@@ -36,7 +39,9 @@ class RecursoForm(forms.ModelForm):
             'descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción'})
         }
 
-
+"""
+Formulario para entrada de plan de producción
+"""
 class CreateEntradaPlanForm(forms.ModelForm):
     class Meta:
         model = EntradaPlan
@@ -55,7 +60,9 @@ class CreateEntradaPlanForm(forms.ModelForm):
           'descripcion': 'Descripción'
         }
 
-
+"""
+Formulario para  un archivo
+"""
 class ArchivoForm(forms.ModelForm):
     class Meta:
         model = Archivo
@@ -71,7 +78,9 @@ class ArchivoForm(forms.ModelForm):
             'fecha_creacion': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control','placeholder':'yyyy-MM-dd', 'type': 'date'})
         }
 
-
+"""
+Formulario para plan de producción
+"""
 class PlanProduccionForm(forms.ModelForm):
     class Meta:
         model = PlanProduccion
@@ -87,7 +96,9 @@ class PlanProduccionForm(forms.ModelForm):
             'descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción'}),
         }
 
-
+"""
+Formulario para un clip
+"""
 class ClipForm(forms.ModelForm):
     class Meta:
         model = Clip
@@ -105,6 +116,9 @@ class ClipForm(forms.ModelForm):
         }
 
 
+"""
+Formulario para un tipo
+"""
 class TipoForm(forms.ModelForm):
     class Meta:
         model = Tipo
@@ -116,6 +130,9 @@ class TipoForm(forms.ModelForm):
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'})
         }
 
+"""
+Formulario para una etiqueta
+"""
 class EtiquetaForm(forms.ModelForm):
     class Meta:
         model = Etiqueta
@@ -135,7 +152,9 @@ class EtiquetaForm(forms.ModelForm):
             raise ValidationError(_('Ya existe una etiqueta con el mismo nombre'), code='invalid')
         return nombre
 
-
+"""
+Formulario para una descarga de archivo
+"""
 class DescargarArchivoForm(forms.ModelForm):
     class Meta:
         model = DescargarArchivo

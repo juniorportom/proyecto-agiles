@@ -3,7 +3,9 @@ from .etiqueta import Etiqueta
 from .tipo import Tipo
 from datetime import datetime
 
-# Create your models here.
+"""
+Modelo de recurso
+"""
 class Recurso(models.Model):
     FASE_TYPES = (
         ('A', 'Pre-Producción'),

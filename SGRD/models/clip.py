@@ -2,7 +2,9 @@ from django.db import models
 from .archivo import Archivo
 from .etiqueta import Etiqueta
 
-
+"""
+Modelo de clip
+"""
 class Clip(models.Model):
     nombre = models.CharField(max_length=200, blank=True)
     inicio = models.IntegerField(default=0)

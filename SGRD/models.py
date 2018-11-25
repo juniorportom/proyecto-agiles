@@ -1,5 +1,9 @@
+# coding=utf-8
 from django.db import models
 
+"""
+Importación de los modelos de la carpeta models
+"""
 # Import your models here.
 from .models.entradaPlan import EntradaPlan
 from .models.tipo import Tipo

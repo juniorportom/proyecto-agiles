@@ -177,7 +177,7 @@
                                     </td>
                                     <td>
                                       {% if archivo.descarga %}
-                                        <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'editar-descargar-archivo' recurso.id archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programada</a>
+                                        <a class="btnn btn-ghost"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'editar-descargar-archivo' recurso.id archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programada</a>
                                       {% else %}
                                         <a class="btnn btn-full"  id="id_descargar" href="#"  onclick="return abrir_modal('{% url 'descargar-archivo' recurso.id archivo.id %}')"   ><i class="ion-ios-alarm icon-small"></i>Programar</a>
                                       {% endif %}

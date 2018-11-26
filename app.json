@@ -26,7 +26,8 @@
     },
     "DATABASE_URL": {
       "description": "URL de la base de datos con usuario, contraseña, host, puerto y nombre de DB",
-      "value": ""
+      "value": "",
+      "required": false
     },
     "DISABLE_COLLECTSTATIC": {
       "description": "Setting de Python para no pasar archivos estáticos a S3",

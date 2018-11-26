@@ -1,0 +1,39 @@
+{
+  "name": "SGRD",
+  "description": "Sistema de gestion de rescursos digitales",
+  "website": "https://proyecto-agiles.herokuapp.com/",
+  "success_url": "/",
+  "addons": [
+    "heroku-postgresql:hobby-dev"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "env": {
+    "AWS_ACCESS_KEY_ID": {
+      "description": "ACCESS KEY ID de AWS con permisos de S3",
+      "value": ""
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "description": "SECRET ACCESS KEY de AWS con permisos de S3",
+      "value": ""
+    },
+    "AWS_STORAGE_BUCKET_NAME": {
+      "description": "Nombre del bucket de S3",
+      "value": "agiles-media"
+    },
+    "DATABASE_URL": {
+      "description": "URL de la base de datos con usuario, contraseña, host, puerto y nombre de DB",
+      "value": ""
+    },
+    "DISABLE_COLLECTSTATIC": {
+      "description": "Setting de Python para no pasar archivos estáticos a S3",
+      "value": "1"
+    }
+  },
+  "scripts": {
+    "postdeploy": "python manage.py migrate"
+  }
+}

@@ -1,0 +1,13 @@
+Documentación de referencia
+https://documentation.codeship.com/basic/languages-frameworks/python/
+
+# We support all major Python versions. Please see our documentation for a full list.
+# https://documentation.codeship.com/basic/languages-frameworks/python/
+#
+# By default we use the Python version specified in via the PYENV_VERSION environment
+# variable and fall back to the latest version from the 2.7 release branch.
+pyenv local 3.6
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver 2>&1 &
+python -m unittest discover SGRD/
